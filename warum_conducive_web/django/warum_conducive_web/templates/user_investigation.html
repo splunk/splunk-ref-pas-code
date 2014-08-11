@@ -1,0 +1,76 @@
+{% extends "splunkdj:base_with_app_bar.html" %}
+
+{% load splunkmvc %}
+
+{% block title %}User Investigation{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}splunkjs/css/dashboard.css">
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}{{app_name}}/custom.css" />
+<style>
+
+</style>
+{% endblock css %}
+
+{% block content %}
+<div class="dashboard-body container-fluid main-section-body">
+  
+  <div class="row">
+    <div class="span12 dashboard-header clearfix">
+      <h2>User Investigation</h2>
+    </div>
+  </div>
+
+      <div class="dashboard-row">
+        <div class="dashboard-cell" style="width: 100%;">
+            <div class="dashboard-panel">
+                <div class="dashboard-element">
+                    <div class="panel-head">
+                        <h3>Search Criteria</h3>
+                    </div>
+                    <div class="panel-body">
+                        {% timerange id="timerange" managerid="trend-search" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  <div class="dashboard-row">
+    <div class="dashboard-cell" style="width: 100%;">
+      <div class="dashboard-panel">
+        <div class="panel-head">
+          <h3>Trend</h3>
+        </div>
+
+        <div class="panel-body">
+            {% chart id="trend-chart" managerid="trend-search" type="area" %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock content%}
+
+{% block managers %}
+
+  {% searchmanager id="trend-search" search="index=warum sourcetype=access | timechart count by event_name" 
+        preview=True cache=60 status_buckets=300 %}
+
+{% endblock managers %}
+
+{% block js %}    
+<script>    
+require(["splunkjs/ready!", "underscore"], function(mvc, _) {
+
+    var search = mvc.Components.getInstance("trend-search");
+    var timerange = mvc.Components.getInstance("timerange"); 
+    timerange.on("change", function() {
+        search.search.set(timerange.val());
+    });
+
+});
+
+</script>
+{% endblock js %}

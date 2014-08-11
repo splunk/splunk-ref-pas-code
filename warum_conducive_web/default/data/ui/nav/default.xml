@@ -1,4 +1,4 @@
 <nav>
     <view name="default" default="true"/>
-    <a href="/dj/redirector/warum_conducive_web/home">Home</a>
+    <a href="/dj/redirector/warum_conducive_web/user_investigation">User Investigation</a>
 </nav>
