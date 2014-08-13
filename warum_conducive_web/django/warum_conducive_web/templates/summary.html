@@ -25,7 +25,7 @@
   
   <div class="row">
     <div class="span12 dashboard-header clearfix">
-      <h2>User Investigation</h2>
+      <h2>Summary</h2>
     </div>
   </div>
 
@@ -37,7 +37,7 @@
                         <h3>Search Criteria</h3>
                     </div>
                     <div class="panel-body">
-                        {% timerange id="timerange" managerid="trend-search" preset="Last 24 hours" %}
+                        {% timerange id="timerange" managerid="trend-search" preset="Last 7 days" %}
                     </div>
                 </div>
             </div>
@@ -115,7 +115,7 @@ require(
     var drilldown_div = $("#drilldown-row");
     var tokens = mvc.Components.getInstance("default");
 
-    drilldown_div.hide();
+    tokens.set("event_name", "*");
 
     timerange.on("change", function() {
         search.search.set(timerange.val());
@@ -133,7 +133,6 @@ require(
     barchart.on("click:chart", function(e) {
         e.preventDefault();
         tokens.set("event_name", e.name2);
-        drilldown_div.show();
     });
 });
 
