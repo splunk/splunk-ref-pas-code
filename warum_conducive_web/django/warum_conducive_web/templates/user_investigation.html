@@ -7,9 +7,17 @@
 {% block css %}
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}splunkjs/css/dashboard.css">
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}{{app_name}}/custom.css" />
-<style>
-
-</style>
+    <style>
+        .span-full {
+            width: 100%;
+        }
+        .span-half {
+            width: 50%;
+        }
+        .span-third {
+            width: 33%;
+        }
+    </style>
 {% endblock css %}
 
 {% block content %}
@@ -29,7 +37,7 @@
                         <h3>Search Criteria</h3>
                     </div>
                     <div class="panel-body">
-                        {% timerange id="timerange" managerid="trend-search" %}
+                        {% timerange id="timerange" managerid="trend-search" preset="Last 24 hours" %}
                     </div>
                 </div>
             </div>
@@ -44,10 +52,37 @@
         </div>
 
         <div class="panel-body">
-            {% chart id="trend-chart" managerid="trend-search" type="area" %}
+          <div id="trend-chart-div"></div>
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="dashboard-row" id="drilldown-row">
+    <div class="dashboard-cell span-half">
+            <div class="dashboard-panel">
+                <div class="dashboard-element">
+                    <div class="panel-head">
+                        <h3>Top Users</h3>
+                    </div>
+                    <div class="panel-body">
+                        {% table id="user-table" managerid="top_users" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div class="dashboard-cell span-half">
+            <div class="dashboard-panel">
+                <div class="dashboard-element">
+                    <div class="panel-head">
+                        <h3>Top Documents</h3>
+                    </div>
+                    <div class="panel-body">
+                        {% table id="document-table" managerid="top_documents"%}
+                    </div>
+                </div>
+            </div>
+        </div>
   </div>
 
 </div>
@@ -55,21 +90,51 @@
 
 {% block managers %}
 
-  {% searchmanager id="trend-search" search="index=warum sourcetype=access | timechart count by event_name" 
-        preview=True cache=60 status_buckets=300 %}
+  {% searchmanager id="base-search" search="index=warum sourcetype=conducive:application event_name=create OR event_name=delete OR event_name=read OR event_name=share OR event_name=upload OR event_name=permissions_changed | bucket span=5m _time | stats count by _time event_name user_name event_target" preview=True cache=60 status_buckets=300 %}
+
+  {% postprocessmanager id="trend-search" managerid="base-search" search="timechart sum(count) by event_name" %}
+
+  {% postprocessmanager id="top_users" managerid="base-search" search=" search event_name=$event_name$ | top user_name"|token_safe %}
+
+  {% postprocessmanager id="top_documents" managerid="base-search" search=" search event_name=$event_name$ | top event_target"|token_safe %}
 
 {% endblock managers %}
 
 {% block js %}    
 <script>    
-require(["splunkjs/ready!", "underscore"], function(mvc, _) {
+require(
+  [
+    "splunkjs/ready!", 
+    "underscore", 
+    "splunkjs/mvc/chartview"
+  ], function(mvc, _) {
 
     var search = mvc.Components.getInstance("trend-search");
+    var ChartView = require("splunkjs/mvc/chartview");
     var timerange = mvc.Components.getInstance("timerange"); 
+    var drilldown_div = $("#drilldown-row");
+    var tokens = mvc.Components.getInstance("default");
+
+    drilldown_div.hide();
+
     timerange.on("change", function() {
         search.search.set(timerange.val());
     });
 
+    barchart = new ChartView({
+      id: "trend-chart",
+      managerid: "trend-search",
+      type: "column",
+      "charting.chart.stackMode": "stacked",
+      drilldownRedirect: false,
+      el: $("#trend-chart-div")
+    }).render();
+
+    barchart.on("click:chart", function(e) {
+        e.preventDefault();
+        tokens.set("event_name", e.name2);
+        drilldown_div.show();
+    });
 });
 
 </script>
