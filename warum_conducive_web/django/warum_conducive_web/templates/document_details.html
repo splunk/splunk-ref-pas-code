@@ -2,7 +2,7 @@
 
 {% load splunkmvc %}
 
-{% block title %}Summary{% endblock title %}
+{% block title %}Document Details{% endblock title %}
 
 {% block css %}
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}splunkjs/css/dashboard.css">
@@ -25,7 +25,7 @@
   
   <div class="row">
     <div class="span12 dashboard-header clearfix">
-      <h2>Summary</h2>
+      <h2>Document Details</h2>
     </div>
   </div>
 
@@ -37,7 +37,8 @@
                         <h3>Search Criteria</h3>
                     </div>
                     <div class="panel-body">
-                        {% timerange id="timerange" managerid="trend-search" preset="Last 24 hours" earliest_time="$earliest_time$"|token_safe latest_time="$latest_time$"|token_safe%}
+                        <div id="userInput" class="splunk-view" style="float:left"></div>
+                        {% timerange id="timerange" managerid="trend-search" earliest_time="$earliest_time$"|token_safe latest_time="$latest_time$"|token_safe%}
                     </div>
                 </div>
             </div>
@@ -63,10 +64,10 @@
             <div class="dashboard-panel">
                 <div class="dashboard-element">
                     <div class="panel-head">
-                        <h3>Top Users</h3>
+                        <h3>Top Events</h3>
                     </div>
                     <div class="panel-body">
-                        {% table id="user-table" managerid="top_users" %}
+                        {% table id="user-table" managerid="top_events" %}
                     </div>
                 </div>
             </div>
@@ -90,13 +91,13 @@
 
 {% block managers %}
 
-  {% searchmanager id="base-search" search="index=warum sourcetype=conducive:application event_name=create OR event_name=delete OR event_name=read OR event_name=share OR event_name=upload OR event_name=permissions_changed | bucket span=5m _time | stats count by _time event_name user_name event_target" preview=True cache=60 status_buckets=300 %}
+  {% searchmanager id="base-search" search="index=warum sourcetype=conducive:application event_target=$document$ | bucket span=5m _time | stats count by _time event_name event_target"|token_safe preview=True cache=60 status_buckets=300 %}
 
   {% postprocessmanager id="trend-search" managerid="base-search" search="timechart sum(count) by event_name" %}
 
-  {% postprocessmanager id="top_users" managerid="base-search" search=" search event_name=$event_name$ | top user_name"|token_safe %}
+  {% postprocessmanager id="top_events" managerid="base-search" search="top event_name"|token_safe %}
 
-  {% postprocessmanager id="top_documents" managerid="base-search" search=" search event_name=$event_name$ | top event_target"|token_safe %}
+  {% postprocessmanager id="top_users" managerid="base-search" search="top user_name"|token_safe %}
 
 {% endblock managers %}
 
@@ -106,22 +107,37 @@ require(
   [
     "splunkjs/ready!", 
     "underscore", 
-    "splunkjs/mvc/chartview"
+    "splunkjs/mvc/chartview",
+    "splunkjs/mvc/textinputview",
+    "warum_conducive_web/purl"
   ], function(mvc, _) {
 
     var ChartView = require("splunkjs/mvc/chartview");
-    var timerange = mvc.Components.getInstance("timerange"); 
-    var tokens = mvc.Components.getInstance("default");
+    var TextInputView = require("splunkjs/mvc/textinputview");
 
     var search = mvc.Components.getInstance("trend-search");
-    var user_table = mvc.Components.getInstance("user-table");
-    var document_table = mvc.Components.getInstance("document-table");
+    var timerange = mvc.Components.getInstance("timerange"); 
+    var drilldown_div = $("#drilldown-row");
+    var tokens = mvc.Components.getInstance("default");
 
-    tokens.set("event_name", "*");
+    var params = getQueryStringParams();
+    if (params.document) {
+      tokens.set("document",decodeURI(params.document));
+      tokens.set("earliest_time",params.earliest_time);
+      tokens.set("latest_time",params.latest_time);
+    }
+
 
     timerange.on("change", function() {
         search.search.set(timerange.val());
     });
+
+    new TextInputView({
+      id: "userInput",
+      el: $("#userInput"),
+      default: "*",
+      value: mvc.tokenSafe("$document$")
+    }).render();
 
     barchart = new ChartView({
       id: "trend-chart",
@@ -134,23 +150,6 @@ require(
 
     barchart.on("click:chart", function(e) {
         e.preventDefault();
-        tokens.set("event_name", e.name2);
-    });
-
-    user_table.on("click:row", function(e) {
-        e.preventDefault();
-        username = e.data["row.user_name"];
-        earliest_time = tokens.get("earliest_time");
-        latest_time = tokens.get("latest_time");
-        window.location.href = "../user_details?username=" + username + "&earliest_time=" + earliest_time + "&latest_time=" + latest_time;
-    });
-
-    document_table.on("click:row", function(e) {
-        e.preventDefault();
-        document_name = e.data["row.event_target"];
-        earliest_time = tokens.get("earliest_time");
-        latest_time = tokens.get("latest_time");
-        window.location.href = "../document_details?document=" + document_name + "&earliest_time=" + earliest_time + "&latest_time=" + latest_time;
     });
 });
 
