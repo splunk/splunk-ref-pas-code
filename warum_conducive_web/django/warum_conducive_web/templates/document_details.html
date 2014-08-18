@@ -76,10 +76,10 @@
             <div class="dashboard-panel">
                 <div class="dashboard-element">
                     <div class="panel-head">
-                        <h3>Top Documents</h3>
+                        <h3>Top Users</h3>
                     </div>
                     <div class="panel-body">
-                        {% table id="document-table" managerid="top_documents"%}
+                        {% table id="users-table" managerid="top_users"%}
                     </div>
                 </div>
             </div>
@@ -91,7 +91,7 @@
 
 {% block managers %}
 
-  {% searchmanager id="base-search" search="index=warum sourcetype=conducive:application event_target=$document$ | bucket span=5m _time | stats count by _time event_name event_target"|token_safe preview=True cache=60 status_buckets=300 %}
+  {% searchmanager id="base-search" search="index=warum sourcetype=conducive:application event_target=$document$ | bucket span=5m _time | stats count by _time event_name user_name"|token_safe preview=True cache=60 status_buckets=300 %}
 
   {% postprocessmanager id="trend-search" managerid="base-search" search="timechart sum(count) by event_name" %}
 
@@ -122,7 +122,7 @@ require(
 
     var params = getQueryStringParams();
     if (params.document) {
-      tokens.set("document",decodeURI(params.document));
+      tokens.set("document",decodeURI(params.document).replace(/\\/g,"\\\\"));
       tokens.set("earliest_time",params.earliest_time);
       tokens.set("latest_time",params.latest_time);
     }
