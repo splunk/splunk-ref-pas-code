@@ -67,7 +67,7 @@
                         <h3>Top Events</h3>
                     </div>
                     <div class="panel-body">
-                        {% table id="user-table" managerid="top_events" %}
+                        {% table id="events-table" managerid="top_events" %}
                     </div>
                 </div>
             </div>
@@ -86,6 +86,18 @@
         </div>
   </div>
 
+  <div class="dashboard-row" id="raw_container" style="display:none;">
+    <div class="dashboard-cell" style="width: 100%;">
+      <div class="dashboard-panel">
+        <div class="panel-head">
+          <h3>Raw Events ({{"$raw_search$"|token_safe}})</h3>
+        </div>
+        <div class="panel-body">
+          {% table id="raw-table" managerid="raw-search"%}
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock content%}
 
@@ -98,6 +110,8 @@
   {% postprocessmanager id="top_events" managerid="base-search" search="top event_name"|token_safe %}
 
   {% postprocessmanager id="top_users" managerid="base-search" search="top user_name"|token_safe %}
+
+  {% searchmanager id="raw-search" search="index=warum sourcetype=conducive:application event_target=$document$ $raw_search$"|token_safe preview=True cache=60 status_buckets=300 earliest_time="$earliest_time$"|token_safe latest_time="$latest_time$"|token_safe%}
 
 {% endblock managers %}
 
@@ -119,6 +133,8 @@ require(
     var timerange = mvc.Components.getInstance("timerange"); 
     var drilldown_div = $("#drilldown-row");
     var tokens = mvc.Components.getInstance("default");
+    var events_table = mvc.Components.getInstance("events-table");
+    var users_table = mvc.Components.getInstance("users-table");
 
     var params = getQueryStringParams();
     if (params.document) {
@@ -149,8 +165,28 @@ require(
     }).render();
 
     barchart.on("click:chart", function(e) {
-        e.preventDefault();
+      e.preventDefault();
+      earliest = parseFloat(e.rowContext["row._time"]);
+      span = parseFloat(e._span);
+      latest = earliest + span;
+      tokens.set("earliest_time",earliest);
+      tokens.set("latest_time",latest);
     });
+
+    users_table.on("click:row", function(e) {
+      e.preventDefault();
+      username = e.data["row.user_name"];
+      tokens.set("raw_search","user_name = " + username);
+      $("#raw_container").show();
+    });
+
+    events_table.on("click:row", function(e) {
+      e.preventDefault();
+      eventname = e.data["row.event_name"];
+      tokens.set("raw_search","event_name = " + eventname);
+      $("#raw_container").show();
+    });
+
 });
 
 </script>
