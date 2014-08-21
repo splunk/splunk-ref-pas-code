@@ -57,7 +57,21 @@
       </div>
     </div>
   </div>
-
+  <div class="dashboard-row" id="filter_header" style="display:none">
+    <div class="dashboard-cell span-full">
+            <div class="dashboard-panel">
+                <div class="dashboard-element">
+                    <div class="panel-head">
+                          <h3>Tables Below Filtered on Event Type of {{"$event_name$"|token_safe}}
+                          <div style="float:right">
+                            <button id="reset_filter" class="btn btn-primary">Reset</button>
+                          </div>
+                          </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+  </div>  
   <div class="dashboard-row" id="drilldown-row">
     <div class="dashboard-cell span-half">
             <div class="dashboard-panel">
@@ -86,7 +100,9 @@
   </div>
 
 </div>
-{% endblock content%}
+
+  </script>
+  {% endblock content%}
 
 {% block managers %}
 
@@ -134,7 +150,19 @@ require(
 
     barchart.on("click:chart", function(e) {
         e.preventDefault();
+        earliest = parseFloat(e.rowContext["row._time"]);
+        span = parseFloat(e._span);
+        latest = earliest + span;
         tokens.set("event_name", e.name2);
+        tokens.set("earliest_time",earliest);
+        tokens.set("latest_time",latest);
+        $("#filter_header").show();
+    });
+
+    barchart.on("click:legend", function(e) {
+        e.preventDefault();
+        tokens.set("event_name", e.name2);
+        $("#filter_header").show();
     });
 
     user_table.on("click:row", function(e) {
@@ -143,6 +171,11 @@ require(
         earliest_time = tokens.get("earliest_time");
         latest_time = tokens.get("latest_time");
         window.location.href = "../user_details?username=" + username + "&earliest_time=" + earliest_time + "&latest_time=" + latest_time;
+    });
+
+    $("#reset_filter").click(function(e) {
+        tokens.set("event_name", "*");
+        $("#filter_header").hide();
     });
 
     document_table.on("click:row", function(e) {
