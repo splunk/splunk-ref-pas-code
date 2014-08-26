@@ -63,7 +63,7 @@
                 <div class="dashboard-element">
                     <div class="panel-head">
                           <h3>Tables Below Filtered on Event Type of {{"$event_name$"|token_safe}}
-                          <div style="float:right">
+                          <div style="float:right;margin-top:-5px;">
                             <button id="reset_filter" class="btn btn-primary">Remove Filter</button>
                           </div>
                           </h3>
@@ -110,9 +110,9 @@
 
   {% postprocessmanager id="trend-search" managerid="base-search" search="timechart sum(count) by event_name" %}
 
-  {% postprocessmanager id="top_users" managerid="base-search" search=" search event_name=$event_name$ | top user_name"|token_safe %}
+  {% postprocessmanager id="top_users" managerid="base-search" search=" search event_name=$event_name$ | top user_name | eval percent=round(percent,2)"|token_safe %}
 
-  {% postprocessmanager id="top_documents" managerid="base-search" search=" search event_name=$event_name$ | top event_target"|token_safe %}
+  {% postprocessmanager id="top_documents" managerid="base-search" search=" search event_name=$event_name$ | top event_target | eval percent=round(percent,2)"|token_safe %}
 
 {% endblock managers %}
 

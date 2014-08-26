@@ -90,7 +90,7 @@
     <div class="dashboard-cell" style="width: 100%;">
       <div class="dashboard-panel">
         <div class="panel-head">
-          <h3>Raw Events ({{"$raw_search$"|token_safe}})</h3>
+          <h3>Raw Events (Username: {{"$username$"|token_safe}}, {{"$raw_search$"|token_safe}})</h3>
         </div>
         <div class="panel-body">
           {% table id="raw-table" managerid="raw-search"%}
@@ -107,9 +107,9 @@
 
   {% postprocessmanager id="trend-search" managerid="base-search" search="timechart sum(count) by event_name" %}
 
-  {% postprocessmanager id="top_events" managerid="base-search" search="top event_name"|token_safe %}
+  {% postprocessmanager id="top_events" managerid="base-search" search="top event_name | eval percent=round(percent,2)"|token_safe %}
 
-  {% postprocessmanager id="top_documents" managerid="base-search" search="top event_target"|token_safe %}
+  {% postprocessmanager id="top_documents" managerid="base-search" search="top event_target | eval percent=round(percent,2)"|token_safe %}
 
   {% searchmanager id="raw-search" search="index=warum sourcetype=conducive:application user_name=$username$ $raw_search$"|token_safe preview=True cache=60 status_buckets=300 earliest_time="$earliest_time$"|token_safe latest_time="$latest_time$"|token_safe%}
 
