@@ -42,6 +42,9 @@
             stroke-width: 1;
             shape-rendering: crispEdges;
         }
+        svg {
+          font: 10px sans-serif;
+        }
     </style>
 {% endblock css %}
 
@@ -131,7 +134,7 @@
 
   {% searchmanager id="base-search" search="index=warum sourcetype=conducive:application user_name=$username$ | bucket span=5m _time | stats count by _time event_name event_target"|token_safe preview=True cache=60 status_buckets=300 %}
 
-  {% postprocessmanager id="trend-search" managerid="base-search" search="timechart sum(count) by event_name | addtotals fieldname=total" %}
+  {% postprocessmanager id="trend-search" managerid="base-search" search="timechart sum(count) by event_name | addtotals fieldname=total | fillnull " %}
 
   {% postprocessmanager id="top_events" managerid="base-search" search="top event_name | eval percent=round(percent,2)"|token_safe %}
 
@@ -143,6 +146,7 @@
 
 {% block js %} 
 <script>
+
 require.config({
     paths: {
         "d3.tip": "{{STATIC_URL}}{{app_name}}/d3.tip",
@@ -198,37 +202,7 @@ require(
       value: mvc.tokenSafe("$username$")
     }).render();
 
-    // barchart = new ChartView({
-    //   id: "trend-chart",
-    //   managerid: "trend-search",
-    //   type: "column",
-    //   "charting.chart.stackMode": "stacked",
-    //   drilldownRedirect: false,
-    //   el: $("#trend-chart-div")
-    // }).render();
-
-    // barchart.on("click:chart", function(e) {
-    //     e.preventDefault();
-    //     earliest = parseFloat(e.rowContext["row._time"]);
-    //     span = parseFloat(e._span);
-    //     latest = earliest + span;
-    //     tokens.set("earliest_time",earliest);
-    //     tokens.set("latest_time",latest);
-    // });
-
-
-
-    //Generate some nice data.
     var keys=["Read","Write","Upload","Share","Download","Delete"];
-    function exampleData() {
-      return stream_layers(6,100,1).map(function(data, i) {
-        return {
-          key: keys[i],
-          values: data
-        };
-      });
-    }
-
 
     documents_table.on("click:row", function(e) {
       e.preventDefault();
@@ -294,9 +268,12 @@ require(
             stack = d3.layout.stack(),
             layers = results.collection().toJSON();
 
-        var margin = {top: 40, right: 10, bottom: 20, left: 50},
+        var margin = {top: 40, right: 10, bottom: 100, left: 40},
+            margin2 = {top: 430, right: 10, bottom: 20, left: 40},
             width = 960 - margin.left - margin.right,
-            height = 500 - margin.top - margin.bottom;
+            height = 500 - margin.top - margin.bottom,
+            height2 = 500 - margin2.top - margin2.bottom;
+
         var barWidth = width / layers.length;
 
         var formatTime = d3.time.format("%e %B");
@@ -304,17 +281,37 @@ require(
         var x = d3.time.scale()
             .domain([d3.min(layers, function(d) { return new Date(d["_time"]);}),d3.max(layers, function(d) { return new Date(d["_time"]);})])
             .range([0, width]);
+        var x2 = d3.time.scale()
+            .domain(x.domain())
+            .range([0, width]);
 
         var y = d3.scale.linear()
             .domain([0, d3.max(layers,function(d) { return parseFloat(d["total"]) })])
             .range([height, 0]);
+        var y2 = d3.scale.linear()
+            .domain(y.domain())
+            .range([height2, 0]);
 
-        var color = d3.scale.linear()
-            .domain([0, n - 1])
-            .range(["#aad", "#556"]);
+        var brush = d3.svg.brush()
+            .x(x2)
+            .on("brush", brushed);
+
+        var color = d3.scale.category20b();
+
+        var area2 = d3.svg.area()
+            .interpolate("monotone")
+            .x(function(d) { return x2(new Date(d["_time"])); })
+            .y0(height2)
+            .y1(function(d) { return y2(parseFloat(d["_total"])); });
 
         var xAxis = d3.svg.axis()
             .scale(x)
+            .tickSize(0)
+            .tickPadding(6)
+            .orient("bottom");
+
+        var xAxis2 = d3.svg.axis()
+            .scale(x2)
             .tickSize(0)
             .tickPadding(6)
             .orient("bottom");
@@ -332,16 +329,36 @@ require(
 
         var svg = d3.select("#trend-chart-div").append("svg")
             .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-          .append("g")
+            .attr("height", height + margin.top + margin.bottom);
+
+        var focus = svg.append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-        //svg.call(tip);
+        var legend = focus.selectAll('g')
+              .data(d3_data)
+              .enter()
+            .append('g')
+              .attr('class', 'legend');
+            
+          legend.append('rect')
+              .attr('x', function(d, i){ return width - ((i+1) *  60);})
+              .attr('y', 20)
+              .attr('width', 10)
+              .attr('height', 10)
+              .style('fill', function(d,i) { 
+                return color(i);
+              });
+              
+          legend.append('text')
+              .attr('x', function(d, i){ return width - ((i+1) *  60)+12;})
+              .attr('y', 29)
+              .text(function(d){ return d.key; });
 
-        var layer = svg.selectAll(".layer")
+        var layer = focus.selectAll(".layer")
             .data(d3_data)
           .enter().append("g")
             .attr("class", "layer")
+            .attr("id",function(d) { return "layer_"+d.key})
             .style("fill", function(d, i) { return color(i); });
 
         var xPos = 0;
@@ -378,21 +395,52 @@ require(
             //.on('mouseover', tip.show)
             //.on('mouseout', tip.hide);
 
-        svg.append("g")
+        focus.append("g")
             .attr("class", "x axis")
             .attr("transform", "translate(0," + height + ")")
             .call(xAxis);
 
         //Create Y axis
-        svg.append("g")
+        focus.append("g")
             .attr("class", "axis")
             .call(yAxis);
 
+        var context = svg.append("g")
+          .attr("class", "context")
+          .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
+        // context.append("path")
+        //     .datum(layers)
+        //       .attr("class", "area")
+        //       .attr("d", area2);
 
+        context.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + height2 + ")")
+            .call(xAxis2);
+
+        context.append("g")
+            .attr("class", "x brush")
+            .call(brush)
+          .selectAll("rect")
+            .attr("y", -6)
+            .attr("height", height2 + 7);
+
+        function brushed() {
+  x.domain(brush.empty() ? x2.domain() : brush.extent());
+  //focus.select(".area").attr("d", area);
+  focus.select(".x.axis").call(xAxis);
+}
+
+function type(d) {
+  d.date = parseDate(d.date);
+  d.price = +d.price;
+  return d;
+}
     };
     data.on('data', formatResults);
     manager.startSearch();
 });
+
 
 </script>
 {% endblock js %}
