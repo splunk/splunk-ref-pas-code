@@ -17,6 +17,31 @@
         .span-third {
             width: 33%;
         }
+        div.tooltip {   
+          position: absolute;           
+          text-align: center;           
+          width: 60px;                  
+          height: 28px;                 
+          padding: 2px;             
+          font: 12px sans-serif;        
+          background: lightsteelblue;   
+          border: 0px;      
+          border-radius: 8px;           
+          pointer-events: none;         
+        }
+        path { 
+            stroke: steelblue;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: grey;
+            stroke-width: 1;
+            shape-rendering: crispEdges;
+        }
     </style>
 {% endblock css %}
 
@@ -53,7 +78,8 @@
         </div>
 
         <div class="panel-body">
-          <div id="trend-chart-div"></div>
+          <div id="trend-chart-div">
+          </div>
         </div>
       </div>
     </div>
@@ -105,7 +131,7 @@
 
   {% searchmanager id="base-search" search="index=warum sourcetype=conducive:application user_name=$username$ | bucket span=5m _time | stats count by _time event_name event_target"|token_safe preview=True cache=60 status_buckets=300 %}
 
-  {% postprocessmanager id="trend-search" managerid="base-search" search="timechart sum(count) by event_name" %}
+  {% postprocessmanager id="trend-search" managerid="base-search" search="timechart sum(count) by event_name | addtotals fieldname=total" %}
 
   {% postprocessmanager id="top_events" managerid="base-search" search="top event_name | eval percent=round(percent,2)"|token_safe %}
 
@@ -115,15 +141,32 @@
 
 {% endblock managers %}
 
-{% block js %}    
-<script>    
+{% block js %} 
+<script>
+require.config({
+    paths: {
+        "d3.tip": "{{STATIC_URL}}{{app_name}}/d3.tip",
+        "d3.v3.min": "{{STATIC_URL}}{{app_name}}/d3.v3.min"
+    },
+    shim: {
+        "d3.tip": {
+            deps: ["d3"]
+        },
+        "d3": {
+          exports: "d3"
+        }
+    }
+});
+
 require(
   [
     "splunkjs/ready!", 
     "underscore", 
     "splunkjs/mvc/chartview",
     "splunkjs/mvc/textinputview",
-    "warum_conducive_web/purl"
+    "warum_conducive_web/purl",
+    "d3.v3.min",
+
   ], function(mvc, _) {
 
     var ChartView = require("splunkjs/mvc/chartview");
@@ -155,23 +198,37 @@ require(
       value: mvc.tokenSafe("$username$")
     }).render();
 
-    barchart = new ChartView({
-      id: "trend-chart",
-      managerid: "trend-search",
-      type: "column",
-      "charting.chart.stackMode": "stacked",
-      drilldownRedirect: false,
-      el: $("#trend-chart-div")
-    }).render();
+    // barchart = new ChartView({
+    //   id: "trend-chart",
+    //   managerid: "trend-search",
+    //   type: "column",
+    //   "charting.chart.stackMode": "stacked",
+    //   drilldownRedirect: false,
+    //   el: $("#trend-chart-div")
+    // }).render();
 
-    barchart.on("click:chart", function(e) {
-        e.preventDefault();
-        earliest = parseFloat(e.rowContext["row._time"]);
-        span = parseFloat(e._span);
-        latest = earliest + span;
-        tokens.set("earliest_time",earliest);
-        tokens.set("latest_time",latest);
-    });
+    // barchart.on("click:chart", function(e) {
+    //     e.preventDefault();
+    //     earliest = parseFloat(e.rowContext["row._time"]);
+    //     span = parseFloat(e._span);
+    //     latest = earliest + span;
+    //     tokens.set("earliest_time",earliest);
+    //     tokens.set("latest_time",latest);
+    // });
+
+
+
+    //Generate some nice data.
+    var keys=["Read","Write","Upload","Share","Download","Delete"];
+    function exampleData() {
+      return stream_layers(6,100,1).map(function(data, i) {
+        return {
+          key: keys[i],
+          values: data
+        };
+      });
+    }
+
 
     documents_table.on("click:row", function(e) {
       e.preventDefault();
@@ -186,6 +243,155 @@ require(
       tokens.set("raw_search","event_name=" + eventname);
       $("#raw_container").show();
     });
+
+    var manager = splunkjs.mvc.Components.getInstance('trend-search');
+    var data = manager.data('results', {
+        output_mode: 'json_rows',
+        count: 0 // get all results
+    });
+    var formatResults = function(results) {
+        if (!results.hasData()) {
+            return;
+        }
+
+        json_collection = results.collection().toJSON();
+        create_data = {key: "Create",values: []};
+        delete_data = {key:"Delete",values:[]};
+        lock_data = {key:"Lock",values:[]};
+        read_data = {key:"Read",values:[]};
+        share_data = {key:"Share",values:[]};
+        unlock_data = {key:"Unlock",values:[]};
+        upload_data  = {key:"Upload",values:[]};
+        d3_data = [create_data,delete_data,lock_data,read_data,share_data,unlock_data,upload_data];
+        for (i=0;i<json_collection.length;i++)
+        {
+          var x = new Date(json_collection[i]["_time"]);
+          var y0 = 0;
+          var y = parseFloat(json_collection[i]["create"])
+          create_data.values.push({x: x,y: y,y0:y0, key:"create"});
+          y0 += y;
+          y = parseFloat(json_collection[i]["delete"]);
+          delete_data.values.push({x: x,y: y,y0:y0, key:"delete"});
+          y0 += y;
+          y = parseFloat(json_collection[i]["lock"]);
+          lock_data.values.push({x: x,y: y,y0: y0, key:"lock"});
+          y0 += y;
+          y = parseFloat(json_collection[i]["read"]);
+          read_data.values.push({x: x,y: y,y0: y0, key:"read"});
+          y0 += y;
+          y = parseFloat(json_collection[i]["share"]);
+          share_data.values.push({x: x,y: y,y0: y0, key:"share"});
+          y0 += y;
+          y = parseFloat(json_collection[i]["unlock"]);
+          unlock_data.values.push({x: x,y: y,y0: y0, key:"unlock"});
+          y0 += y;
+          y = parseFloat(json_collection[i]["upload"]);
+          upload_data.values.push({x: x,y: y,y0: y0, key:"upload"});
+        }
+
+        var n = 4, // number of layers
+            m = 58, // number of samples per layer
+            stack = d3.layout.stack(),
+            layers = results.collection().toJSON();
+
+        var margin = {top: 40, right: 10, bottom: 20, left: 50},
+            width = 960 - margin.left - margin.right,
+            height = 500 - margin.top - margin.bottom;
+        var barWidth = width / layers.length;
+
+        var formatTime = d3.time.format("%e %B");
+
+        var x = d3.time.scale()
+            .domain([d3.min(layers, function(d) { return new Date(d["_time"]);}),d3.max(layers, function(d) { return new Date(d["_time"]);})])
+            .range([0, width]);
+
+        var y = d3.scale.linear()
+            .domain([0, d3.max(layers,function(d) { return parseFloat(d["total"]) })])
+            .range([height, 0]);
+
+        var color = d3.scale.linear()
+            .domain([0, n - 1])
+            .range(["#aad", "#556"]);
+
+        var xAxis = d3.svg.axis()
+            .scale(x)
+            .tickSize(0)
+            .tickPadding(6)
+            .orient("bottom");
+
+        var yAxis = d3.svg.axis()
+                  .scale(y)
+                  .orient("left")
+                  .ticks(5);
+
+        //tip = d3.tip().attr('class', 'd3-tip').html(function(d) { return d; });
+
+        var div = d3.select("body").append("div")   
+            .attr("class", "tooltip")               
+            .style("opacity", 0);
+
+        var svg = d3.select("#trend-chart-div").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        //svg.call(tip);
+
+        var layer = svg.selectAll(".layer")
+            .data(d3_data)
+          .enter().append("g")
+            .attr("class", "layer")
+            .style("fill", function(d, i) { return color(i); });
+
+        var xPos = 0;
+
+        var rect = layer.selectAll("rect")
+            .data(
+              function(d) {
+                  return d.values;
+              })
+          .enter().append("rect")
+            .attr("x", function(d) { 
+              return x(d.x); 
+            })
+            .attr("y", function(d) { 
+              return y(d.y0 + d.y); 
+            })
+            .attr("width",barWidth)
+            .attr("height", function(d) { 
+              return height - y(d.y); 
+            })
+            .on("mouseover", function(d) {      
+            div.transition()        
+                .duration(200)      
+                .style("opacity", .9);      
+            div .html(formatTime(d.x) + "<br/>"  + d.key + "=" + d.y)  
+                .style("left", (d3.event.pageX) + "px")     
+                .style("top", (d3.event.pageY - 28) + "px");    
+            })                  
+            .on("mouseout", function(d) {       
+                div.transition()        
+                    .duration(500)      
+                    .style("opacity", 0);   
+            });
+            //.on('mouseover', tip.show)
+            //.on('mouseout', tip.hide);
+
+        svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xAxis);
+
+        //Create Y axis
+        svg.append("g")
+            .attr("class", "axis")
+            .call(yAxis);
+
+
+    };
+    data.on('data', formatResults);
+    manager.startSearch();
 });
 
 </script>
