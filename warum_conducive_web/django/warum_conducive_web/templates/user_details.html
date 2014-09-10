@@ -143,7 +143,7 @@
 
   {% searchmanager id="base-search" search="index=warum sourcetype=conducive:application user_name=$username$ | bucket span=5m _time | stats count by _time event_name event_target"|token_safe preview=True cache=60 status_buckets=300 %}
 
-  {% postprocessmanager id="trend-search" managerid="base-search" search="timechart sum(count) by event_name | addtotals fieldname=total | fillnull " %}
+  {% postprocessmanager id="trend-search" managerid="base-search" search="timechart span=1h sum(count) by event_name | addtotals fieldname=total | fillnull " %}
 
   {% postprocessmanager id="top_events" managerid="base-search" search="top event_name | eval percent=round(percent,2)"|token_safe %}
 
@@ -307,17 +307,6 @@ require(
 
         var color = d3.scale.category20b();
 
-        var area2 = d3.svg.area()
-            .interpolate("monotone")
-            .x(function(d) { 
-              console.log("x:" + x2(new Date(d["_time"])));
-              return x2(new Date(d["_time"])); 
-            })
-            .y0(height2)
-            .y1(function(d) { 
-              console.log("y:" + y2(parseFloat(d["total"])));
-              return y2(parseFloat(d["total"])); 
-            });
 
         var xAxis = d3.svg.axis()
             .scale(x)
@@ -347,6 +336,7 @@ require(
             .attr("height", height + margin.top + margin.bottom);
 
         var focus = svg.append("g")
+            .attr("class","focus_chart")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
         var legend = focus.selectAll('g')
@@ -423,6 +413,13 @@ require(
         var context = svg.append("g")
           .attr("class", "context")
           .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
+
+        var area2 = d3.svg.area()
+          .interpolate("monotone")
+          .x(function(d)  {return x2(new Date(d["_time"])); })
+          .y0(height2)
+          .y1(function(d) {return y2(parseFloat(d["total"]));});
+
         context.append("path")
           .datum(layers)
           .attr("class", "area")
@@ -441,10 +438,17 @@ require(
             .attr("height", height2 + 7);
 
         function brushed() {
-  x.domain(brush.empty() ? x2.domain() : brush.extent());
-  //focus.select(".area").attr("d", area);
-  focus.select(".x.axis").call(xAxis);
-}
+          x.domain(brush.empty() ? x2.domain() : brush.extent());
+          //focus.select(".area").attr("d", area);
+          focus.select(".x.axis").call(xAxis);
+          span = brush.extent()[1]-brush.extent()[0];
+          layer.selectAll("rect")
+                    .attr("x", function (d) { return x(d.x);});
+          if (span > 0) {
+            span = span;
+            layer.selectAll("rect").attr("width",width/(span/1000/60/60));
+          }
+        }
 
 function type(d) {
   d.date = parseDate(d.date);
