@@ -45,6 +45,15 @@
         svg {
           font: 10px sans-serif;
         }
+        .area {
+          fill: steelblue;
+          clip-path: url(#clip);
+        }
+        .brush .extent {
+          stroke: #fff;
+          fill-opacity: .125;
+          shape-rendering: crispEdges;
+        }
     </style>
 {% endblock css %}
 
@@ -300,9 +309,15 @@ require(
 
         var area2 = d3.svg.area()
             .interpolate("monotone")
-            .x(function(d) { return x2(new Date(d["_time"])); })
+            .x(function(d) { 
+              console.log("x:" + x2(new Date(d["_time"])));
+              return x2(new Date(d["_time"])); 
+            })
             .y0(height2)
-            .y1(function(d) { return y2(parseFloat(d["_total"])); });
+            .y1(function(d) { 
+              console.log("y:" + y2(parseFloat(d["total"])));
+              return y2(parseFloat(d["total"])); 
+            });
 
         var xAxis = d3.svg.axis()
             .scale(x)
@@ -408,10 +423,10 @@ require(
         var context = svg.append("g")
           .attr("class", "context")
           .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
-        // context.append("path")
-        //     .datum(layers)
-        //       .attr("class", "area")
-        //       .attr("d", area2);
+        context.append("path")
+          .datum(layers)
+          .attr("class", "area")
+          .attr("d", area2);
 
         context.append("g")
             .attr("class", "x axis")
