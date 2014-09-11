@@ -1,0 +1,48 @@
+[props/db.log/FIELDALIAS-action]
+access = read : [ * ], write : [ admin ]
+export = system
+owner = nobody
+version = 6.1.2
+modtime = 1410212472.639603900
+
+[props/db.log/FIELDALIAS-command]
+access = read : [ * ], write : [ admin ]
+export = system
+owner = nobody
+version = 6.1.2
+modtime = 1410212477.865902800
+
+[props/db.log/FIELDALIAS-object]
+access = read : [ * ], write : [ admin ]
+export = system
+owner = nobody
+version = 6.1.2
+modtime = 1410212486.530398400
+
+[props/db.log/FIELDALIAS-object_id]
+access = read : [ * ], write : [ admin ]
+export = system
+owner = nobody
+version = 6.1.2
+modtime = 1410212491.678692900
+
+[props/db.log/FIELDALIAS-src]
+access = read : [ * ], write : [ admin ]
+export = system
+owner = nobody
+version = 6.1.2
+modtime = 1410212500.087173800
+
+[props/db.log/FIELDALIAS-user]
+access = read : [ * ], write : [ admin ]
+export = system
+owner = nobody
+version = 6.1.2
+modtime = 1410212506.896563300
+
+[props/db.log/FIELDALIAS-user_id]
+access = read : [ * ], write : [ admin ]
+export = system
+owner = nobody
+version = 6.1.2
+modtime = 1410212513.818959200
