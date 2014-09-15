@@ -272,41 +272,45 @@ require(
           upload_data.values.push({x: x,y: y,y0: y0, key:"upload"});
         }
 
-        var n = 4, // number of layers
-            m = 58, // number of samples per layer
-            stack = d3.layout.stack(),
+        var stack = d3.layout.stack(),
             layers = results.collection().toJSON();
 
+
+        //set variables for both charts
         var margin = {top: 40, right: 10, bottom: 100, left: 40},
             margin2 = {top: 430, right: 10, bottom: 20, left: 40},
             width = 960 - margin.left - margin.right,
             height = 500 - margin.top - margin.bottom,
             height2 = 500 - margin2.top - margin2.bottom;
 
+        //set initial bar width to width of screen / number of bars
         var barWidth = width / layers.length;
 
+        //default time format
         var formatTime = d3.time.format("%e %B");
 
+        //set up scale form main chart
         var x = d3.time.scale()
             .domain([d3.min(layers, function(d) { return new Date(d["_time"]);}),d3.max(layers, function(d) { return new Date(d["_time"]);})])
             .range([0, width]);
-        var x2 = d3.time.scale()
-            .domain(x.domain())
-            .range([0, width]);
-
         var y = d3.scale.linear()
             .domain([0, d3.max(layers,function(d) { return parseFloat(d["total"]) })])
             .range([height, 0]);
+
+        //set up scales for mini chart
+        var x2 = d3.time.scale()
+            .domain(x.domain())
+            .range([0, width]);
         var y2 = d3.scale.linear()
             .domain(y.domain())
             .range([height2, 0]);
 
+        //set up color
+        var color = d3.scale.category20b();
+
         var brush = d3.svg.brush()
             .x(x2)
             .on("brush", brushed);
-
-        var color = d3.scale.category20b();
-
 
         var xAxis = d3.svg.axis()
             .scale(x)
@@ -357,14 +361,18 @@ require(
           legend.append('text')
               .attr('x', function(d, i){ return width - ((i+1) *  60)+12;})
               .attr('y', 29)
-              .text(function(d){ return d.key; });
+              .text(function(d){ return d.key; })
+              .on("click", function(e) {
+                e.disabled = !e.disabled;
+              });
 
         var layer = focus.selectAll(".layer")
             .data(d3_data)
           .enter().append("g")
             .attr("class", "layer")
             .attr("id",function(d) { return "layer_"+d.key})
-            .style("fill", function(d, i) { return color(i); });
+            .style("fill", function(d, i) { return color(i); })
+            .classed('disabled', function(d) { return d.disabled });
 
         var xPos = 0;
 
@@ -385,12 +393,12 @@ require(
               return height - y(d.y); 
             })
             .on("mouseover", function(d) {      
-            div.transition()        
-                .duration(200)      
-                .style("opacity", .9);      
-            div .html(formatTime(d.x) + "<br/>"  + d.key + "=" + d.y)  
-                .style("left", (d3.event.pageX) + "px")     
-                .style("top", (d3.event.pageY - 28) + "px");    
+              div.transition()        
+                  .duration(200)      
+                  .style("opacity", .9);      
+              div .html(formatTime(d.x) + "<br/>"  + d.key + "=" + d.y)  
+                  .style("left", (d3.event.pageX) + "px")     
+                  .style("top", (d3.event.pageY - 28) + "px");    
             })                  
             .on("mouseout", function(d) {       
                 div.transition()        
@@ -446,7 +454,8 @@ require(
                     .attr("x", function (d) { return x(d.x);});
           if (span > 0) {
             span = span;
-            layer.selectAll("rect").attr("width",width/(span/1000/60/60));
+            layer.selectAll("rect").attr("width",width/(span/1000/60/60))
+            .attr("x", function (d) { return x(d.x) - (width/(span/1000/60/60)/2);});;
           }
         }
 
