@@ -1,48 +1,5 @@
-[props/app.log/FIELDALIAS-command]
+[props]
 access = read : [ * ], write : [ admin ]
 export = system
 owner = nobody
 version = 6.1.2
-modtime = 1410212529.645864500
-
-[props/app.log/FIELDALIAS-test]
-access = read : [ * ], write : [ * ]
-export = system
-owner = nobody
-version = 6.1.2
-modtime = 1409691590.870698400
-
-[props/app.log/FIELDALIAS-action]
-access = read : [ * ], write : [ admin ]
-export = system
-owner = nobody
-version = 6.1.2
-modtime = 1410212523.958539200
-
-[props/app.log/FIELDALIAS-object]
-access = read : [ * ], write : [ admin ]
-export = system
-owner = nobody
-version = 6.1.2
-modtime = 1410212535.450196400
-
-[props/app.log/FIELDALIAS-object_id]
-access = read : [ * ], write : [ admin ]
-export = system
-owner = nobody
-version = 6.1.2
-modtime = 1410212542.668609300
-
-[props/app.log/FIELDALIAS-src]
-access = read : [ * ], write : [ admin ]
-export = system
-owner = nobody
-version = 6.1.2
-modtime = 1410212547.825904300
-
-[props/app.log/FIELDALIAS-user]
-access = read : [ * ], write : [ admin ]
-export = system
-owner = nobody
-version = 6.1.2
-modtime = 1410212553.615235400
