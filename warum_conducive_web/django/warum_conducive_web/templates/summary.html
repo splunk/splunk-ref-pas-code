@@ -106,7 +106,7 @@
 
 {% block managers %}
 
-  {% searchmanager id="base-search" search="index=warum sourcetype=conducive:application event_name=create OR event_name=delete OR event_name=read OR event_name=share OR event_name=upload OR event_name=permissions_changed | bucket span=5m _time | stats count by _time event_name user_name event_target" preview=True cache=60 status_buckets=300 %}
+  {% searchmanager id="base-search" search="index=warum sourcetype=ri:pas:application event_name=create OR event_name=delete OR event_name=read OR event_name=share OR event_name=upload OR event_name=permissions_changed | bucket span=5m _time | stats count by _time event_name user_name event_target" preview=True cache=60 status_buckets=300 %}
 
   {% postprocessmanager id="trend-search" managerid="base-search" search="timechart sum(count) by event_name" %}
 
