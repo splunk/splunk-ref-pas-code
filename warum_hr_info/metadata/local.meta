@@ -1,0 +1,9 @@
+[transforms]
+export = system
+
+[lookups/employee_details.csv]
+access = read : [ * ], write : [ * ]
+export = system
+owner = nobody
+version = 6.1.3
+modtime = 1410902072.530265000

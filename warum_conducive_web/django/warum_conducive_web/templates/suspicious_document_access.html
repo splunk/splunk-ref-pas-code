@@ -2,30 +2,18 @@
 
 {% load splunkmvc %}
 
-{% block title %}Summary{% endblock title %}
+{% block title %}Suspicious Document Access{% endblock title %}
 
 {% block css %}
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}splunkjs/css/dashboard.css">
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}{{app_name}}/custom.css" />
-    <style>
-        .span-full {
-            width: 100%;
-        }
-        .span-half {
-            width: 50%;
-        }
-        .span-third {
-            width: 33%;
-        }
-    </style>
 {% endblock css %}
 
 {% block content %}
 <div class="dashboard-body container-fluid main-section-body">
-  
   <div class="row">
     <div class="span12 dashboard-header clearfix">
-      <h2>Summary</h2>
+      <h2>Suspicious Document Access</h2>
     </div>
   </div>
 
@@ -37,7 +25,7 @@
                         <h3>Search Criteria</h3>
                     </div>
                     <div class="panel-body">
-                        {% timerange id="timerange" managerid="trend-search" preset="Last 24 hours" earliest_time="$earliest_time$"|token_safe latest_time="$latest_time$"|token_safe%}
+                        <div id="timerangeview"></div>
                     </div>
                 </div>
             </div>
@@ -48,30 +36,15 @@
     <div class="dashboard-cell" style="width: 100%;">
       <div class="dashboard-panel">
         <div class="panel-head">
-          <h3>Trend</h3>
+          <h3>Documents Accessed Outside Working Hours</h3>
         </div>
 
         <div class="panel-body">
-          <div id="trend-chart-div"></div>
+          <div id="suspicious_document_div"></div>
         </div>
       </div>
     </div>
   </div>
-  <div class="dashboard-row" id="filter_header" style="display:none">
-    <div class="dashboard-cell span-full">
-            <div class="dashboard-panel">
-                <div class="dashboard-element">
-                    <div class="panel-head">
-                          <h3>Tables Below Filtered on Event Type of {{"$event_name$"|token_safe}}
-                          <div style="float:right;margin-top:-5px;">
-                            <button id="reset_filter" class="btn btn-primary">Remove Filter</button>
-                          </div>
-                          </h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-  </div>  
   <div class="dashboard-row" id="drilldown-row">
     <div class="dashboard-cell span-half">
             <div class="dashboard-panel">
@@ -99,6 +72,7 @@
         </div>
   </div>
 
+
 </div>
 
   </script>
@@ -106,11 +80,9 @@
 
 {% block managers %}
 
-  {% savedsearchmanager id="base-search" searchname="summary_base_search" preview=True status_buckets=300 %}
+  {% postprocessmanager id="trend-search" managerid="base-search" search="timechart sum(count) as count" %}
 
-  {% savedsearchmanager id="trend-search" searchname="trend_chart_search"  %}
-
-  {% postprocessmanager id="top_users" managerid="base-search" search=" search command=$command$ | top user | eval percent=round(percent,2)"|token_safe %}
+  {% postprocessmanager id="top_users" managerid="base-search" search="search command=$command$ | top user | eval percent=round(percent,2)"|token_safe %}
 
   {% postprocessmanager id="top_documents" managerid="base-search" search=" search command=$command$ | top object | eval percent=round(percent,2)"|token_safe %}
 
@@ -122,30 +94,44 @@ require(
   [
     "splunkjs/ready!", 
     "underscore", 
-    "splunkjs/mvc/chartview"
+    "splunkjs/mvc/chartview",
+    "splunkjs/mvc/savedsearchmanager",
+    "splunkjs/mvc/timerangeview"
   ], function(mvc, _) {
 
     var ChartView = require("splunkjs/mvc/chartview");
-    var timerange = mvc.Components.getInstance("timerange"); 
+    var SavedSearchManager = require("splunkjs/mvc/savedsearchmanager");
+    var TimeRangeView = require("splunkjs/mvc/timerangeview");
     var tokens = mvc.Components.getInstance("default");
+    
+    tokens.set("command","*");
 
-    var search = mvc.Components.getInstance("trend-search");
-    var user_table = mvc.Components.getInstance("user-table");
-    var document_table = mvc.Components.getInstance("document-table");
+    // Create manager
+    var base_search = new SavedSearchManager({
+        id: "base-search",
+        searchname: "offhours_document_access",
+        cache: true,
+        preview: true
+    });
 
-    tokens.set("command", "*");
+    var timerange = new TimeRangeView({
+        id: "base-timerange",
+        managerid: "base-search",
+        preset: "Last 24 hours",
+        el: $("#timerangeview")
+    }).render();
 
+    // Update the search manager when the time range changes
     timerange.on("change", function() {
-        search.search.set(timerange.val());
+        base_search.settings.set(timerange.val());
     });
 
     barchart = new ChartView({
       id: "trend-chart",
       managerid: "trend-search",
-      type: "column",
-      "charting.chart.stackMode": "stacked",
+      type: "line",
       drilldownRedirect: false,
-      el: $("#trend-chart-div")
+      el: $("#suspicious_document_div")
     }).render();
 
     barchart.on("click:chart", function(e) {
@@ -165,26 +151,6 @@ require(
         $("#filter_header").show();
     });
 
-    user_table.on("click:row", function(e) {
-        e.preventDefault();
-        username = e.data["row.user"];
-        earliest_time = tokens.get("earliest_time");
-        latest_time = tokens.get("latest_time");
-        window.location.href = "../user_details?username=" + username + "&earliest_time=" + earliest_time + "&latest_time=" + latest_time;
-    });
-
-    $("#reset_filter").click(function(e) {
-        tokens.set("command", "*");
-        $("#filter_header").hide();
-    });
-
-    document_table.on("click:row", function(e) {
-        e.preventDefault();
-        document_name = e.data["row.object"];
-        earliest_time = tokens.get("earliest_time");
-        latest_time = tokens.get("latest_time");
-        window.location.href = "../document_details?document=" + document_name + "&earliest_time=" + earliest_time + "&latest_time=" + latest_time;
-    });
 });
 
 </script>
