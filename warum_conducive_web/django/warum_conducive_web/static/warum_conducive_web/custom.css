@@ -1,3 +1,13 @@
 .main-area {
     border: 1px solid black;
 }
+.span-full {
+    width: 100%;
+}
+.span-half {
+    width: 50%;
+}
+.span-third {
+    width: 33%;
+}
+        
