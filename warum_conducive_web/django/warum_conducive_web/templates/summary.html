@@ -106,13 +106,13 @@
 
 {% block managers %}
 
-  {% searchmanager id="base-search" search="index=warum sourcetype=ri:pas:application event_name=create OR event_name=delete OR event_name=read OR event_name=share OR event_name=upload OR event_name=permissions_changed | bucket span=5m _time | stats count by _time event_name user_name event_target" preview=True cache=60 status_buckets=300 %}
+  {% savedsearchmanager id="base-search" searchname="summary_base_search" preview=True status_buckets=300 %}
 
-  {% postprocessmanager id="trend-search" managerid="base-search" search="timechart sum(count) by event_name" %}
+  {% savedsearchmanager id="trend-search" searchname="trend_chart_search"  %}
 
-  {% postprocessmanager id="top_users" managerid="base-search" search=" search event_name=$event_name$ | top user_name | eval percent=round(percent,2)"|token_safe %}
+  {% postprocessmanager id="top_users" managerid="base-search" search=" search command=$command$ | top user | eval percent=round(percent,2)"|token_safe %}
 
-  {% postprocessmanager id="top_documents" managerid="base-search" search=" search event_name=$event_name$ | top event_target | eval percent=round(percent,2)"|token_safe %}
+  {% postprocessmanager id="top_documents" managerid="base-search" search=" search command=$command$ | top object | eval percent=round(percent,2)"|token_safe %}
 
 {% endblock managers %}
 
@@ -133,7 +133,7 @@ require(
     var user_table = mvc.Components.getInstance("user-table");
     var document_table = mvc.Components.getInstance("document-table");
 
-    tokens.set("event_name", "*");
+    tokens.set("command", "*");
 
     timerange.on("change", function() {
         search.search.set(timerange.val());
@@ -153,7 +153,7 @@ require(
         earliest = parseFloat(e.rowContext["row._time"]);
         span = parseFloat(e._span);
         latest = earliest + span;
-        tokens.set("event_name", e.name2);
+        tokens.set("command", e.name2);
         tokens.set("earliest_time",earliest);
         tokens.set("latest_time",latest);
         $("#filter_header").show();
@@ -161,26 +161,26 @@ require(
 
     barchart.on("click:legend", function(e) {
         e.preventDefault();
-        tokens.set("event_name", e.name2);
+        tokens.set("command", e.name2);
         $("#filter_header").show();
     });
 
     user_table.on("click:row", function(e) {
         e.preventDefault();
-        username = e.data["row.user_name"];
+        username = e.data["row.user"];
         earliest_time = tokens.get("earliest_time");
         latest_time = tokens.get("latest_time");
         window.location.href = "../user_details?username=" + username + "&earliest_time=" + earliest_time + "&latest_time=" + latest_time;
     });
 
     $("#reset_filter").click(function(e) {
-        tokens.set("event_name", "*");
+        tokens.set("command", "*");
         $("#filter_header").hide();
     });
 
     document_table.on("click:row", function(e) {
         e.preventDefault();
-        document_name = e.data["row.event_target"];
+        document_name = e.data["row.object"];
         earliest_time = tokens.get("earliest_time");
         latest_time = tokens.get("latest_time");
         window.location.href = "../document_details?document=" + document_name + "&earliest_time=" + earliest_time + "&latest_time=" + latest_time;
