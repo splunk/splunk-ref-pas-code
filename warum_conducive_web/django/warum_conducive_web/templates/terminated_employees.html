@@ -1,0 +1,152 @@
+{% extends "splunkdj:base_with_app_bar.html" %}
+
+{% load splunkmvc %}
+
+{% block title %}Terminated Employee - Document Access{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}splunkjs/css/dashboard.css">
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}{{app_name}}/custom.css" />
+{% endblock css %}
+
+{% block content %}
+<div class="dashboard-body container-fluid main-section-body">
+  <div class="row">
+    <div class="span12 dashboard-header clearfix">
+      <h2>Terminated Employee - Document Access</h2>
+    </div>
+  </div>
+
+      <div class="dashboard-row">
+        <div class="dashboard-cell" style="width: 100%;">
+            <div class="dashboard-panel">
+                <div class="dashboard-element">
+                    <div class="panel-head">
+                        <h3>Search Criteria</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div id="timerangeview"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  <div class="dashboard-row">
+    <div class="dashboard-cell" style="width: 100%;">
+      <div class="dashboard-panel">
+        <div class="panel-head">
+          <h3>Documents Accessed By Terminated Employees</h3>
+        </div>
+
+        <div class="panel-body">
+          <div id="suspicious_document_div"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="dashboard-row" id="drilldown-row">
+    <div class="dashboard-cell span-half">
+            <div class="dashboard-panel">
+                <div class="dashboard-element">
+                    <div class="panel-head">
+                        <h3>Top Users</h3>
+                    </div>
+                    <div class="panel-body">
+                        {% table id="user-table" managerid="recently_terminated_employees" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div class="dashboard-cell span-half">
+            <div class="dashboard-panel">
+                <div class="dashboard-element">
+                    <div class="panel-head">
+                        <h3>Top Documents</h3>
+                    </div>
+                    <div class="panel-body">
+                        {% table id="document-table" managerid="top_documents"%}
+                    </div>
+                </div>
+            </div>
+        </div>
+  </div>
+
+
+</div>
+
+  </script>
+  {% endblock content%}
+
+{% block managers %}
+
+
+{% endblock managers %}
+
+{% block js %}    
+<script>    
+require(
+  [
+    "splunkjs/ready!", 
+    "underscore", 
+    "splunkjs/mvc/chartview",
+    "splunkjs/mvc/savedsearchmanager",
+    "splunkjs/mvc/timerangeview"
+  ], function(mvc, _) {
+
+    var ChartView = require("splunkjs/mvc/chartview");
+    var SavedSearchManager = require("splunkjs/mvc/savedsearchmanager");
+    var TimeRangeView = require("splunkjs/mvc/timerangeview");
+    var tokens = mvc.Components.getInstance("default");
+    
+    tokens.set("command","*");
+
+    // Create manager
+    var base_search = new SavedSearchManager({
+        id: "base-search",
+        searchname: "recently_terminated_employees",
+        cache: true,
+        preview: true
+    });
+
+    var timerange = new TimeRangeView({
+        id: "base-timerange",
+        managerid: "base-search",
+        preset: "Last 24 hours",
+        el: $("#timerangeview")
+    }).render();
+
+    // Update the search manager when the time range changes
+    timerange.on("change", function() {
+        base_search.settings.set(timerange.val());
+    });
+
+    barchart = new ChartView({
+      id: "trend-chart",
+      managerid: "trend-search",
+      type: "line",
+      drilldownRedirect: false,
+      el: $("#suspicious_document_div")
+    }).render();
+
+    barchart.on("click:chart", function(e) {
+        e.preventDefault();
+        earliest = parseFloat(e.rowContext["row._time"]);
+        span = parseFloat(e._span);
+        latest = earliest + span;
+        tokens.set("command", e.name2);
+        tokens.set("earliest_time",earliest);
+        tokens.set("latest_time",latest);
+        $("#filter_header").show();
+    });
+
+    barchart.on("click:legend", function(e) {
+        e.preventDefault();
+        tokens.set("command", e.name2);
+        $("#filter_header").show();
+    });
+
+});
+
+</script>
+{% endblock js %}
