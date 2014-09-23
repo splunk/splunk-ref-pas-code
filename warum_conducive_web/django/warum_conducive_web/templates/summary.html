@@ -119,6 +119,7 @@ require(
     var tokens = mvc.Components.getInstance("default");
 
     var search = mvc.Components.getInstance("trend-search");
+    var basesearch = mvc.Components.getInstance("base-search");
     var user_table = mvc.Components.getInstance("user-table");
     var document_table = mvc.Components.getInstance("document-table");
 
@@ -126,6 +127,7 @@ require(
 
     timerange.on("change", function() {
         search.search.set(timerange.val());
+        basesearch.search.set(timerange.val());
     });
 
     barchart = new ChartView({
