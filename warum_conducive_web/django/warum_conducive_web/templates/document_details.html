@@ -27,7 +27,7 @@
                     </div>
                     <div class="panel-body">
                         <div id="userInput" class="splunk-view" style="float:left"></div>
-                        {% timerange id="timerange" managerid="trend-search" earliest_time="$earliest_time$"|token_safe latest_time="$latest_time$"|token_safe%}
+                        <div id="timepicker"></div>
                     </div>
                 </div>
             </div>
@@ -43,6 +43,7 @@
 
         <div class="panel-body">
           <div id="trend-chart-div"></div>
+          <div id="zoom-chart-div"></div>
         </div>
       </div>
     </div>
@@ -92,15 +93,17 @@
 
 {% block managers %}
 
-  {% searchmanager id="base-search" search="index=warum sourcetype=ri:pas:application event_target=$document$ | bucket span=5m _time | stats count by _time event_name user_name"|token_safe preview=True cache=60 status_buckets=300 %}
+  {% searchmanager id="base-search" search="index=warum sourcetype=ri:pas:application event_target=$document$ | bucket span=5m _time | stats count by _time event_name user_name"|token_safe preview=True %}
 
   {% postprocessmanager id="trend-search" managerid="base-search" search="timechart sum(count) by event_name" %}
+
+  {% searchmanager id="zoom-search" search="index=warum sourcetype=ri:pas:application event_target=$document$ | bucket span=5m _time | stats count by _time event_name user_name | timechart sum(count)"|token_safe preview=True cache=60 status_buckets=300 %}
 
   {% postprocessmanager id="top_events" managerid="base-search" search="top event_name | eval percent=round(percent,2)"|token_safe %}
 
   {% postprocessmanager id="top_users" managerid="base-search" search="top user_name | eval percent=round(percent,2)"|token_safe %}
 
-  {% searchmanager id="raw-search" search="index=warum sourcetype=conducive:application event_target=$document$ $raw_search$"|token_safe preview=True cache=60 status_buckets=300 earliest_time="$earliest_time$"|token_safe latest_time="$latest_time$"|token_safe%}
+  {% searchmanager id="raw-search" search="index=warum sourcetype=ri:pas:application event_target=$document$ $raw_search$"|token_safe preview=True cache=60 status_buckets=300 earliest_time="$earliest_time$"|token_safe latest_time="$latest_time$"|token_safe%}
 
 {% endblock managers %}
 
@@ -112,14 +115,17 @@ require(
     "underscore", 
     "splunkjs/mvc/chartview",
     "splunkjs/mvc/textinputview",
+    "splunkjs/mvc/timerangeview",
     "warum_conducive_web/purl"
   ], function(mvc, _) {
 
     var ChartView = require("splunkjs/mvc/chartview");
     var TextInputView = require("splunkjs/mvc/textinputview");
+    var TimeRangeView = require("splunkjs/mvc/timerangeview")
 
-    var search = mvc.Components.getInstance("trend-search");
-    var timerange = mvc.Components.getInstance("timerange"); 
+    var base_search = mvc.Components.getInstance("base-search");
+    var zoom_search = mvc.Components.getInstance("zoom-search");
+
     var drilldown_div = $("#drilldown-row");
     var tokens = mvc.Components.getInstance("default");
     var events_table = mvc.Components.getInstance("events-table");
@@ -132,9 +138,26 @@ require(
       tokens.set("latest_time",params.latest_time);
     }
 
-
+    value = {
+        earliest_time: tokens.get("earliest_time"),
+        latest_time: tokens.get("latest_time")
+    };
+    var timerange = new TimeRangeView({
+        id: "timepicker",
+        dialogOptions: {
+            showCustomRealTime: false,
+            showPresetsRealTime :false,
+            enableCustomAdvancedRealTime: false
+        },
+        el: $("#timepicker"),
+        value: value
+    }).render();
+    
     timerange.on("change", function() {
-        search.search.set(timerange.val());
+      base_search.search.set(timerange.val());
+      zoom_search.search.set(timerange.val());
+      /*tokens.set("earliest_time",params.earliest_time);
+      tokens.set("latest_time",params.latest_time);*/
     });
 
     new TextInputView({
@@ -143,6 +166,26 @@ require(
       default: "*",
       value: mvc.tokenSafe("$document$")
     }).render();
+
+    zoomchart = new ChartView({
+      height: "175px",
+      managerid: "zoom-search",
+      type: "line",
+      "charting.axisTitleX.visibility" : "collapsed",
+      "charting.axisTitleY.visibility" : "collapsed",
+      el: $("#zoom-chart-div")
+    }).render();
+
+    zoomchart.on("selection", function(e) {
+      e.preventDefault();
+      time_value = {
+        "earliest_time":e.startValue,
+        "latest_time":e.endValue
+      };
+      base_search.search.set(time_value);
+      tokens.set("earliest_time",e.startValue);
+      tokens.set("latest_time",e.endValue);
+    });
 
     barchart = new ChartView({
       id: "trend-chart",
@@ -153,26 +196,17 @@ require(
       el: $("#trend-chart-div")
     }).render();
 
-    barchart.on("click:chart", function(e) {
-      e.preventDefault();
-      earliest = parseFloat(e.rowContext["row._time"]);
-      span = parseFloat(e._span);
-      latest = earliest + span;
-      tokens.set("earliest_time",earliest);
-      tokens.set("latest_time",latest);
-    });
-
     users_table.on("click:row", function(e) {
       e.preventDefault();
       username = e.data["row.user_name"];
-      tokens.set("raw_search","user_name = " + username);
+      tokens.set("raw_search","user_name=" + username);
       $("#raw_container").show();
     });
 
     events_table.on("click:row", function(e) {
       e.preventDefault();
       eventname = e.data["row.event_name"];
-      tokens.set("raw_search","event_name = " + eventname);
+      tokens.set("raw_search","event_name=" + eventname);
       $("#raw_container").show();
     });
 
