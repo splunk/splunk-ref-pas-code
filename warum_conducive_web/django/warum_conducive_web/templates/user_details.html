@@ -27,7 +27,7 @@
                     </div>
                     <div class="panel-body">
                         <div id="userInput" class="splunk-view" style="float:left"></div>
-                        {% timerange id="timerange" managerid="trend-search" earliest_time="$earliest_time$"|token_safe latest_time="$latest_time$"|token_safe%}
+                        <div id="timepicker"></div>
                     </div>
                 </div>
             </div>
@@ -42,8 +42,8 @@
         </div>
 
         <div class="panel-body">
-          <div id="trend-chart-div">
-          </div>
+          <div id="trend-chart-div"></div>
+          <div id="zoom-chart-div"></div>
         </div>
       </div>
     </div>
@@ -80,7 +80,7 @@
     <div class="dashboard-cell" style="width: 100%;">
       <div class="dashboard-panel">
         <div class="panel-head">
-          <h3>Raw Events (Username: {{"$username$"|token_safe}}, {{"$raw_search$"|token_safe}})</h3>
+          <h3>Raw Events (User: {{"$username$"|token_safe}}, {{"$raw_search$"|token_safe}})</h3>
         </div>
         <div class="panel-body">
           {% table id="raw-table" managerid="raw-search"%}
@@ -93,9 +93,11 @@
 
 {% block managers %}
 
-  {% searchmanager id="base-search" search="index=warum sourcetype=ri:pas:application user_name=$username$ | bucket span=5m _time | stats count by _time event_name event_target"|token_safe preview=True cache=60 status_buckets=300 %}
+  {% searchmanager id="base-search" search="index=warum sourcetype=ri:pas:application user_name=$username$ | bucket span=5m _time | stats count by _time event_name event_target"|token_safe preview=True %}
 
-  {% postprocessmanager id="trend-search" managerid="base-search" search="timechart span=1h sum(count) by event_name | addtotals fieldname=total | fillnull " %}
+  {% postprocessmanager id="trend-search" managerid="base-search" search="timechart sum(count) by event_name" %}
+
+  {% searchmanager id="zoom-search" search="index=warum sourcetype=ri:pas:application user_name=$username$ | bucket span=5m _time | stats count by _time event_name user_name | timechart sum(count)"|token_safe preview=True cache=60 status_buckets=300 %}
 
   {% postprocessmanager id="top_events" managerid="base-search" search="top event_name | eval percent=round(percent,2)"|token_safe %}
 
@@ -105,40 +107,25 @@
 
 {% endblock managers %}
 
-{% block js %} 
-<script>
-
-require.config({
-    paths: {
-        "d3.tip": "{{STATIC_URL}}{{app_name}}/d3.tip",
-        "d3.v3.min": "{{STATIC_URL}}{{app_name}}/d3.v3.min"
-    },
-    shim: {
-        "d3.tip": {
-            deps: ["d3"]
-        },
-        "d3": {
-          exports: "d3"
-        }
-    }
-});
-
+{% block js %}    
+<script>    
 require(
   [
     "splunkjs/ready!", 
     "underscore", 
     "splunkjs/mvc/chartview",
     "splunkjs/mvc/textinputview",
-    "warum_conducive_web/purl",
-    "d3.v3.min",
-
+    "splunkjs/mvc/timerangeview",
+    "warum_conducive_web/purl"
   ], function(mvc, _) {
 
     var ChartView = require("splunkjs/mvc/chartview");
     var TextInputView = require("splunkjs/mvc/textinputview");
+    var TimeRangeView = require("splunkjs/mvc/timerangeview")
 
-    var search = mvc.Components.getInstance("trend-search");
-    var timerange = mvc.Components.getInstance("timerange"); 
+    var base_search = mvc.Components.getInstance("base-search");
+    var zoom_search = mvc.Components.getInstance("zoom-search");
+
     var drilldown_div = $("#drilldown-row");
     var tokens = mvc.Components.getInstance("default");
     var events_table = mvc.Components.getInstance("events-table");
@@ -146,14 +133,31 @@ require(
 
     var params = getQueryStringParams();
     if (params.username) {
-      tokens.set("username",params.username);
+      tokens.set("username",decodeURI(params.username));
       tokens.set("earliest_time",params.earliest_time);
       tokens.set("latest_time",params.latest_time);
     }
 
-
+    value = {
+        earliest_time: tokens.get("earliest_time"),
+        latest_time: tokens.get("latest_time")
+    };
+    var timerange = new TimeRangeView({
+        id: "timepicker",
+        dialogOptions: {
+            showCustomRealTime: false,
+            showPresetsRealTime :false,
+            enableCustomAdvancedRealTime: false
+        },
+        el: $("#timepicker"),
+        value: value
+    }).render();
+    
     timerange.on("change", function() {
-        search.search.set(timerange.val());
+      base_search.search.set(timerange.val());
+      zoom_search.search.set(timerange.val());
+      /*tokens.set("earliest_time",params.earliest_time);
+      tokens.set("latest_time",params.latest_time);*/
     });
 
     new TextInputView({
@@ -163,12 +167,39 @@ require(
       value: mvc.tokenSafe("$username$")
     }).render();
 
-    var keys=["Read","Write","Upload","Share","Download","Delete"];
+    zoomchart = new ChartView({
+      height: "175px",
+      managerid: "zoom-search",
+      type: "line",
+      "charting.axisTitleX.visibility" : "collapsed",
+      "charting.axisTitleY.visibility" : "collapsed",
+      el: $("#zoom-chart-div")
+    }).render();
+
+    zoomchart.on("selection", function(e) {
+      e.preventDefault();
+      time_value = {
+        "earliest_time":e.startValue,
+        "latest_time":e.endValue
+      };
+      base_search.search.set(time_value);
+      tokens.set("earliest_time",e.startValue);
+      tokens.set("latest_time",e.endValue);
+    });
+
+    barchart = new ChartView({
+      id: "trend-chart",
+      managerid: "trend-search",
+      type: "column",
+      "charting.chart.stackMode": "stacked",
+      drilldownRedirect: false,
+      el: $("#trend-chart-div")
+    }).render();
 
     documents_table.on("click:row", function(e) {
       e.preventDefault();
       event_target = e.data["row.event_target"].replace(/\\/g,"\\\\");
-      tokens.set("raw_search","event_target=\"" + event_target + "\"");
+      tokens.set("raw_search","event_target=" + event_target);
       $("#raw_container").show();
     });
 
@@ -179,248 +210,7 @@ require(
       $("#raw_container").show();
     });
 
-    var manager = splunkjs.mvc.Components.getInstance('trend-search');
-    var data = manager.data('results', {
-        output_mode: 'json_rows',
-        count: 0 // get all results
-    });
-    var formatResults = function(results) {
-        if (!results.hasData()) {
-            return;
-        }
-
-        json_collection = results.collection().toJSON();
-        create_data = {key: "Create",values: []};
-        delete_data = {key:"Delete",values:[]};
-        lock_data = {key:"Lock",values:[]};
-        read_data = {key:"Read",values:[]};
-        share_data = {key:"Share",values:[]};
-        unlock_data = {key:"Unlock",values:[]};
-        upload_data  = {key:"Upload",values:[]};
-        d3_data = [create_data,delete_data,lock_data,read_data,share_data,unlock_data,upload_data];
-        for (i=0;i<json_collection.length;i++)
-        {
-          var x = new Date(json_collection[i]["_time"]);
-          var y0 = 0;
-          var y = parseFloat(json_collection[i]["create"])
-          create_data.values.push({x: x,y: y,y0:y0, key:"create"});
-          y0 += y;
-          y = parseFloat(json_collection[i]["delete"]);
-          delete_data.values.push({x: x,y: y,y0:y0, key:"delete"});
-          y0 += y;
-          y = parseFloat(json_collection[i]["lock"]);
-          lock_data.values.push({x: x,y: y,y0: y0, key:"lock"});
-          y0 += y;
-          y = parseFloat(json_collection[i]["read"]);
-          read_data.values.push({x: x,y: y,y0: y0, key:"read"});
-          y0 += y;
-          y = parseFloat(json_collection[i]["share"]);
-          share_data.values.push({x: x,y: y,y0: y0, key:"share"});
-          y0 += y;
-          y = parseFloat(json_collection[i]["unlock"]);
-          unlock_data.values.push({x: x,y: y,y0: y0, key:"unlock"});
-          y0 += y;
-          y = parseFloat(json_collection[i]["upload"]);
-          upload_data.values.push({x: x,y: y,y0: y0, key:"upload"});
-        }
-
-        var stack = d3.layout.stack(),
-            layers = results.collection().toJSON();
-
-
-        //set variables for both charts
-        var margin = {top: 40, right: 10, bottom: 100, left: 40},
-            margin2 = {top: 430, right: 10, bottom: 20, left: 40},
-            width = 960 - margin.left - margin.right,
-            height = 500 - margin.top - margin.bottom,
-            height2 = 500 - margin2.top - margin2.bottom;
-
-        //set initial bar width to width of screen / number of bars
-        var barWidth = width / layers.length;
-
-        //default time format
-        var formatTime = d3.time.format("%e %B");
-
-        //set up scale form main chart
-        var x = d3.time.scale()
-            .domain([d3.min(layers, function(d) { return new Date(d["_time"]);}),d3.max(layers, function(d) { return new Date(d["_time"]);})])
-            .range([0, width]);
-        var y = d3.scale.linear()
-            .domain([0, d3.max(layers,function(d) { return parseFloat(d["total"]) })])
-            .range([height, 0]);
-
-        //set up scales for mini chart
-        var x2 = d3.time.scale()
-            .domain(x.domain())
-            .range([0, width]);
-        var y2 = d3.scale.linear()
-            .domain(y.domain())
-            .range([height2, 0]);
-
-        //set up color
-        var color = d3.scale.category20b();
-
-        var brush = d3.svg.brush()
-            .x(x2)
-            .on("brush", brushed);
-
-        var xAxis = d3.svg.axis()
-            .scale(x)
-            .tickSize(0)
-            .tickPadding(6)
-            .orient("bottom");
-
-        var xAxis2 = d3.svg.axis()
-            .scale(x2)
-            .tickSize(0)
-            .tickPadding(6)
-            .orient("bottom");
-
-        var yAxis = d3.svg.axis()
-                  .scale(y)
-                  .orient("left")
-                  .ticks(5);
-
-        //tip = d3.tip().attr('class', 'd3-tip').html(function(d) { return d; });
-
-        var div = d3.select("body").append("div")   
-            .attr("class", "tooltip")               
-            .style("opacity", 0);
-
-        var svg = d3.select("#trend-chart-div").append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom);
-
-        var focus = svg.append("g")
-            .attr("class","focus_chart")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-        var legend = focus.selectAll('g')
-              .data(d3_data)
-              .enter()
-            .append('g')
-              .attr('class', 'legend');
-            
-          legend.append('rect')
-              .attr('x', function(d, i){ return width - ((i+1) *  60);})
-              .attr('y', 20)
-              .attr('width', 10)
-              .attr('height', 10)
-              .style('fill', function(d,i) { 
-                return color(i);
-              });
-              
-          legend.append('text')
-              .attr('x', function(d, i){ return width - ((i+1) *  60)+12;})
-              .attr('y', 29)
-              .text(function(d){ return d.key; })
-              .on("click", function(e) {
-                e.disabled = !e.disabled;
-              });
-
-        var layer = focus.selectAll(".layer")
-            .data(d3_data)
-          .enter().append("g")
-            .attr("class", "layer")
-            .attr("id",function(d) { return "layer_"+d.key})
-            .style("fill", function(d, i) { return color(i); })
-            .classed('disabled', function(d) { return d.disabled });
-
-        var xPos = 0;
-
-        var rect = layer.selectAll("rect")
-            .data(
-              function(d) {
-                  return d.values;
-              })
-          .enter().append("rect")
-            .attr("x", function(d) { 
-              return x(d.x); 
-            })
-            .attr("y", function(d) { 
-              return y(d.y0 + d.y); 
-            })
-            .attr("width",barWidth)
-            .attr("height", function(d) { 
-              return height - y(d.y); 
-            })
-            .on("mouseover", function(d) {      
-              div.transition()        
-                  .duration(200)      
-                  .style("opacity", .9);      
-              div .html(formatTime(d.x) + "<br/>"  + d.key + "=" + d.y)  
-                  .style("left", (d3.event.pageX) + "px")     
-                  .style("top", (d3.event.pageY - 28) + "px");    
-            })                  
-            .on("mouseout", function(d) {       
-                div.transition()        
-                    .duration(500)      
-                    .style("opacity", 0);   
-            });
-            //.on('mouseover', tip.show)
-            //.on('mouseout', tip.hide);
-
-        focus.append("g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(0," + height + ")")
-            .call(xAxis);
-
-        //Create Y axis
-        focus.append("g")
-            .attr("class", "axis")
-            .call(yAxis);
-
-        var context = svg.append("g")
-          .attr("class", "context")
-          .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
-
-        var area2 = d3.svg.area()
-          .interpolate("monotone")
-          .x(function(d)  {return x2(new Date(d["_time"])); })
-          .y0(height2)
-          .y1(function(d) {return y2(parseFloat(d["total"]));});
-
-        context.append("path")
-          .datum(layers)
-          .attr("class", "area")
-          .attr("d", area2);
-
-        context.append("g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(0," + height2 + ")")
-            .call(xAxis2);
-
-        context.append("g")
-            .attr("class", "x brush")
-            .call(brush)
-          .selectAll("rect")
-            .attr("y", -6)
-            .attr("height", height2 + 7);
-
-        function brushed() {
-          x.domain(brush.empty() ? x2.domain() : brush.extent());
-          //focus.select(".area").attr("d", area);
-          focus.select(".x.axis").call(xAxis);
-          span = brush.extent()[1]-brush.extent()[0];
-          layer.selectAll("rect")
-                    .attr("x", function (d) { return x(d.x);});
-          if (span > 0) {
-            span = span;
-            layer.selectAll("rect").attr("width",width/(span/1000/60/60))
-            .attr("x", function (d) { return x(d.x) - (width/(span/1000/60/60)/2);});;
-          }
-        }
-
-function type(d) {
-  d.date = parseDate(d.date);
-  d.price = +d.price;
-  return d;
-}
-    };
-    data.on('data', formatResults);
-    manager.startSearch();
 });
-
 
 </script>
 {% endblock js %}
