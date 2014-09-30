@@ -125,7 +125,7 @@
             "calculations": [],
             "constraints": [
                 {
-                    "search": "index=warum sourcetype=\"ri:pas:*\"",
+                    "search": "`index_macro` `process_sourcetype` `alerts_sourcetype` `events_sourcetype`",
                     "owner": "Root_Event"
                 }
             ],
