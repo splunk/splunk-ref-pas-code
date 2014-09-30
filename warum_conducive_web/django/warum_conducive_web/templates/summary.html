@@ -6,6 +6,7 @@
 
 {% block css %}
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}splunkjs/css/dashboard.css"/>
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}{{app_name}}/tagmanager.css" />
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}{{app_name}}/custom.css" />
 {% endblock css %}
 
@@ -18,20 +19,28 @@
     </div>
   </div>
 
-      <div class="dashboard-row">
-        <div class="dashboard-cell" style="width: 100%;">
+    <div class="dashboard-row" id="filter_header">
+        <div class="dashboard-cell span-full">
             <div class="dashboard-panel">
                 <div class="dashboard-element">
                     <div class="panel-head">
-                        <h3>Search Criteria</h3>
                     </div>
                     <div class="panel-body">
-                        {% timerange id="timerange" managerid="trend-search" preset="Last 24 hours" earliest_time="$earliest_time$"|token_safe latest_time="$latest_time$"|token_safe%}
+                        <div class="filter_tags" style="float:left">
+                            <h6>Filter Criteria:</h6>
+                            <input id="filter_tags_input" type="text" >
+                        </div>
+
+                        <div style="float:right;margin-right:10px">
+                            <br/>
+                            <div id="timepicker"></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 
   <div class="dashboard-row">
     <div class="dashboard-cell" style="width: 100%;">
@@ -90,14 +99,13 @@
 
 </div>
 
-  </script>
   {% endblock content%}
 
 {% block managers %}
 
   {% savedsearchmanager id="base-search" searchname="summary_base_search" preview=True status_buckets=300 %}
 
-  {% savedsearchmanager id="trend-search" searchname="trend_chart_search"  %}
+  {% searchmanager id="trend-search" search="| pivot ri_pas_datamodel Root_Event count(Root_Event) AS count SPLITROW _time AS _time PERIOD auto SPLITCOL command FILTER command isNotNull $filter$ $exclude$ SORT 0 _time ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 10 SHOWOTHER 0"|token_safe  %}
 
   {% postprocessmanager id="top_users" managerid="base-search" search=" search command=$command$ | top user | eval percent=round(percent,2)"|token_safe %}
 
@@ -107,17 +115,40 @@
 
 {% block js %}    
 <script>    
+    require.config({
+        paths: {
+            "tagmanager": "{{STATIC_URL}}{{app_name}}/tagmanager",
+            "filter_component": "{{STATIC_URL}}{{app_name}}/filter_component"
+        },
+        shim: {
+            "filter_component": {
+                deps: [
+                    "splunkjs/mvc/timerangeview",
+                    "splunkjs/mvc/radiogroupview",
+                    "splunkjs/mvc/textinputview",
+                    "warum_conducive_web/context",
+                    "tagmanager"
+                ]
+            },
+            "tagmanager": {
+                deps: ["jquery"]
+            }
+        }
+    });
 require(
   [
     "splunkjs/ready!", 
     "underscore", 
-    "splunkjs/mvc/chartview"
+    "splunkjs/mvc/chartview",
+    "filter_component"
   ], function(mvc, _) {
-
-    var ChartView = require("splunkjs/mvc/chartview");
-    var timerange = mvc.Components.getInstance("timerange"); 
     var tokens = mvc.Components.getInstance("default");
 
+    context.init({preventDoubleContext: false});
+    generateFilterComponent(mvc);
+
+    var ChartView = require("splunkjs/mvc/chartview");
+    var timepicker = mvc.Components.getInstance("timepicker"); 
     var search = mvc.Components.getInstance("trend-search");
     var basesearch = mvc.Components.getInstance("base-search");
     var user_table = mvc.Components.getInstance("user-table");
@@ -125,9 +156,9 @@ require(
 
     tokens.set("command", "*");
 
-    timerange.on("change", function() {
-        search.search.set(timerange.val());
-        basesearch.search.set(timerange.val());
+    timepicker.on("change", function() {
+        search.search.set(timepicker.val());
+        basesearch.search.set(timepicker.val());
     });
 
     barchart = new ChartView({
@@ -139,16 +170,16 @@ require(
       el: $("#trend-chart-div")
     }).render();
 
-    barchart.on("click:chart", function(e) {
-        e.preventDefault();
-        earliest = parseFloat(e.rowContext["row._time"]);
-        span = parseFloat(e._span);
-        latest = earliest + span;
-        tokens.set("command", e.name2);
-        tokens.set("earliest_time",earliest);
-        tokens.set("latest_time",latest);
-        $("#filter_header").show();
-    });
+    // barchart.on("click:chart", function(e) {
+    //     e.preventDefault();
+    //     earliest = parseFloat(e.rowContext["row._time"]);
+    //     span = parseFloat(e._span);
+    //     latest = earliest + span;
+    //     tokens.set("command", e.name2);
+    //     tokens.set("earliest_time",earliest);
+    //     tokens.set("latest_time",latest);
+    //     $("#filter_header").show();
+    // });
 
     barchart.on("click:legend", function(e) {
         e.preventDefault();
@@ -156,26 +187,50 @@ require(
         $("#filter_header").show();
     });
 
-    user_table.on("click:row", function(e) {
-        e.preventDefault();
-        username = e.data["row.user"];
-        earliest_time = tokens.get("earliest_time");
-        latest_time = tokens.get("latest_time");
-        window.location.href = "../user_details?username=" + username + "&earliest_time=" + earliest_time + "&latest_time=" + latest_time;
-    });
+    // user_table.on("click:row", function(e) {
+    //     e.preventDefault();
+    //     username = e.data["row.user"];
+    //     earliest_time = tokens.get("earliest_time");
+    //     latest_time = tokens.get("latest_time");
+    //     window.location.href = "../user_details?username=" + username + "&earliest_time=" + earliest_time + "&latest_time=" + latest_time;
+    // });
 
-    $("#reset_filter").click(function(e) {
-        tokens.set("command", "*");
-        $("#filter_header").hide();
-    });
+    // $("#reset_filter").click(function(e) {
+    //     tokens.set("command", "*");
+    //     $("#filter_header").hide();
+    // });
 
-    document_table.on("click:row", function(e) {
-        e.preventDefault();
-        document_name = e.data["row.object"];
-        earliest_time = tokens.get("earliest_time");
-        latest_time = tokens.get("latest_time");
-        window.location.href = "../document_details?document=" + document_name + "&earliest_time=" + earliest_time + "&latest_time=" + latest_time;
-    });
+    // document_table.on("click:row", function(e) {
+    //     e.preventDefault();
+    //     document_name = e.data["row.object"];
+    //     earliest_time = tokens.get("earliest_time");
+    //     latest_time = tokens.get("latest_time");
+    //     window.location.href = "../document_details?document=" + document_name + "&earliest_time=" + earliest_time + "&latest_time=" + latest_time;
+    // });
+
+            var menu_data = [
+            {
+                text: 'Include', 
+                splunk_action: 'include'
+            },
+            {
+                text: 'Exclude', 
+                splunk_action: 'exclude'
+                
+            },
+            {
+                text: 'Drilldown', 
+                splunk_action: 'drilldown',
+                search: "index=* sourcetype=Events $criteria$ | table _time Event_ID User_Name, Computer_Name, Application, Operation, Email_Domain, DNS_Hostname, Source_Directory, Source_File_Extension, Destination_Directory, Destination_File_Extension"
+            }
+        ];
+
+        var chart_column = "command";
+
+        context.attachToChart(barchart, menu_data);
+        context.attachToTable(user_table, menu_data);
+        context.attachToTable(document_table, menu_data);
+
 });
 
 </script>

@@ -10,3 +10,16 @@
 .span-third {
     width: 33%;
 }
+
+.filter_tags {
+  margin-left: 10px;
+  float:left;
+}
+
+.filter {
+  background-color: #273542;
+}
+
+.exclude {
+  background-color: #E73E2E;
+}
