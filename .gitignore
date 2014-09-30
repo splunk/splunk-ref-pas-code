@@ -25,3 +25,9 @@ test/unit-test/obj/Debug/unit-test.csprojResolveAssemblyReference.cache
 test/unit-test/obj/Debug/unit-test.dll
 test/unit-test/obj/Debug/unit-test.pdb
 test/warum-conducive-test.v12.suo
+
+warum_conducive_web/metadata/local.meta
+
+warum_conducive_web/local/macros.conf
+
+warum_conducive_web/local/app.conf
