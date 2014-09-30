@@ -168,7 +168,7 @@ require(
     }).render();
 
     zoomchart = new ChartView({
-      height: "175px",
+      height: "100px",
       managerid: "zoom-search",
       type: "line",
       "charting.axisTitleX.visibility" : "collapsed",
@@ -192,6 +192,7 @@ require(
       managerid: "trend-search",
       type: "column",
       "charting.chart.stackMode": "stacked",
+      "charting.axisTitleX.visibility" : "collapsed",
       drilldownRedirect: false,
       el: $("#trend-chart-div")
     }).render();
