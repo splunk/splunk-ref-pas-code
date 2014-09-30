@@ -111,7 +111,7 @@ function filter(tokens,field_name,field_value)
 function exclude(tokens,field_name,field_value)
 {
     var exclude_search = "";
-    var terms = "FILTER " + field_name + " isNot \"" + field_value + "\"";
+    var terms = "FILTER " + field_name + " isNot \"" + field_value + "\" ";
     exclude_search = tokens.get("exclude");
     if (exclude_search=="*") exclude_search="";
     exclude_search += terms;

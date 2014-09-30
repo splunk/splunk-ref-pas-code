@@ -103,13 +103,13 @@
 
 {% block managers %}
 
-  {% savedsearchmanager id="base-search" searchname="summary_base_search" preview=True status_buckets=300 %}
+  {% searchmanager id="base-search" search="| pivot ri_pas_datamodel Root_Event count(Root_Event) AS Count SPLITROW _time AS _time PERIOD auto SPLITROW user AS user SPLITROW command AS command SPLITROW object AS object FILTER command isNotNull $filter$ $exclude$ ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 0 SHOWOTHER 1"|token_safe preview=True status_buckets=300 %}
 
   {% searchmanager id="trend-search" search="| pivot ri_pas_datamodel Root_Event count(Root_Event) AS count SPLITROW _time AS _time PERIOD auto SPLITCOL command FILTER command isNotNull $filter$ $exclude$ SORT 0 _time ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 10 SHOWOTHER 0"|token_safe  %}
 
-  {% postprocessmanager id="top_users" managerid="base-search" search=" search command=$command$ | top user | eval percent=round(percent,2)"|token_safe %}
+  {% postprocessmanager id="top_users" managerid="base-search" search=" | top user | eval percent=round(percent,2)"|token_safe %}
 
-  {% postprocessmanager id="top_documents" managerid="base-search" search=" search command=$command$ | top object | eval percent=round(percent,2)"|token_safe %}
+  {% postprocessmanager id="top_documents" managerid="base-search" search=" | top object | eval percent=round(percent,2)"|token_safe %}
 
 {% endblock managers %}
 
