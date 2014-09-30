@@ -16,7 +16,7 @@ def summary(request):
         "app_name": "warum_conducive_web"
     }
 
-@render_to('dg_web:setup.html')
+@render_to('warum_conducive_web:setup.html')
 @login_required
 def setup(request):
     return create_setup_view_context(
