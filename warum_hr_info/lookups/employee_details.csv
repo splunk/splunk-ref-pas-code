@@ -1,8 +1,8 @@
 date,user,shift_start,shift_end,workdays,status
-09/01/2014,mbailey,17,1,"Mon,Tue,Wed,Thu,Fri",active
+08/01/2014,mbailey,17,1,"Mon,Tue,Wed,Thu,Fri",terminated
 09/01/2014,kadams,17,1,"Mon,Tue,Wed,Thu,Fri",active
 09/01/2014,caustin,1,9,"Mon,Tue,Wed,Thu,Fri",active
-09/01/2014,rblack,1,9,"Mon,Tue,Wed,Thu,Fri",active
+09/01/2014,rblack,1,9,"Mon,Wed,Thu,Fri",terminated
 09/01/2014,bberry,1,9,"Mon,Tue,Wed,Thu,Fri",active
 09/01/2014,harnold,17,1,"Mon,Tue,Wed,Thu,Fri",active
 09/01/2014,jbennet,17,1,"Mon,Tue,Wed,Thu,Fri",active
@@ -13,5 +13,4 @@ date,user,shift_start,shift_end,workdays,status
 09/01/2014,landers,9,17,"Mon,Tue,Wed,Thu,Fri",active
 09/01/2014,sallen,17,1,"Mon,Tue,Wed,Thu,Fri",active
 09/01/2014,dalexan,17,1,"Mon,Tue,Wed,Thu,Fri",active
-09/01/2014,jbell,17,1,"Mon,Tue,Wed,Thu,Fri",terminated
 08/25/2014,jbell,17,1,"Mon,Tue,Wed,Thu,Fri",terminated
