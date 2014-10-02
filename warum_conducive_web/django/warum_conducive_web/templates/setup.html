@@ -24,8 +24,7 @@
             <form class="splunkdj-setup-form" method="post" action="">
                 {% csrf_token %}
                 <h2>Setup Form</h2>
-                <p>Enter your information, then click <b>Save</b> to continue.</p></br>
-               
+                <p>Enter your information, then click <b>Save</b> to continue.</p></br>               
                 {{ form.as_p }}
                 <input class="btn btn-primary" type="submit" value="Save" />
                 {% if configured %}
