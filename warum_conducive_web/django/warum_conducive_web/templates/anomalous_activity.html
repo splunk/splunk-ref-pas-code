@@ -1,0 +1,118 @@
+{% extends "splunkdj:base_with_app_bar.html" %}
+
+{% load splunkmvc %}
+
+{% block title %}Anomalous Document Access{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}splunkjs/css/dashboard.css"/>
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}{{app_name}}/custom.css" />
+{% endblock css %}
+
+{% block content %}
+<div class="dashboard-body container-fluid main-section-body">
+  <div class="row">
+    <div class="span12 dashboard-header clearfix">
+      <h2>Anomalous Document Access</h2>
+    </div>
+  </div>
+
+      <div class="dashboard-row">
+        <div class="dashboard-cell" style="width: 100%;">
+            <div class="dashboard-panel">
+                <div class="dashboard-element">
+                    <div class="panel-head">
+                        <h3>Search Criteria</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div id="multiplier_search" style="float:left;margin-left:20px;">
+                          <div id="multiplier_label" style="float:left;">
+                            <h6>Multiplier:</h6>
+                          </div>
+                          <div id="multiplier_input" style="float:left;"></div>
+                        </div>
+                        <div id="timerange_search" style="float:right">
+                          <div id="timepicker"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+  <div class="dashboard-row" id="drilldown-row">
+    <div class="dashboard-cell span-full">
+            <div class="dashboard-panel">
+                <div class="dashboard-element">
+                    <div class="panel-head">
+                        <h3>Anomalous Activity</h3>
+                    </div>
+                    <div class="panel-body">
+                        {% table id="main-table" managerid="anomalous_manager" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+  </div>
+
+
+</div>
+
+  </script>
+  {% endblock content%}
+
+{% block managers %}
+
+  {% searchmanager id="anomalous_manager" search="index=warum | bucket _time span=1d | stats count as ops by _time user |  stats stdev(ops) as SD, avg(ops) as MEAN, sparkline  latest(ops) as LAST_OPS by user | eval sig_mult=SD*$multiplier$| eval threshold = sig_mult+MEAN| table user MEAN SD threshold LAST_OPS sparkline| eval DELTA=LAST_OPS-threshold| eval TIMES_OVER_NORM = round(DELTA/MEAN,0) | eval ANOMALY= if(LAST_OPS>threshold,\"true\",\"false\") | sort -ANOMALY"|token_safe %}
+
+
+{% endblock managers %}
+
+{% block js %}    
+<script>    
+require(
+  [
+    "splunkjs/ready!", 
+    "underscore", 
+    "splunkjs/mvc/chartview",
+    "splunkjs/mvc/savedsearchmanager",
+    "splunkjs/mvc/timerangeview",
+    "splunkjs/mvc/textinputview"
+  ], function(mvc, _) {
+
+    var ChartView = require("splunkjs/mvc/chartview");
+    var SavedSearchManager = require("splunkjs/mvc/savedsearchmanager");
+    var TimeRangeView = require("splunkjs/mvc/timerangeview");
+    var TextInputView = require("splunkjs/mvc/textinputview");
+    var tokens = mvc.Components.getInstance("default");
+
+    var base_search = mvc.Components.getInstance("anomalous_manager");
+
+    var timepicker = new TimeRangeView({
+        id: "timepicker",
+        managerid: "anomalous_manager",
+        preset: "Last 24 hours",
+        el: $("#timepicker")
+    }).render();
+
+    timepicker.on("change", function (e) {
+      base_search.settings.set(timepicker.val());
+    });
+
+    var multiplier = new TextInputView({
+      id: "multiplier_input",
+      el: $("#multiplier_input"),
+      default: "0.5",
+      value: mvc.tokenSafe("$multiplier$")
+    }).render();
+
+    // multiplier.on("change",function (e) {
+
+    // });
+
+
+});
+
+</script>
+{% endblock js %}
