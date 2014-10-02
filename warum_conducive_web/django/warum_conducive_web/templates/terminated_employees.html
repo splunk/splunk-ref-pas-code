@@ -1,5 +1,6 @@
 {% extends "splunkdj:base_with_app_bar.html" %}
 
+
 {% load splunkmvc %}
 
 {% block title %}Terminated Employee - Document Access{% endblock title %}
@@ -53,7 +54,7 @@
                         <h3>Top Users</h3>
                     </div>
                     <div class="panel-body">
-                        {% table id="user-table" managerid="recently_terminated_employees" %}
+                        {% table id="user-table" managerid="user_search" %}
                     </div>
                 </div>
             </div>
@@ -65,7 +66,7 @@
                         <h3>Top Documents</h3>
                     </div>
                     <div class="panel-body">
-                        {% table id="document-table" managerid="top_documents"%}
+                        {% table id="document-table" managerid="document_search"%}
                     </div>
                 </div>
             </div>
@@ -90,24 +91,37 @@ require(
     "splunkjs/ready!", 
     "underscore", 
     "splunkjs/mvc/chartview",
-    "splunkjs/mvc/savedsearchmanager",
+    "splunkjs/mvc/searchmanager",
     "splunkjs/mvc/timerangeview"
   ], function(mvc, _) {
 
     var ChartView = require("splunkjs/mvc/chartview");
-    var SavedSearchManager = require("splunkjs/mvc/savedsearchmanager");
+    var SearchManager = require("splunkjs/mvc/searchmanager");
     var TimeRangeView = require("splunkjs/mvc/timerangeview");
     var tokens = mvc.Components.getInstance("default");
     
     tokens.set("command","*");
 
     // Create manager
-    var base_search = new SavedSearchManager({
+    var base_search = new SearchManager({
         id: "base-search",
-        searchname: "recently_terminated_employees",
+        search: "| pivot ri_pas_datamodel Terminated_Access count(Terminated_Access) AS Count SPLITROW _time AS _time PERIOD auto SORT 0 _time ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 0 SHOWOTHER 1",
         cache: true,
         preview: true
     });
+    var user_search = new SearchManager({
+        id: "user_search",
+        search: "| pivot ri_pas_datamodel Terminated_Access count(Terminated_Access) AS Count SPLITROW user AS user PERIOD auto SORT 0 _time ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 0 SHOWOTHER 1",
+        cache: true,
+        preview: true
+    });
+    var document_search = new SearchManager({
+        id: "document_search",
+        search: "| pivot ri_pas_datamodel Terminated_Access count(Terminated_Access) AS Count SPLITROW object AS object PERIOD auto SORT 0 _time ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 0 SHOWOTHER 1",
+        cache: true,
+        preview: true
+    });
+
 
     var timerange = new TimeRangeView({
         id: "base-timerange",
@@ -119,11 +133,13 @@ require(
     // Update the search manager when the time range changes
     timerange.on("change", function() {
         base_search.settings.set(timerange.val());
+        user_search.settings.set(timerange.val());
+        document_search.settings.set(timerange.val());
     });
 
     barchart = new ChartView({
       id: "trend-chart",
-      managerid: "trend-search",
+      managerid: "base-search",
       type: "line",
       drilldownRedirect: false,
       el: $("#suspicious_document_div")
