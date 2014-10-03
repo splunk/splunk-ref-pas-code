@@ -41,6 +41,20 @@
         </div>
     </div>
 
+  <div class="dashboard-row">
+    <div class="dashboard-cell" style="width: 100%;">
+      <div class="dashboard-panel">
+        <div class="panel-head">
+          <h3>Policy Violations</h3>
+        </div>
+
+        <div class="panel-body">
+          <div id="single-value"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
   <div class="dashboard-row">
     <div class="dashboard-cell" style="width: 100%;">
@@ -107,6 +121,8 @@
 
   {% searchmanager id="trend-search" search="| pivot ri_pas_datamodel Root_Event count(Root_Event) AS count SPLITROW _time AS _time PERIOD auto SPLITCOL command FILTER command isNotNull $filter$ $exclude$ SORT 0 _time ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 10 SHOWOTHER 0"|token_safe  %}
 
+  {% searchmanager id="single-value" search="| pivot ri_pas_datamodel Policy_Violation count(Policy_Violation) AS count FILTER command isNotNull $filter$ $exclude$ ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 0 SHOWOTHER 1"|token_safe %}
+
   {% postprocessmanager id="top_users" managerid="base-search" search=" | stats count by user | sort - count"|token_safe %}
 
   {% postprocessmanager id="top_documents" managerid="base-search" search="| stats count by object | sort - count"|token_safe %}
@@ -140,6 +156,7 @@ require(
     "splunkjs/ready!", 
     "underscore", 
     "splunkjs/mvc/chartview",
+    "splunkjs/mvc/singleview",
     "filter_component"
   ], function(mvc, _) {
     var tokens = mvc.Components.getInstance("default");
@@ -148,9 +165,11 @@ require(
     generateFilterComponent(mvc);
 
     var ChartView = require("splunkjs/mvc/chartview");
+    var SingleView = require("splunkjs/mvc/singleview");
     var timepicker = mvc.Components.getInstance("timepicker"); 
     var search = mvc.Components.getInstance("trend-search");
     var basesearch = mvc.Components.getInstance("base-search");
+    var singlesearch = mvc.Components.getInstance("single-value");
     var user_table = mvc.Components.getInstance("user-table");
     var document_table = mvc.Components.getInstance("document-table");
 
@@ -159,7 +178,15 @@ require(
     timepicker.on("change", function() {
         search.search.set(timepicker.val());
         basesearch.search.set(timepicker.val());
+        singlesearch.search.set(timepicker.val());
     });
+
+    new SingleView({
+        id: "policy-single",
+        managerid: "single-value",
+        beforeLabel: "Policy Violations:",
+        el: $("#single-value")
+    }).render();
 
     barchart = new ChartView({
       id: "trend-chart",
