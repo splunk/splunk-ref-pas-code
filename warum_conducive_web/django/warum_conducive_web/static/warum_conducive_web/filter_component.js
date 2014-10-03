@@ -120,9 +120,11 @@ function exclude(tokens,field_name,field_value)
 }
 function drilldown(tokens,base_search,field_name,field_value,earliest,latest)
 {
-    if (field_name == "Channel") {
-        field_name = "eventtype";
-        field_value = "egress:" + field_value;
+    if (field_name == "user") {
+        page = "user_details";
+    }
+    if (field_name == "object") {
+        page = "document_details";
     }
     var exclude = tokens.get("exclude");
     var include = tokens.get("filter");
@@ -130,6 +132,6 @@ function drilldown(tokens,base_search,field_name,field_value,earliest,latest)
     include = include.replace("Channel=\"","eventtype=\"egress:");
     var terms = field_name + "=\"" + field_value + "\""
     var search = base_search.replace("$criteria$",terms +" " + include + " " + exclude);
-    window.open("../search?earliest=" + earliest + "&latest=" + latest + "&q=" + search,"_blank");
+    window.open("../" + page + "?earliest=" + earliest + "&latest=" + latest + "&" + field_name +"=" + field_value,"_blank");
 }
 
