@@ -80,7 +80,7 @@
     <div class="dashboard-cell" style="width: 100%;">
       <div class="dashboard-panel">
         <div class="panel-head">
-          <h3>Raw Events (User: {{"$username$"|token_safe}}, {{"$raw_search$"|token_safe}})</h3>
+          <h3>Raw Events (User: {{"$user$"|token_safe}}, {{"$raw_search$"|token_safe}})</h3>
         </div>
         <div class="panel-body">
           {% table id="raw-table" managerid="raw-search"%}
@@ -93,17 +93,17 @@
 
 {% block managers %}
 
-  {% searchmanager id="base-search" search="index=warum sourcetype=ri:pas:application user_name=$username$ | bucket span=5m _time | stats count by _time event_name event_target"|token_safe preview=True %}
+  {% searchmanager id="base-search" search="index=warum sourcetype=ri:pas:application user_name=$user$ | bucket span=5m _time | stats count by _time event_name event_target"|token_safe preview=True %}
 
   {% postprocessmanager id="trend-search" managerid="base-search" search="timechart sum(count) by event_name" %}
 
-  {% searchmanager id="zoom-search" search="index=warum sourcetype=ri:pas:application user_name=$username$ | bucket span=5m _time | stats count by _time event_name user_name | timechart sum(count)"|token_safe preview=True cache=60 status_buckets=300 %}
+  {% searchmanager id="zoom-search" search="index=warum sourcetype=ri:pas:application user_name=$user$ | bucket span=5m _time | stats count by _time event_name user_name | timechart sum(count)"|token_safe preview=True cache=60 status_buckets=300 %}
 
   {% postprocessmanager id="top_events" managerid="base-search" search="top event_name | eval percent=round(percent,2)"|token_safe %}
 
   {% postprocessmanager id="top_documents" managerid="base-search" search="top event_target | eval percent=round(percent,2)"|token_safe %}
 
-  {% searchmanager id="raw-search" search="index=warum sourcetype=ri:pas:application user_name=$username$ $raw_search$"|token_safe preview=True cache=60 status_buckets=300 earliest_time="$earliest_time$"|token_safe latest_time="$latest_time$"|token_safe%}
+  {% searchmanager id="raw-search" search="index=warum sourcetype=ri:pas:application user_name=$user$ $raw_search$"|token_safe preview=True cache=60 status_buckets=300 earliest_time="$earliest_time$"|token_safe latest_time="$latest_time$"|token_safe%}
 
 {% endblock managers %}
 
@@ -132,10 +132,10 @@ require(
     var documents_table = mvc.Components.getInstance("documents-table");
 
     var params = getQueryStringParams();
-    if (params.username) {
-      tokens.set("username",decodeURI(params.username));
-      tokens.set("earliest_time",params.earliest_time);
-      tokens.set("latest_time",params.latest_time);
+    if (params.user) {
+      tokens.set("user",decodeURI(params.user));
+      tokens.set("earliest_time",params.earliest);
+      tokens.set("latest_time",params.latest);
     }
 
     value = {
@@ -164,7 +164,7 @@ require(
       id: "userInput",
       el: $("#userInput"),
       default: "*",
-      value: mvc.tokenSafe("$username$")
+      value: mvc.tokenSafe("$user$")
     }).render();
 
     zoomchart = new ChartView({
