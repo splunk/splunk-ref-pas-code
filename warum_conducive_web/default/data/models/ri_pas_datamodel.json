@@ -3,7 +3,7 @@
     "displayName": "PAS Data Model",
     "description": "",
     "objectSummary": {
-        "Event-Based": 3,
+        "Event-Based": 4,
         "Transaction-Based": 0,
         "Search-Based": 0
     },
@@ -700,11 +700,26 @@
                 }
             ],
             "lineage": "Root_Event.Terminated_Access"
+        },
+        {
+            "objectName": "Policy_Violation",
+            "displayName": "Policy Violation",
+            "parentName": "Root_Event",
+            "fields": [],
+            "calculations": [],
+            "constraints": [
+                {
+                    "search": "terminated_access=1 OR valid_time_access=0",
+                    "owner": "Root_Event.Policy_Violation"
+                }
+            ],
+            "lineage": "Root_Event.Policy_Violation"
         }
     ],
     "objectNameList": [
         "Root_Event",
         "Invalid_Time_Access",
-        "Terminated_Access"
+        "Terminated_Access",
+        "Policy_Violation"
     ]
 }
