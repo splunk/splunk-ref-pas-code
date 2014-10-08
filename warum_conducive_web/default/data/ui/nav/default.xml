@@ -1,4 +1,4 @@
-<nav>
+<nav color="205365">
     <view name="default" default="true"/>
     <a href="/dj/redirector/warum_conducive_web/summary" default="true">Summary</a>
     <collection label="Suspicous Document Access">
@@ -8,5 +8,4 @@
     </collection>
     <a href="/dj/warum_conducive_web/user_details/">User Details</a>
     <a href="/dj/redirector/warum_conducive_web/setup" default="true">Setup</a>
-
 </nav>
