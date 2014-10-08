@@ -26,8 +26,11 @@
                         <h3>Search Criteria</h3>
                     </div>
                     <div class="panel-body">
-                        <div id="userInput" class="splunk-view" style="float:left"></div>
-                        <div id="timepicker"></div>
+                        <div style="float:left">
+                          <h6>&nbsp;Username: </h6>
+                        </div>
+                        <div id="userInput" style="float:left"></div>
+                        <div id="timepicker" style="float:right"></div>
                     </div>
                 </div>
             </div>
@@ -136,22 +139,31 @@ require(
       tokens.set("user",decodeURI(params.user));
       tokens.set("earliest_time",params.earliest);
       tokens.set("latest_time",params.latest);
+      value = {
+          earliest_time: tokens.get("earliest_time"),
+          latest_time: tokens.get("latest_time")
+      };
+    }
+    else {
+      value = {
+        earliest_time: "-24h",
+        latest_time: "now"
+      }
     }
 
-    value = {
-        earliest_time: tokens.get("earliest_time"),
-        latest_time: tokens.get("latest_time")
-    };
     var timerange = new TimeRangeView({
         id: "timepicker",
         dialogOptions: {
             showCustomRealTime: false,
-            showPresetsRealTime :false,
-            enableCustomAdvancedRealTime: false
+            showPresetsRealTime: false,
+            enableCustomAdvancedRealTime: false,
+            preset: "Last 24 hours"
         },
         el: $("#timepicker"),
         value: value
     }).render();
+    base_search.search.set(timerange.val());
+    zoom_search.search.set(timerange.val());
     
     timerange.on("change", function() {
       base_search.search.set(timerange.val());
