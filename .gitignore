@@ -31,3 +31,5 @@ warum_conducive_web/metadata/local.meta
 warum_conducive_web/local/macros.conf
 
 warum_conducive_web/local/app.conf
+build
+.build
