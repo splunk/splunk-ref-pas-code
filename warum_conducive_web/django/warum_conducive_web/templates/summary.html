@@ -117,11 +117,11 @@
 
 {% block managers %}
 
-  {% searchmanager id="base-search" search="| pivot ri_pas_datamodel Root_Event count(Root_Event) AS Count SPLITROW _time AS _time PERIOD auto SPLITROW user AS user SPLITROW command AS command SPLITROW object AS object FILTER command isNotNull $filter$ $exclude$ ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 0 SHOWOTHER 1"|token_safe preview=True status_buckets=300 %}
+  {% searchmanager id="base-search" search="| pivot ri_pas_datamodel Root_Event count(Root_Event) AS Count SPLITROW _time AS _time PERIOD auto SPLITROW user AS user SPLITROW command AS command SPLITROW object AS object FILTER command isNotNull $filter$ $exclude$ ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 0 SHOWOTHER 1"|token_safe preview=True status_buckets=300 cache=true%}
 
-  {% searchmanager id="trend-search" search="| pivot ri_pas_datamodel Root_Event count(Root_Event) AS count SPLITROW _time AS _time PERIOD auto SPLITCOL command FILTER command isNotNull $filter$ $exclude$ SORT 0 _time ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 10 SHOWOTHER 0"|token_safe  %}
+  {% searchmanager id="trend-search" search="| pivot ri_pas_datamodel Root_Event count(Root_Event) AS count SPLITROW _time AS _time PERIOD auto SPLITCOL command FILTER command isNotNull $filter$ $exclude$ SORT 0 _time ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 10 SHOWOTHER 0"|token_safe  cache=true%}
 
-  {% searchmanager id="single-value" search="| pivot ri_pas_datamodel Policy_Violation count(Policy_Violation) AS count FILTER command isNotNull $filter$ $exclude$ ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 0 SHOWOTHER 1"|token_safe %}
+  {% searchmanager id="single-value" search="| pivot ri_pas_datamodel Policy_Violation count(Policy_Violation) AS count FILTER command isNotNull $filter$ $exclude$ ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 0 SHOWOTHER 1"|token_safe cache=true%}
 
   {% postprocessmanager id="top_users" managerid="base-search" search=" | stats count by user | sort - count"|token_safe %}
 
