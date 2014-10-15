@@ -63,8 +63,6 @@ function generateFilterComponent(mvc)
                 }            
             }
 
-            value= value.replace("\\","\\\\");
-
             if (action=="include")
                 filter(tokens,name,value);
             if (action=="exclude")

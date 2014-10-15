@@ -132,16 +132,21 @@ require(
     var users_table = mvc.Components.getInstance("users-table");
 
     var params = getQueryStringParams();
-    if (params.document) {
-      tokens.set("document",decodeURI(params.document).replace(/\\/g,"\\\\"));
-      tokens.set("earliest_time",params.earliest_time);
-      tokens.set("latest_time",params.latest_time);
+    if (params.object) {
+      tokens.set("document",decodeURI(params.object).replace(/\\/g,"\\\\"));
+      tokens.set("earliest_time",params.earliest);
+      tokens.set("latest_time",params.latest);
+      value = {
+          earliest_time: tokens.get("earliest_time"),
+          latest_time: tokens.get("latest_time")
+      };
     }
-
-    value = {
-        earliest_time: tokens.get("earliest_time"),
-        latest_time: tokens.get("latest_time")
-    };
+    else {
+      value = {
+        earliest_time: "-24h",
+        latest_time: "now"
+      }
+    }
     var timerange = new TimeRangeView({
         id: "timepicker",
         dialogOptions: {
@@ -152,7 +157,9 @@ require(
         el: $("#timepicker"),
         value: value
     }).render();
-    
+    base_search.search.set(timerange.val());
+    zoom_search.search.set(timerange.val());
+
     timerange.on("change", function() {
       base_search.search.set(timerange.val());
       zoom_search.search.set(timerange.val());
