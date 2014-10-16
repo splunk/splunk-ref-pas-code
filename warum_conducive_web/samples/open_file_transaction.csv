@@ -1,0 +1,5 @@
+index,host,source,sourcetype,_raw
+warum,appserver,/var/log/application.log,ri:pas:application,timestamp=07/01/2014 12:07:10.000 CDT user_name=$username$ event_name=download event_target=$document$ src_ip=5.5.5.5
+warum,fileserver,/var/log/fileserver.log,ri:pas:file,07/01/2014 12:07:10.679 CDT (src/loggedfs.cpp:138) getattr $document$ SUCCESS [ pid = $pid$ sshd: user=$username$ ]
+warum,fileserver,/var/log/fileserver.log,ri:pas:file,07/01/2014 12:07:10.759 CDT (src/loggedfs.cpp:138) open $document$ SUCCESS [ pid = $pid$ sshd: user=$username$ ]
+warum,fileserver,/var/log/fileserver.log,ri:pas:file,07/01/2014 12:07:10.966 CDT (src/loggedfs.cpp:138) read $bytes$ bytes from $document$ at offset $offset$ SUCCESS [ pid = $pid$ sshd: user=$username$]
