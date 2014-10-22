@@ -30,3 +30,7 @@ modtime = 1412204157.527498000
 
 [eventgen]
 export = system
+
+[collections/ri_setup_coll]
+version = 6.2
+modtime = 1413916664.997153000

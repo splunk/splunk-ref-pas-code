@@ -37,6 +37,9 @@ body, .main-section-body {
 .span-third {
     width: 33%;
 }
+.span-twothirds {
+    width: 67%;
+}
 .splunk-textinput, .splunk-choice-input {
     margin: 0 !important;
 }

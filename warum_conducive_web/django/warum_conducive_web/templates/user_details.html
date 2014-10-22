@@ -37,20 +37,30 @@
         </div>
     </div>
 
-  <div class="dashboard-row">
-    <div class="dashboard-cell" style="width: 100%;">
-      <div class="dashboard-panel">
-        <div class="panel-head">
-          <h3>Trend</h3>
+    <div class="dashboard-row dashboard-row3">
+      <div class="dashboard-cell span-third" id="activity_levels_id" >
+        <div class="dashboard-panel">                
+          <div class="panel-head">
+            <h3>Activity Levels</h3>
+          </div>
+          <div class="dashboard-element"  id="activity_levels">
+            <div class="panel-body"></div>                  
+          </div>
         </div>
+      </div>
+      <div class="dashboard-cell span-twothirds" id="policy_violations_id">
+        <div class="dashboard-panel">
+          <div class="panel-head">
+            <h3>Trend</h3>
+          </div>
 
-        <div class="panel-body">
-          <div id="trend-chart-div"></div>
-          <div id="zoom-chart-div"></div>
+          <div class="panel-body">
+            <div id="trend-chart-div"></div>
+            <div id="zoom-chart-div"></div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
   <div class="dashboard-row" id="drilldown-row">
     <div class="dashboard-cell span-half">
@@ -96,17 +106,17 @@
 
 {% block managers %}
 
-  {% searchmanager id="base-search" search="index=warum sourcetype=ri:pas:application user_name=$user$ | bucket span=5m _time | stats count by _time event_name event_target"|token_safe preview=True %}
+  {% searchmanager id="base-search" search="index=warum sourcetype=ri:pas:application user=$user$ | bucket span=5m _time | stats count by _time event_name event_target"|token_safe preview=True %}
 
   {% postprocessmanager id="trend-search" managerid="base-search" search="timechart sum(count) by event_name" %}
 
-  {% searchmanager id="zoom-search" search="index=warum sourcetype=ri:pas:application user_name=$user$ | bucket span=5m _time | stats count by _time event_name user_name | timechart sum(count)"|token_safe preview=True cache=60 status_buckets=300 %}
+  {% searchmanager id="zoom-search" search="index=warum sourcetype=ri:pas:application user=$user$ | bucket span=5m _time | stats count by _time event_name user | timechart sum(count)"|token_safe preview=True cache=60 status_buckets=300 %}
 
   {% postprocessmanager id="top_events" managerid="base-search" search="top event_name | eval percent=round(percent,2)"|token_safe %}
 
   {% postprocessmanager id="top_documents" managerid="base-search" search="top event_target | eval percent=round(percent,2)"|token_safe %}
 
-  {% searchmanager id="raw-search" search="index=warum sourcetype=ri:pas:application user_name=$user$ $raw_search$"|token_safe preview=True cache=60 status_buckets=300 earliest_time="$earliest_time$"|token_safe latest_time="$latest_time$"|token_safe%}
+  {% searchmanager id="raw-search" search="index=warum sourcetype=ri:pas:application user=$user$ $raw_search$"|token_safe preview=True cache=60 status_buckets=300 earliest_time="$earliest_time$"|token_safe latest_time="$latest_time$"|token_safe%}
 
 {% endblock managers %}
 
@@ -119,12 +129,16 @@ require(
     "splunkjs/mvc/chartview",
     "splunkjs/mvc/textinputview",
     "splunkjs/mvc/timerangeview",
-    "warum_conducive_web/purl"
+    "splunkjs/mvc/searchmanager",
+    "warum_conducive_web/purl",
+    "warum_conducive_web/components/calendarheatmap/calendarheatmap"
   ], function(mvc, _) {
 
     var ChartView = require("splunkjs/mvc/chartview");
     var TextInputView = require("splunkjs/mvc/textinputview");
-    var TimeRangeView = require("splunkjs/mvc/timerangeview")
+    var TimeRangeView = require("splunkjs/mvc/timerangeview");
+    var SearchManager = require("splunkjs/mvc/searchmanager");
+    var CalendarHeatmap = require("warum_conducive_web/components/calendarheatmap/calendarheatmap");
 
     var base_search = mvc.Components.getInstance("base-search");
     var zoom_search = mvc.Components.getInstance("zoom-search");
@@ -133,6 +147,18 @@ require(
     var tokens = mvc.Components.getInstance("default");
     var events_table = mvc.Components.getInstance("events-table");
     var documents_table = mvc.Components.getInstance("documents-table");
+
+    var activity_levels_search = new SearchManager({
+            "id": "activity_levels_search",
+            "earliest_time": "$earliest_time$",
+            "latest_time": "$latest_time$",
+            "cancelOnUnload": true,
+            "status_buckets": 0,
+            "search": "index=warum user=$user$ | timechart span=1d count",
+            "auto_cancel": 90,
+            "preview": true,
+            "runWhenTimeIsUndefined": false
+        }, {tokens: true});
 
     var params = getQueryStringParams();
     if (params.user) {
@@ -164,10 +190,22 @@ require(
     }).render();
     base_search.search.set(timerange.val());
     zoom_search.search.set(timerange.val());
+    activity_levels_search.search.set(timerange.val());
     
+    var activity_levels = new CalendarHeatmap({
+      id : "activity_levels",
+      managerid : "activity_levels_search",
+      domain : "month",
+      subDomain : "x_day",
+      el : $("#activity_levels")
+    }).render();
+
+
     timerange.on("change", function() {
       base_search.search.set(timerange.val());
       zoom_search.search.set(timerange.val());
+      activity_levels_search.search.set(timerange.val());
+
       /*tokens.set("earliest_time",params.earliest_time);
       tokens.set("latest_time",params.latest_time);*/
     });
