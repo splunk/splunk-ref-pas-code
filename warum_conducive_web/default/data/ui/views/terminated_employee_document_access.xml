@@ -1,0 +1,28 @@
+<form>
+	<label>Terminated Employee Document Access</label>
+	<fieldset autoRun="true" submitButton="false">
+	    <input type="time" searchWhenChanged="true">
+	      <default>
+	        <earliestTime>-24h</earliestTime>
+	        <latestTime>now</latestTime>
+	      </default>
+	    </input>
+  	</fieldset>
+	<row>
+		<chart>
+			<title>Documents Accessed By Terminated Employees</title>
+			<searchString>| pivot ri_pas_datamodel Terminated_Access count(Terminated_Access) AS count SPLITROW _time AS _time PERIOD auto ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 0 SHOWOTHER 1</searchString>
+			<option name="charting.chart">line</option>
+		</chart>
+	</row>
+	<row>
+		<table>
+			<title>Top Users</title>
+			<searchString>| pivot ri_pas_datamodel Terminated_Access count(Terminated_Access) AS count SPLITROW user AS user SORT 0 user ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 0 SHOWOTHER 1</searchString>
+		</table>
+		<table>
+			<title>Top Documents</title>
+			<searchString>| pivot ri_pas_datamodel Terminated_Access count(Terminated_Access) AS count SPLITROW object AS object SORT 100 object ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 0 SHOWOTHER 1</searchString>
+		</table>
+	</row>
+</form>

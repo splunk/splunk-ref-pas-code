@@ -1,0 +1,20 @@
+<form>
+	<label>Anomalous Activity</label>
+	<fieldset autoRun="true" submitButton="false">
+	    <input type="time" searchWhenChanged="true">
+	      <default>
+	        <earliestTime>-24h</earliestTime>
+	        <latestTime>now</latestTime>
+	      </default>
+	    </input>
+  	</fieldset>
+  	<row>
+  		<table>
+  			<searchString>
+  				<![CDATA[
+  					index=warum | bucket _time span=1d | stats count as ops by _time user |  stats stdev(ops) as SD, avg(ops) as MEAN, sparkline  latest(ops) as LAST_OPS by user | eval sig_mult=SD*1| eval threshold = sig_mult+MEAN| table user MEAN SD threshold LAST_OPS sparkline| eval DELTA=LAST_OPS-threshold| eval TIMES_OVER_NORM = round(DELTA/MEAN,0) | eval ANOMALY= if(LAST_OPS>threshold,"true","false") | sort -ANOMALY
+  				]]>
+  			</searchString>
+  		</table>
+  	</row>
+</form>

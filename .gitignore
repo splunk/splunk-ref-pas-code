@@ -35,3 +35,5 @@ build
 .build
 
 warum_conducive_web/local/collections.conf
+
+warum_conducive_web/local/*

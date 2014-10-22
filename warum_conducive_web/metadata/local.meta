@@ -34,3 +34,15 @@ export = system
 [collections/ri_setup_coll]
 version = 6.2
 modtime = 1413916664.997153000
+
+[views/offhours_document_access]
+version = 6.1.3
+modtime = 1413956142.757256000
+
+[views/terminated_employee_document_access]
+version = 6.1.3
+modtime = 1413956696.237265000
+
+[views/anomalous_activity]
+version = 6.1.3
+modtime = 1413957228.032673000
