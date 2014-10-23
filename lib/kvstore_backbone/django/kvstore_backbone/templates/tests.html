@@ -1,0 +1,50 @@
+{% extends "splunkdj:base_with_app_bar.html" %}
+
+{% load splunkmvc %}
+
+{% block title %}tests{% endblock title %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{STATIC_URL}}{{app_name}}/bower_components/mocha/mocha.css" />
+{% endblock css %}
+
+{% block content %}
+    <div id="mocha"></div>
+{% endblock content %}
+
+{% block js %}
+    <script>
+        require.config({
+            paths: {
+                'mocha': '{{STATIC_URL}}{{app_name}}/bower_components/mocha/mocha',
+                'chai': '{{STATIC_URL}}{{app_name}}/bower_components/chai/chai',
+                'kvstore': '{{STATIC_URL}}{{app_name}}/lib/kvstore'
+            },
+            shim: {
+                'mocha': {
+                    deps: ['jquery'],
+                    init: function () {
+                      this.mocha.setup('bdd');
+                      return this.mocha;
+                    }
+                },
+                'chai': {
+                    deps: ['jquery']
+                }
+            }
+        });
+
+        // Make Splunk ready
+        require(['splunkjs/ready!'], function() {
+            // Preload mocha and load tests
+            require(
+            [
+                'mocha',
+                '{{app_name}}/tests/model-tests',
+                '{{app_name}}/tests/collection-tests'
+            ], function(mocha) {
+                mocha.run();
+            });
+        });
+    </script>
+{% endblock js %}

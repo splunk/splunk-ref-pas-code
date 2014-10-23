@@ -1,0 +1,52 @@
+{% extends "splunkdj:base_with_app_bar.html" %}
+
+{% load splunkmvc %}
+
+{% block title %}Home Page{% endblock title %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{STATIC_URL}}{{app_name}}/custom.css" >
+{% endblock css %}
+
+{% block content %}
+    <div>
+        <div class="main-area">
+            <p>
+                This is the home page of your app.
+            </p>
+            <p>
+                You can customize it by editing the template file at:
+                <code>kvstore_backbone/django/kvstore_backbone/templates/home.html</code>
+            </p>
+            <p class="muted">
+                You should also look in the JavaScript console...
+            </p>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block js %}
+    <script>
+        /*
+
+        // Configure require config for bower components
+        require.config({
+            paths: {
+                'component': '{{STATIC_URL}}{{app_name}}/bower_components/component/lib/file'
+            },
+            shim: {
+                'component': {
+                    deps: ['jquery']
+                }
+            }
+        });
+
+        // Start with require if you need to execute some js code
+        require(['splunkjs/ready!'], function() {
+    
+        });
+        
+        */
+        console.log("Custom JavaScript goes here!");
+    </script>
+{% endblock js %}
