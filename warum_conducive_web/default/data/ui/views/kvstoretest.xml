@@ -1,0 +1,15 @@
+<dashboard script="kvstoretest.js">
+	<row>
+		<html>
+			<div id="test">
+				Key: <input id="_key"></input><br/>
+				Divisions: <input id="divisions_names"></input> <br/>
+				Locations: <input id="locations_names"></input> <br/>
+				Code Name: <input id="code_name"></input> <br/>
+				Code Weight: <input id="code_weight"></input> <br/>
+				Code Policies: <input id="code_policies"></input> <br/>
+				<input type="button" id="save" value="Save"></input>
+			</div>
+		</html>
+	</row>
+</dashboard>

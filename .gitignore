@@ -37,3 +37,5 @@ build
 warum_conducive_web/local/collections.conf
 
 warum_conducive_web/local/*
+
+lib/kvstore_backbone/local/collections.conf
