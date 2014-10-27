@@ -1,41 +1,18 @@
+# OS X
+.DS_Store
 
+# Python
 *.pyo
-test/unit-test/bin/Debug/Selenium.WebDriverBackedSelenium.dll
-test/unit-test/bin/Debug/Selenium.WebDriverBackedSelenium.pdb
-test/unit-test/bin/Debug/Selenium.WebDriverBackedSelenium.xml
-test/unit-test/bin/Debug/ThoughtWorks.Selenium.Core.dll
-test/unit-test/bin/Debug/ThoughtWorks.Selenium.Core.pdb
-test/unit-test/bin/Debug/ThoughtWorks.Selenium.Core.xml
-test/unit-test/bin/Debug/unit-test.dll
-test/unit-test/bin/Debug/unit-test.pdb
-test/unit-test/bin/Debug/WebDriver.dll
-test/unit-test/bin/Debug/WebDriver.pdb
-test/unit-test/bin/Debug/WebDriver.Support.dll
-test/unit-test/bin/Debug/WebDriver.Support.pdb
-test/unit-test/bin/Debug/WebDriver.Support.xml
-test/unit-test/bin/Debug/WebDriver.xml
-test/unit-test/bin/Debug/xunit.dll
-test/unit-test/bin/Debug/xunit.xml
-test/unit-test/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
-test/unit-test/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
-test/unit-test/obj/Debug/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
-test/unit-test/obj/Debug/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
-test/unit-test/obj/Debug/unit-test.csproj.FileListAbsolute.txt
-test/unit-test/obj/Debug/unit-test.csprojResolveAssemblyReference.cache
-test/unit-test/obj/Debug/unit-test.dll
-test/unit-test/obj/Debug/unit-test.pdb
+
+# UI test automation generated files
+test/unit-test/bin/Debug
+test/unit-test/obj/Debug
 test/warum-conducive-test.v12.suo
 
-warum_conducive_web/metadata/local.meta
+# Splunk app local files
+local
+metadata
 
-warum_conducive_web/local/macros.conf
-
-warum_conducive_web/local/app.conf
+# Unknown
 build
 .build
-
-warum_conducive_web/local/collections.conf
-
-warum_conducive_web/local/*
-
-lib/kvstore_backbone/local/collections.conf
