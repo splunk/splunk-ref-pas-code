@@ -1,11 +1,11 @@
 <nav color="205365">
     <view name="default" default="true"/>
     <a href="/dj/redirector/warum_conducive_web/summary" default="true">Summary</a>
-    <collection label="Suspicous Document Access">
-      <view name="offhours_document_access"/>
-      <view name="terminated_employee_document_access"/>
-      <view name="anomalous_activity"/>
-    </collection>
     <a href="/dj/warum_conducive_web/user_details/">User Activity</a>
+    <collection label="Suspicious Document Access">
+        <view name="offhours_document_access"/>
+        <view name="terminated_employee_document_access"/>
+        <view name="anomalous_activity"/>
+    </collection>
     <a href="/dj/redirector/warum_conducive_web/setup" default="true">Setup</a>
 </nav>
