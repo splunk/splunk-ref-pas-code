@@ -7,6 +7,5 @@
       <view name="anomalous_activity"/>
     </collection>
     <a href="/dj/warum_conducive_web/user_details/">User Details</a>
-    <a href="/dj/warum_conducive_web/document_details/">Document Details</a>
     <a href="/dj/redirector/warum_conducive_web/setup" default="true">Setup</a>
 </nav>
