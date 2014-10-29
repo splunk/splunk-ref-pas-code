@@ -1,7 +1,7 @@
     require.config({
         paths: {
-            "tagmanager": "{{STATIC_URL}}{{app_name}}/tagmanager",
-            "filter_component": "{{STATIC_URL}}{{app_name}}/filter_component"
+            "tagmanager": "../app/warum_conducive_web/tagmanager",
+            "filter_component": "../app/warum_conducive_web/filter_component"
         },
         shim: {
             "filter_component": {
@@ -9,7 +9,7 @@
                     "splunkjs/mvc/timerangeview",
                     "splunkjs/mvc/radiogroupview",
                     "splunkjs/mvc/textinputview",
-                    "warum_conducive_web/context",
+                    "../app/warum_conducive_web/context",
                     "tagmanager"
                 ]
             },
@@ -33,36 +33,32 @@ require(
 
     var ChartView = require("splunkjs/mvc/chartview");
     var SingleView = require("splunkjs/mvc/singleview");
+    
+    // TODO: Fix the naming conventions
     var timepicker = mvc.Components.getInstance("timepicker"); 
-    var search = mvc.Components.getInstance("trend-search");
-    var basesearch = mvc.Components.getInstance("base-search");
-    var singlesearch = mvc.Components.getInstance("single-value");
-    var user_table = mvc.Components.getInstance("user-table");
-    var document_table = mvc.Components.getInstance("document-table");
+    // TODO: Rename to "trendChart"
+    var barchart = mvc.Components.getInstance("trend_chart");
+    // TODO: Rename to "trendSearch"
+    var search = mvc.Components.getInstance(barchart.settings.get("managerid"));
+    // TODO: Rename "policy_single" to something better
+    var single = mvc.Components.getInstance("policy_single");
+    var singlesearch = mvc.Components.getInstance(single.settings.get("managerid"));
+    var user_table = mvc.Components.getInstance("user_table");
+    var document_table = mvc.Components.getInstance("document_table");
+    // TODO: Restore postprocess prefix for the following 2 searches,
+    //       and update the base search's timerange instead of the
+    //       timerange of the final two derived searches.
+    var usersSearch = mvc.Components.getInstance(user_table.settings.get("managerid"));
+    var documentSearch = mvc.Components.getInstance(document_table.settings.get("managerid"));
 
     tokens.set("command", "*");
 
     timepicker.on("change", function() {
         search.search.set(timepicker.val());
-        basesearch.search.set(timepicker.val());
+        usersSearch.search.set(timepicker.val());
+        documentSearch.search.set(timepicker.val());
         singlesearch.search.set(timepicker.val());
     });
-
-    new SingleView({
-        id: "policy-single",
-        managerid: "single-value",
-        beforeLabel: "Policy Violations:",
-        el: $("#single-value")
-    }).render();
-
-    barchart = new ChartView({
-      id: "trend-chart",
-      managerid: "trend-search",
-      type: "column",
-      "charting.chart.stackMode": "stacked",
-      drilldownRedirect: false,
-      el: $("#trend-chart-div")
-    }).render();
 
     // barchart.on("click:chart", function(e) {
     //     e.preventDefault();

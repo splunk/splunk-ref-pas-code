@@ -5,7 +5,22 @@ function generateFilterComponent(mvc)
   var RadioGroupView = require("splunkjs/mvc/radiogroupview");
   var TextInputView = require("splunkjs/mvc/textinputview");
 
-  var tokens = mvc.Components.getInstance("default");
+  var defaultTokens = mvc.Components.getInstance("default");
+  var submittedTokens = mvc.Components.getInstance("submitted");
+  
+  // Facade that reads & writes to both the "default" and "submitted" token
+  // models. This is necessary to send token values to both searches and to
+  // other attributes.
+  var tokens = {
+    get: function(tokenName) {
+      return defaultTokens.get(tokenName);
+    },
+    
+    set: function(tokenName, tokenValue) {
+      defaultTokens.set(tokenName, tokenValue);
+      submittedTokens.set(tokenName, tokenValue);
+    }
+  };
 
   //set default for filters
   tokens.set("filter","");
