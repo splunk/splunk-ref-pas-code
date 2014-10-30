@@ -1,10 +1,11 @@
-<form>
+<form script="user_activity.js">
+  <label>User Activity</label>
   <fieldset submitButton="false">
     <input type="text" token="user">
       <label>Username</label>
       <default>*</default>
     </input>
-    <input type="time" token="time">
+    <input type="time" token="time" searchWhenChanged="true">
       <label></label>
       <default>
         <earliest>-24h@h</earliest>
@@ -14,43 +15,30 @@
   </fieldset>
   <row>
     <panel>
-      <event id="activity_levels">
-        <title>Activity Levels</title>
-        <search>
-          <query>index=_internal | head 10</query>
-          <earliest>$time.earliest$</earliest>
-          <latest>$time.latest$</latest>
-        </search>
-        <option name="count">10</option>
-        <option name="list.drilldown">full</option>
-        <option name="list.wrap">1</option>
-        <option name="maxLines">5</option>
-        <option name="raw.drilldown">full</option>
-        <option name="rowNumbers">0</option>
-        <option name="table.drilldown">all</option>
-        <option name="table.wrap">1</option>
-        <option name="type">list</option>
-        <fields>["host","source","sourcetype"]</fields>
-      </event>
+      <html id="activity_levels">
+        <h3>Activity Levels</h3>
+        
+        Boo
+      </html>
     </panel>
     <panel>
       <chart id="trend_chart">
         <title>Trend</title>
         <search>
           <query>index=warum sourcetype=ri:pas:application user=$user$ | bucket span=5m _time | stats count by _time event_name event_target | timechart sum(count) by event_name</query>
-          <earliest>$time.earliest$</earliest>
-          <latest>$time.latest$</latest>
+          <earliest>$trendTime.earliest$</earliest>
+          <latest>$trendTime.latest$</latest>
         </search>
         <option name="charting.chart">column</option>
         <option name="charting.axisTitleX.visibility">collapsed</option>
         <option name="charting.chart.stackMode">stacked</option>
         <option name="charting.drilldown">none</option>
       </chart>
-      <chart>
-        <search>
+      <chart id="zoom_chart">
+        <search id="zoom_search">
           <query>index=warum sourcetype=ri:pas:application user=$user$ | bucket span=5m _time | stats count by _time event_name user | timechart sum(count)</query>
-          <earliest>$time.earliest$</earliest>
-          <latest>$time.latest$</latest>
+          <earliest>$zoomTime.earliest$</earliest>
+          <latest>$zoomTime.latest$</latest>
         </search>
         <option name="charting.chart">line</option>
         <option name="charting.axisTitleX.visibility">collapsed</option>
@@ -63,7 +51,7 @@
     <panel>
       <table>
         <title>Top Events</title>
-        <search>
+        <search id="top_events_search">
           <query>index=warum sourcetype=ri:pas:application user=$user$ | bucket span=5m _time | stats count by _time event_name event_target | top event_name | eval percent=round(percent,2)</query>
           <earliest>$time.earliest$</earliest>
           <latest>$time.latest$</latest>
@@ -76,7 +64,7 @@
     <panel>
       <table>
         <title>Top Documents</title>
-        <search>
+        <search id="top_documents_search">
           <query>index=warum sourcetype=ri:pas:application user=$user$ | bucket span=5m _time | stats count by _time event_name event_target | top event_target | eval percent=round(percent,2)</query>
           <earliest>$time.earliest$</earliest>
           <latest>$time.latest$</latest>
