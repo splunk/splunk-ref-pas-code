@@ -1,8 +1,12 @@
 # OS X
 .DS_Store
 
+# Windows
+Thumbs.db
+
 # Python
 *.pyo
+*.pyc
 
 # UI test automation generated files
 test/unit-test/bin/Debug
