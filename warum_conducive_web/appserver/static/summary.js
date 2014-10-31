@@ -37,21 +37,19 @@ require([
     filter_component
 ) {
     // TODO: Fix the naming conventions
-    var timepicker = mvc.Components.getInstance("timerange");
-    // TODO: Rename to "trendChart"
-    var barchart = mvc.Components.getInstance("trend_chart");
-    // TODO: Rename to "trendSearch"
-    var search = mvc.Components.getInstance(barchart.settings.get("managerid"));
+    var timeRange = mvc.Components.getInstance("timerange");
+    var trendChart = mvc.Components.getInstance("trend_chart");
+    var trendSearch = mvc.Components.getInstance(trendChart.settings.get("managerid"));
     // TODO: Rename "policy_single" to something better
     var single = mvc.Components.getInstance("policy_single");
     var singlesearch = mvc.Components.getInstance(single.settings.get("managerid"));
-    var user_table = mvc.Components.getInstance("user_table");
-    var document_table = mvc.Components.getInstance("document_table");
+    var userTable = mvc.Components.getInstance("user_table");
+    var documentTable = mvc.Components.getInstance("document_table");
     // TODO: Restore postprocess prefix for the following 2 searches,
     //       and update the base search's timerange instead of the
     //       timerange of the final two derived searches.
-    var usersSearch = mvc.Components.getInstance(user_table.settings.get("managerid"));
-    var documentSearch = mvc.Components.getInstance(document_table.settings.get("managerid"));
+    var usersSearch = mvc.Components.getInstance(userTable.settings.get("managerid"));
+    var documentSearch = mvc.Components.getInstance(documentTable.settings.get("managerid"));
     
     var tokens = mvc.Components.getInstance("default");
     
@@ -59,20 +57,20 @@ require([
     
     tokens.set("command", "*");
 
-    timepicker.on("change", function() {
-        search.search.set(timepicker.val());
-        usersSearch.search.set(timepicker.val());
-        documentSearch.search.set(timepicker.val());
-        singlesearch.search.set(timepicker.val());
+    timeRange.on("change", function() {
+        trendSearch.search.set(timeRange.val());
+        usersSearch.search.set(timeRange.val());
+        documentSearch.search.set(timeRange.val());
+        singlesearch.search.set(timeRange.val());
     });
 
-    barchart.on("click:legend", function(e) {
+    trendChart.on("click:legend", function(e) {
         e.preventDefault();
         tokens.set("command", e.name2);
         $("#filter_header").show();
     });
 
-    var menu_data = [
+    var menuData = [
         {
             text: 'Include', 
             splunk_action: 'include'
@@ -91,7 +89,7 @@ require([
 
     // Setup custom contextual menu that appears when clicking on the tables
     context.init({preventDoubleContext: false});
-    context.attachToChart(barchart, menu_data);
-    context.attachToTable(user_table, menu_data);
-    context.attachToTable(document_table, menu_data);
+    context.attachToChart(trendChart, menuData);
+    context.attachToTable(userTable, menuData);
+    context.attachToTable(documentTable, menuData);
 });
