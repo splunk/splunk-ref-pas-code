@@ -1,4 +1,4 @@
-<form script="user_activity.js">
+<form script="user_activity.js" stylesheet="user_activity.css">
   <label>User Activity</label>
   <fieldset submitButton="false">
     <input type="text" token="user">
@@ -14,14 +14,14 @@
     </input>
   </fieldset>
   <row>
-    <panel>
+    <panel id="activity_levels_panel">
       <html>
         <h3>Activity Levels</h3>
         
         <div id="activity_levels"></div>
       </html>
     </panel>
-    <panel>
+    <panel id="trend_panel">
       <chart id="trend_chart">
         <title>Trend</title>
         <search>
