@@ -1,15 +1,10 @@
+// Define a fake require module "tagmanager" that wraps the
+// non-require-compatible 3rd-party tagmanager.js JQuery plugin.
 require.config({
     paths: {
         "tagmanager": "../app/warum_conducive_web/tagmanager",
-        "filter_component": "../app/warum_conducive_web/filter_component"
     },
     shim: {
-        "filter_component": {
-            deps: [
-                "../app/warum_conducive_web/context",
-                "tagmanager"
-            ]
-        },
         "tagmanager": {
             deps: ["jquery"]
         }
@@ -19,14 +14,12 @@ require.config({
 require([
     "splunkjs/ready!",
     "splunkjs/mvc/simplexml/ready!",
-    "underscore", 
-    "filter_component"
+    "underscore",
+    "../app/warum_conducive_web/filter_component"
 ], function(
     mvc,
     ignored,
     _,
-    // TODO: Make this a real require() module and avoid polluting the
-    //       global namespace.
     FilterComponent
 ) {
     var trendChart = mvc.Components.getInstance("trend_chart");

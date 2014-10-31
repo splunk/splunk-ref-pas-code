@@ -1,6 +1,9 @@
 define(function(require, exports, module) {
     var mvc = require("splunkjs/mvc/mvc");
     
+    require("warum_conducive_web/context");
+    require("tagmanager");
+    
     var FilterComponent = {
         initialize: function() {
             var defaultTokens = mvc.Components.getInstance("default");
