@@ -55,20 +55,16 @@ require([
         });
     });
     
-    // TODO: Following token propagation scenarios are not behaving as expected:
-    // * Change global range should update ALL panels. Currently missing bottom two panels.
-    // * Change zoom range should update only the trend range. Current updating bottom two panels.
-    
-    // Initially propagate times from global -> zoom, trend
-    tokens.set("trendTime.earliest", tokens.get("time.earliest"));
-    tokens.set("trendTime.latest", tokens.get("time.latest"));
-    
-    // Propagate times from global -> zoom, trend
-    tokens.on("change:time.earliest", function(model, value) {
-        tokens.set("trendTime.earliest", value);
+    // Propagate times from global -> trend continuously
+    tokens.set({
+        "trendTime.earliest": tokens.get("time.earliest"),
+        "trendTime.latest": tokens.get("time.latest")
     });
-    tokens.on("change:time.latest", function(model, value) {
-        tokens.set("trendTime.latest", value);
+    tokens.on("change:time.earliest change:time.latest", function(model, value) {
+        tokens.set({
+            "trendTime.earliest": tokens.get("time.earliest"),
+            "trendTime.latest": tokens.get("time.latest")
+        });
     });
     
     var activity_levels_search = new SearchManager({
