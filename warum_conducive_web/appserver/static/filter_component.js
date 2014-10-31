@@ -153,6 +153,6 @@ function drilldown(tokens,base_search,field_name,field_value,earliest,latest)
         "form.time.latest": latest
     };
     queryParams["form." + field_name] = field_value;
-    window.open(page + $.param(queryParams), "_blank");
+    window.open(page + "?" + $.param(queryParams), "_blank");
 }
 
