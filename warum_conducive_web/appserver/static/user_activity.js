@@ -25,8 +25,8 @@ require([
     var topDocumentsSearch = mvc.Components.get("top_documents_search");
     var topEventsSearch = mvc.Components.get("top_events_search");
     
-    // TODO: Does this need to include "submitted" as well?
-    //       I don't think so. Recommend collapse to defaultTokens only.
+    // Update both "default" and "submitted" tokens at the same time so that
+    // everything on the page gets updated appropriately.
     var defaultTokens = mvc.Components.get("default");
     var submittedTokens = mvc.Components.get("submitted");
     var tokens = {
@@ -67,10 +67,10 @@ require([
         });
     });
     
-    var activity_levels_search = new SearchManager({
+    new SearchManager({
         "id": "activity_levels_search",
-        "earliest_time": mvc.tokenSafe("$earliest_time$"),
-        "latest_time": mvc.tokenSafe("$latest_time$"),
+        "earliest_time": mvc.tokenSafe("$time.earliest$"),
+        "latest_time": mvc.tokenSafe("$time.latest$"),
         "cancelOnUnload": true,
         "status_buckets": 0,
         "search": mvc.tokenSafe("index=warum user=$user$ | timechart span=1d count"),
@@ -79,7 +79,7 @@ require([
         "runWhenTimeIsUndefined": false
     });
     
-    var activity_levels = new CalendarHeatMap({
+    new CalendarHeatMap({
         id: "activity_levels",
         managerid: "activity_levels_search",
         domain: "month",
