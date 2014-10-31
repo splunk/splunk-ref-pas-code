@@ -1,12 +1,24 @@
+// Workaround the css! plugin's inability to understand '..' in
+// require'd module names by defining a path that embeds the '..'
+// so that css! doesn't see it.
+require.config({
+    paths: {
+        "warum_conducive_web": "../app/warum_conducive_web"
+    }
+});
+
 require([
     "splunkjs/ready!",
-    "splunkjs/mvc/simplexml/ready!"
-    // TODO: Migrate the calendar heatmap too
-    //"../app/warum_conducive_web/components/calendarheatmap/calendarheatmap"
+    "splunkjs/mvc/simplexml/ready!",
+    "warum_conducive_web/components/calendarheatmap/calendarheatmap",
+    "jquery",
+    "splunkjs/mvc/searchmanager"
 ], function(
     mvc,
-    ignored/*,
-    CalendarHeatMap*/
+    ignored,
+    CalendarHeatMap,
+    $,
+    SearchManager
 ) {
     var zoomChart = mvc.Components.get("zoom_chart");
     var zoomSearch = mvc.Components.get("zoom_search");
@@ -75,4 +87,24 @@ require([
     tokens.on("change:zoomTime.latest", function(model, value) {
         tokens.set("trendTime.latest", value);
     });
+    
+    var activity_levels_search = new SearchManager({
+        "id": "activity_levels_search",
+        "earliest_time": mvc.tokenSafe("$earliest_time$"),
+        "latest_time": mvc.tokenSafe("$latest_time$"),
+        "cancelOnUnload": true,
+        "status_buckets": 0,
+        "search": mvc.tokenSafe("index=warum user=$user$ | timechart span=1d count"),
+        "auto_cancel": 90,
+        "preview": true,
+        "runWhenTimeIsUndefined": false
+    });
+    
+    var activity_levels = new CalendarHeatMap({
+        id: "activity_levels",
+        managerid: "activity_levels_search",
+        domain: "month",
+        subDomain: "x_day",
+        el: $("#activity_levels")
+    }).render();
 });

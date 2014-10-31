@@ -15,10 +15,10 @@
   </fieldset>
   <row>
     <panel>
-      <html id="activity_levels">
+      <html>
         <h3>Activity Levels</h3>
         
-        Boo
+        <div id="activity_levels"></div>
       </html>
     </panel>
     <panel>
