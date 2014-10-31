@@ -41,8 +41,10 @@
           <latest>$time.latest$</latest>
         </search>
         <option name="charting.chart">line</option>
+        <option name="charting.chart.nullValueMode">connect</option>
         <option name="charting.axisTitleX.visibility">collapsed</option>
         <option name="charting.axisTitleY.visibility">collapsed</option>
+        <option name="charting.drilldown">none</option>
         <option name="height">100px</option>
       </chart>
     </panel>
