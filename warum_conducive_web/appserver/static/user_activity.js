@@ -45,19 +45,14 @@ require([
     };
     
     zoomChart.on("selection", function(e) {
+        // Prevent the zoom chart from automatically zooming to the selection
         e.preventDefault();
-        var time_value = {
-            "earliest_time": e.startValue,
-            "latest_time": e.endValue
-        };
         
-        // TODO: Extract prefix of these searches to postprocess prefix.
-        zoomSearch.search.set(time_value);
-        topDocumentsSearch.search.set(time_value);
-        topEventsSearch.search.set(time_value);
-        
-        tokens.set("earliest_time", e.startValue);
-        tokens.set("latest_time", e.endValue);
+        // Update trend chart's time range
+        tokens.set({
+            "trendTime.earliest": e.startValue,
+            "trendTime.latest": e.endValue
+        });
     });
     
     // TODO: Following token propagation scenarios are not behaving as expected:
