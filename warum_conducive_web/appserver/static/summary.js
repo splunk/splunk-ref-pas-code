@@ -23,26 +23,16 @@ require([
     "splunkjs/ready!",
     "splunkjs/mvc/simplexml/ready!",
     "underscore", 
-    "splunkjs/mvc/chartview",
-    "splunkjs/mvc/singleview",
     "filter_component"
 ], function(
     mvc,
     ignored,
     _,
-    ChartView,
-    SingleView,
     // TODO: Make this a real require() module and avoid polluting the
     //       global namespace.
     filter_component
 ) {
-    // TODO: Fix the naming conventions
-    var timeRange = mvc.Components.getInstance("timerange");
     var trendChart = mvc.Components.getInstance("trend_chart");
-    var trendSearch = mvc.Components.getInstance(trendChart.settings.get("managerid"));
-    // TODO: Rename "policy_single" to something better
-    var single = mvc.Components.getInstance("policy_single");
-    var singlesearch = mvc.Components.getInstance(single.settings.get("managerid"));
     var userTable = mvc.Components.getInstance("user_table");
     var documentTable = mvc.Components.getInstance("document_table");
     
@@ -50,8 +40,8 @@ require([
     
     generateFilterComponent(mvc);
     
+    // TODO: Migrate #filter_header section from Django version of this dashboard
     tokens.set("command", "*");
-
     trendChart.on("click:legend", function(e) {
         e.preventDefault();
         tokens.set("command", e.name2);
@@ -66,7 +56,6 @@ require([
         {
             text: 'Exclude', 
             splunk_action: 'exclude'
-            
         },
         {
             text: 'Drilldown', 
