@@ -37,8 +37,8 @@
       <chart id="zoom_chart">
         <search id="zoom_search">
           <query>index=warum sourcetype=ri:pas:application user=$user$ | bucket span=5m _time | stats count by _time event_name user | timechart sum(count)</query>
-          <earliest>$zoomTime.earliest$</earliest>
-          <latest>$zoomTime.latest$</latest>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
         </search>
         <option name="charting.chart">line</option>
         <option name="charting.axisTitleX.visibility">collapsed</option>

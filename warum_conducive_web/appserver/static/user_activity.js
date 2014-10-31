@@ -61,25 +61,13 @@ require([
     
     // Initially propagate times from global -> zoom, trend
     tokens.set("trendTime.earliest", tokens.get("time.earliest"));
-    tokens.set("zoomTime.earliest", tokens.get("time.earliest"));
     tokens.set("trendTime.latest", tokens.get("time.latest"));
-    tokens.set("zoomTime.latest", tokens.get("time.latest"));
     
     // Propagate times from global -> zoom, trend
     tokens.on("change:time.earliest", function(model, value) {
         tokens.set("trendTime.earliest", value);
-        tokens.set("zoomTime.earliest", value);
     });
     tokens.on("change:time.latest", function(model, value) {
-        tokens.set("trendTime.latest", value);
-        tokens.set("zoomTime.latest", value);
-    });
-    
-    // Propagate times from zoom -> trend 
-    tokens.on("change:zoomTime.earliest", function(model, value) {
-        tokens.set("trendTime.earliest", value);
-    });
-    tokens.on("change:zoomTime.latest", function(model, value) {
         tokens.set("trendTime.latest", value);
     });
     
