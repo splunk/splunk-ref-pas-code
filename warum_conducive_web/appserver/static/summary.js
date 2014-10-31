@@ -6,9 +6,6 @@ require.config({
     shim: {
         "filter_component": {
             deps: [
-                "splunkjs/mvc/timerangeview",
-                "splunkjs/mvc/radiogroupview",
-                "splunkjs/mvc/textinputview",
                 "../app/warum_conducive_web/context",
                 "tagmanager"
             ]
@@ -30,7 +27,7 @@ require([
     _,
     // TODO: Make this a real require() module and avoid polluting the
     //       global namespace.
-    filter_component
+    FilterComponent
 ) {
     var trendChart = mvc.Components.getInstance("trend_chart");
     var userTable = mvc.Components.getInstance("user_table");
@@ -38,7 +35,7 @@ require([
     
     var tokens = mvc.Components.getInstance("default");
     
-    generateFilterComponent(mvc);
+    FilterComponent.initialize(mvc);
     
     // TODO: Migrate #filter_header section from Django version of this dashboard
     tokens.set("command", "*");
