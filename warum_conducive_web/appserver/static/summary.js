@@ -20,13 +20,15 @@ require.config({
 });
 
 require([
-    "splunkjs/ready!", 
+    "splunkjs/ready!",
+    "splunkjs/mvc/simplexml/ready!",
     "underscore", 
     "splunkjs/mvc/chartview",
     "splunkjs/mvc/singleview",
     "filter_component"
 ], function(
     mvc,
+    ignored,
     _,
     ChartView,
     SingleView,
@@ -35,7 +37,7 @@ require([
     filter_component
 ) {
     // TODO: Fix the naming conventions
-    var timepicker = mvc.Components.getInstance("timepicker"); 
+    var timepicker = mvc.Components.getInstance("timerange");
     // TODO: Rename to "trendChart"
     var barchart = mvc.Components.getInstance("trend_chart");
     // TODO: Rename to "trendSearch"

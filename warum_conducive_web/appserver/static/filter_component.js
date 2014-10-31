@@ -133,18 +133,26 @@ function exclude(tokens,field_name,field_value)
 }
 function drilldown(tokens,base_search,field_name,field_value,earliest,latest)
 {
+    var page;
     if (field_name == "user") {
-        page = "user_details";
+        page = "user_activity";
     }
     if (field_name == "object") {
         page = "document_details";
     }
+    
     var exclude = tokens.get("exclude");
     var include = tokens.get("filter");
     exclude = exclude.replace("Channel=\"","eventtype=\"egress:");
     include = include.replace("Channel=\"","eventtype=\"egress:");
     var terms = field_name + "=\"" + field_value + "\""
-    var search = base_search.replace("$criteria$",terms +" " + include + " " + exclude);
-    window.open("../" + page + "?earliest=" + earliest + "&latest=" + latest + "&" + field_name +"=" + field_value,"_blank");
+    var search = base_search.replace("$criteria$", terms +" " + include + " " + exclude);
+    
+    var queryParams = {
+        "form.time.earliest": earliest,
+        "form.time.latest": latest
+    };
+    queryParams["form." + field_name] = field_value;
+    window.open(page + $.param(queryParams), "_blank");
 }
 
