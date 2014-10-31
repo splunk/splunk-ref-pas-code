@@ -1,5 +1,12 @@
 <form script="user_activity.js" stylesheet="user_activity.css">
   <label>User Activity</label>
+  <search id="base_search">
+    <query>
+      index=warum sourcetype=ri:pas:application user=$user$ | bucket span=5m _time | stats count by _time event_name event_target
+    </query>
+    <earliest>$time.earliest$</earliest>
+    <latest>$time.latest$</latest>
+  </search>
   <fieldset submitButton="false">
     <input type="text" token="user">
       <label>Username</label>
@@ -53,8 +60,8 @@
     <panel>
       <table>
         <title>Top Events</title>
-        <search id="top_events_search">
-          <query>index=warum sourcetype=ri:pas:application user=$user$ | bucket span=5m _time | stats count by _time event_name event_target | top event_name | eval percent=round(percent,2)</query>
+        <search id="top_events_search" base="base_search">
+          <query>top event_name | eval percent=round(percent,2)</query>
           <earliest>$time.earliest$</earliest>
           <latest>$time.latest$</latest>
         </search>
@@ -66,8 +73,8 @@
     <panel>
       <table>
         <title>Top Documents</title>
-        <search id="top_documents_search">
-          <query>index=warum sourcetype=ri:pas:application user=$user$ | bucket span=5m _time | stats count by _time event_name event_target | top event_target | eval percent=round(percent,2)</query>
+        <search id="top_documents_search" base="base_search">
+          <query>top event_target | eval percent=round(percent,2)</query>
           <earliest>$time.earliest$</earliest>
           <latest>$time.latest$</latest>
         </search>

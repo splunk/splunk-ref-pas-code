@@ -45,24 +45,12 @@ require([
     var singlesearch = mvc.Components.getInstance(single.settings.get("managerid"));
     var userTable = mvc.Components.getInstance("user_table");
     var documentTable = mvc.Components.getInstance("document_table");
-    // TODO: Restore postprocess prefix for the following 2 searches,
-    //       and update the base search's timerange instead of the
-    //       timerange of the final two derived searches.
-    var usersSearch = mvc.Components.getInstance(userTable.settings.get("managerid"));
-    var documentSearch = mvc.Components.getInstance(documentTable.settings.get("managerid"));
     
     var tokens = mvc.Components.getInstance("default");
     
     generateFilterComponent(mvc);
     
     tokens.set("command", "*");
-
-    timeRange.on("change", function() {
-        trendSearch.search.set(timeRange.val());
-        usersSearch.search.set(timeRange.val());
-        documentSearch.search.set(timeRange.val());
-        singlesearch.search.set(timeRange.val());
-    });
 
     trendChart.on("click:legend", function(e) {
         e.preventDefault();

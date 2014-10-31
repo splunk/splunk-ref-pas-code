@@ -1,5 +1,10 @@
 <form script="summary.js">
 	<label>Summary</label>
+    <search id="base_search">
+        <query>
+            | pivot ri_pas_datamodel Root_Event count(Root_Event) AS Count SPLITROW _time AS _time PERIOD auto SPLITROW user AS user SPLITROW command AS command SPLITROW object AS object FILTER command isNotNull $filter$ $exclude$ ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 0 SHOWOTHER 1
+        </query>
+    </search>
 	<fieldset autoRun="true" submitButton="false">
         <input id="timerange" type="time" searchWhenChanged="true">
 	        <default>
@@ -27,11 +32,15 @@
 	<row>
 		<table id="user_table">
 			<title>Top Users</title>
-			<searchString>| pivot ri_pas_datamodel Root_Event count(Root_Event) AS Count SPLITROW _time AS _time PERIOD auto SPLITROW user AS user SPLITROW command AS command SPLITROW object AS object FILTER command isNotNull $filter$ $exclude$ ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 0 SHOWOTHER 1 | stats count by user | sort - count</searchString>
+			<search id="top_users_search" base="base_search">
+                <query>stats count by user | sort - count</query>
+            </search>
 		</table>
 		<table id="document_table">
 			<title>Top Documents</title>
-			<searchString>| pivot ri_pas_datamodel Root_Event count(Root_Event) AS Count SPLITROW _time AS _time PERIOD auto SPLITROW user AS user SPLITROW command AS command SPLITROW object AS object FILTER command isNotNull $filter$ $exclude$ ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 0 SHOWOTHER 1 | stats count by object | sort - count</searchString>
+            <search id="top_documents_search" base="base_search">
+                <query>stats count by object | sort - count</query>
+            </search>
 		</table>
 	</row>
 </form>
