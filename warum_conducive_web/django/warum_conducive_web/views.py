@@ -7,15 +7,6 @@ from django.core.urlresolvers import reverse
 from splunkdj.setup import config_required
 from splunkdj.setup import create_setup_view_context
 
-@render_to('warum_conducive_web:summary.html')
-@config_required
-@login_required
-def summary(request):
-    return {
-        "message": "Hello World from warum_conducive_web!",
-        "app_name": "warum_conducive_web"
-    }
-
 @render_to('warum_conducive_web:setup.html')
 @login_required
 def setup(request):
