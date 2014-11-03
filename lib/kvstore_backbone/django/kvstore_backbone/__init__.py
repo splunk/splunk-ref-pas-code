@@ -1,1 +1,0 @@
-# Copyright [TODO: This year]
