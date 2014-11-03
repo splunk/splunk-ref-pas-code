@@ -26,11 +26,12 @@ require([
     var userTable = mvc.Components.getInstance("user_table");
     var documentTable = mvc.Components.getInstance("document_table");
     
-    var tokens = mvc.Components.getInstance("default");
+    var tokens = mvc.Components.get("default");
     
     FilterComponent.initialize(mvc);
     
-    // TODO: Migrate #filter_header section from Django version of this dashboard
+    // TODO: Filtering functionality triggered by clicking on the legend
+    //       of the Trend chart is currently broken. Please fix or remove.
     tokens.set("command", "*");
     trendChart.on("click:legend", function(e) {
         e.preventDefault();

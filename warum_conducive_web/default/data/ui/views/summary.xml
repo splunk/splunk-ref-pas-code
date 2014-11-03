@@ -1,4 +1,4 @@
-<form script="summary.js">
+<form script="summary.js" stylesheet="summary.css">
 	<label>Summary</label>
     <search id="base_search">
         <query>
@@ -29,6 +29,14 @@
             <option name="drilldown">none</option>
 		</chart>
 	</row>
+    <row id="filter_header">
+        <html>
+            <h3>Tables Below Filtered on Event Type of $command$</h3>
+            <div style="float: right; margin-top: -5px;">
+                <button id="reset_filter" class="btn btn-primary">Remove Filter</button>
+            </div>
+        </html>
+    </row>
 	<row>
 		<table id="user_table">
 			<title>Top Users</title>
