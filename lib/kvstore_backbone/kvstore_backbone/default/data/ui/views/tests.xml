@@ -1,0 +1,8 @@
+<dashboard script="tests.js" stylesheet="tests.css">
+  <label>Tests</label>
+  <row>
+    <html>
+      <div id="mocha"></div>
+    </html>
+  </row>
+</dashboard>
