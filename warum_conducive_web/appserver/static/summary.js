@@ -2,7 +2,6 @@
 // non-require-compatible 3rd-party tagmanager.js JQuery plugin.
 require.config({
     paths: {
-        "warum_conducive_web": "../app/warum_conducive_web",
         "tagmanager": "../app/warum_conducive_web/tagmanager",
     },
     shim: {
@@ -16,7 +15,7 @@ require([
     "splunkjs/ready!",
     "splunkjs/mvc/simplexml/ready!",
     "underscore",
-    "warum_conducive_web/filter_component"
+    "../app/warum_conducive_web/filter_component"
 ], function(
     mvc,
     ignored,

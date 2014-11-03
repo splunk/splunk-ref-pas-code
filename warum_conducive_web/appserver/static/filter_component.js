@@ -1,7 +1,7 @@
 define(function(require, exports, module) {
     var mvc = require("splunkjs/mvc/mvc");
     
-    require("warum_conducive_web/context");
+    require("./context");
     require("tagmanager");
     
     var FilterComponent = {
