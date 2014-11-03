@@ -1,4 +1,4 @@
-<form script="summary.js" stylesheet="summary.css">
+<form script="summary.js" stylesheet="summary.css,tagmanager.css">
 	<label>Summary</label>
     <search id="base_search">
         <query>
@@ -13,6 +13,14 @@
 	        </default>
 	    </input>
   	</fieldset>
+    <row>
+        <html>
+            <div class="filter_tags">
+                <h3>Filter Criteria:</h3>
+                <input id="filter_tags_input" type="text"/>
+            </div>
+        </html>
+    </row>
   	<row>
   		<single id="policy_single">
   			<title>Policy Violations</title>
