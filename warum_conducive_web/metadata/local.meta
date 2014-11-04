@@ -32,8 +32,8 @@ modtime = 1412204157.527498000
 export = system
 
 [collections/ri_setup_coll]
-version = 6.2
-modtime = 1414097312.415712000
+version = 6.2.0
+modtime = 1415125860.738966000
 
 [views/offhours_document_access]
 version = 6.1.3
