@@ -2,10 +2,10 @@
 // non-require-compatible 3rd-party tagmanager.js JQuery plugin.
 require.config({
     paths: {
-        "tagmanager": "../app/warum_conducive_web/tagmanager",
+        "bootstrap-tagsinput": "../app/warum_conducive_web/bootstrap-tagsinput",
     },
     shim: {
-        "tagmanager": {
+        "bootstrap-tagsinput": {
             deps: ["jquery"]
         }
     }
