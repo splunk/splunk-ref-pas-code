@@ -1,4 +1,9 @@
-(function ($) {
+/*
+ * bootstrap-tagsinput v0.4.2 by Tim Schlechter
+ * 
+ */
+
+ (function ($) {
   "use strict";
 
   var defaultOptions = {
