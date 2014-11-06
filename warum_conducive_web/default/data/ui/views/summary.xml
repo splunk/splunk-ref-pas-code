@@ -22,11 +22,19 @@
         </html>
     </row>
     <row>
-        <single id="policy_single">
-            <title>Policy Violations</title>
-            <searchString>| pivot ri_pas_datamodel Policy_Violation count(Policy_Violation) AS count FILTER command isNotNull $filter$ $exclude$ ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 0 SHOWOTHER 1</searchString>
-            <option name="beforeLabel">Policy Violations:</option>
-        </single>
+        <panel id="policy_violations_panel">
+            <html>
+                <h3>Policy Violations</h3>
+                <div class="donut_series"></div>
+            </html>
+        </panel>
+        <panel id="policy_single_panel">
+            <single id="policy_single">
+                <title>Policy Violations</title>
+                <searchString>| pivot ri_pas_datamodel Policy_Violation count(Policy_Violation) AS count FILTER command isNotNull $filter$ $exclude$ ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 0 SHOWOTHER 1</searchString>
+                <option name="beforeLabel">Policy Violations:</option>
+            </single>
+        </panel>
     </row>
     <row>
         <chart id="trend_chart">

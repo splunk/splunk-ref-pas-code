@@ -1,16 +1,36 @@
+/* Filter tags */
 .filter_tags {
-  margin-left: 10px;
-  float:left;
+    margin-left: 10px;
+    float: left;
 }
+.filter { background-color: #273542; }
+.exclude { background-color: #E73E2E; }
 
-.filter {
-  background-color: #273542;
+/* Policy Violations */
+#policy_violations_panel { width: 66% !important; }
+#policy_single_panel { width: 33% !important; }
+
+/* Grigori prefers the default Splunk styles here */
+/*
+.donut .arc path {
+    stroke: #fff;
 }
-
-.exclude {
-  background-color: #E73E2E;
+.donut .centerText {
+    font-family: sans-serif;
 }
+.donut .lowerText {
+    font-family: sans-serif;
+    stroke: gray;
+    fill: gray;
+    font-weight: lighter;
+}
+.donut .titleText {
+    font-family: sans-serif;
+    font-weight: bold;
+}
+*/
 
+/* Tables Below Filtered on... */
 #filter_header {
     display: none;
 }
