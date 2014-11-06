@@ -1,0 +1,5 @@
+ViolationType,ViolationColor,ViolationWeight
+BigRed,Red,8
+LittleRed,Red,4
+BigYellow,Yellow,2
+LittleYellow,Yellow,1

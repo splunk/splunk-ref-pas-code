@@ -16,13 +16,15 @@ require([
     "splunkjs/mvc/simplexml/ready!",
     "underscore",
     "../app/warum_conducive_web/filter_component",
-    "../app/warum_conducive_web/components/d3/d3"   // for donut series
+    "../app/warum_conducive_web/components/d3/d3",   // for donut series
+    "splunkjs/mvc/searchmanager"
 ], function(
     mvc,
     ignored,
     _,
     FilterComponent,
-    d3
+    d3,
+    SearchManager
 ) {
     var trendChart = mvc.Components.getInstance("trend_chart");
     var userTable = mvc.Components.getInstance("user_table");
@@ -73,6 +75,56 @@ require([
     }, 0);
     
     function createDonutSeriesVisualization() {
+        var dataSearch = new SearchManager({
+            search: '| inputlookup example_violation_data.csv | lookup violation_info ViolationType | eval isYellow=if(ViolationColor="Yellow",1,0) | eval isRed=if(ViolationColor="Red",1,0) | stats sum(isYellow) as NumYellows, sum(isRed) as NumReds, sum(ViolationWeight) as TotalWeight by Department | table Department, NumYellows, NumReds, TotalWeight'
+        });
+        
+        dataSearch.data("results").on("data", function(resultsModel) {
+            var rows = resultsModel.data().rows;
+            
+            // From the search results, compute what data the donut series
+            // chart should display.
+            var donutSeriesData = [];
+            _.each(rows, function(row) {
+                var department = row[0];
+                var numYellows = row[1];
+                var numReds = row[2];
+                var totalWeight = row[3];
+                
+                var colorData = [];
+                if (numYellows == 0 && numReds == 0) {
+                    colorData = [{ color: 'gray', size: 1 }];
+                } else if (numYellows != 0 && numReds == 0) {
+                    colorData = [{ color: 'orange', size: numYellows }];
+                } else if (numYellows == 0 && numReds != 0) {
+                    colorData = [{ color: 'red', size: numReds }];
+                } else {
+                    colorData = [
+                        { color: 'red', size: numReds },
+                        { color: 'orange', size: numYellows }
+                    ];
+                }
+                
+                donutSeriesData.push({
+                    data: colorData,
+                    titleText: department,
+                    centerText: (totalWeight == null) ? "0" : totalWeight,
+                    // TODO: Compute % difference from last period
+                    lowerText: ""
+                });
+            });
+            
+            // Display the donut series chart
+            createDonutSeriesPanel(
+                donutSeriesData,
+                d3.select(".donut_series"),
+                200);
+        });
+    }
+    
+    // Displays the donut series chart with a nice set of canned data.
+    // TODO: Remove. Unused.
+    function createDefaultDonutSeriesPanel() {
         var standardData = [
             {
                 color: 'red',
