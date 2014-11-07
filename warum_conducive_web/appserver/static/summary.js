@@ -65,16 +65,30 @@ require([
     context.attachToTable(userTable, menuData);
     context.attachToTable(documentTable, menuData);
     
+    // Display the policy violations in the donut series view.
+    // 
     // HACK: Wait until end of the current event loop for the browser
     //       to finish rendering the div in which the donut series
     //       viz will be inserted. If not done, the div will be width
     //       zero which will prevert the viz from calculating how to
     //       render itself.
     window.setTimeout(function() {
-        createDonutSeriesVisualization();
+        var donutSeriesView = new DonutSeriesView(
+            d3.select(".donut_series"),
+            200);
+        
+        // Fetch and display initial policy violation data
+        updatePolicyViolations(donutSeriesView);
+        
+        // Refetch and display every 5 minutes thereafter
+        window.setInterval(function() {
+            updatePolicyViolations(donutSeriesView);
+        }, 5*60*1000);
     }, 0);
     
-    function createDonutSeriesVisualization() {
+    // Fetches the latest policy violation information and
+    // displays it as a donut series in the dashboard.
+    function updatePolicyViolations(donutSeriesView) {
         var dataSearch = new SearchManager({
             search: '| inputlookup example_violation_data.csv | lookup violation_info ViolationType | eval isYellow=if(ViolationColor="Yellow",1,0) | eval isRed=if(ViolationColor="Red",1,0) | stats sum(isYellow) as NumYellows, sum(isRed) as NumReds, sum(ViolationWeight) as TotalWeight by Department | table Department, NumYellows, NumReds, TotalWeight'
         });
@@ -115,10 +129,7 @@ require([
             });
             
             // Display the donut series chart
-            createDonutSeriesPanel(
-                donutSeriesData,
-                d3.select(".donut_series"),
-                200);
+            donutSeriesView.setData(donutSeriesData);
         });
     }
     
@@ -162,118 +173,147 @@ require([
             }*/
         ], d3.select(".donut_series"), 200);
     }
-
-    function createDonutSeriesPanel(data, container, maxHeight) {
-        // Perform initial rendering
-        renderDonutSeriesPanel(data, container, maxHeight);
+    
+    var DonutSeriesView = function() {
+        DonutSeriesView.prototype.initialize.apply(this, arguments);
+    };
+    _.extend(DonutSeriesView.prototype, {
+        // The parameter "data" is optional.
+        initialize: function(container, maxHeight, data) {
+            this.container = container;
+            this.maxHeight = maxHeight;
+            this.data = data;
+            
+            this._start();
+        },
         
-        // Rerender whenever the page resizes
-        window.addEventListener("resize", function() {
+        setData: function(data) {
+            this.data = data;
+            this._renderDonutSeriesPanel();
+        },
+        
+        _start: function() {
+            var that = this;
+            
+            // Perform initial rendering
+            this._renderDonutSeriesPanel();
+            
+            // Rerender whenever the page resizes
+            window.addEventListener("resize", function() {
+                that._renderDonutSeriesPanel();
+            }, false);
+        },
+        
+        _renderDonutSeriesPanel: function() {
+            var DONUT_SPACING = 10;
+            
+            var data = this.data;
+            var container = this.container;
+            var maxHeight = this.maxHeight;
+            
             // Destroy old rendering
             var containerNode = container.node();
             while (containerNode.hasChildNodes()) {
                 containerNode.removeChild(containerNode.lastChild);
             }
             
-            // Perform new rendering
-            renderDonutSeriesPanel(data, container, maxHeight);
-        }, false);
-    }
-
-    function renderDonutSeriesPanel(data, container, maxHeight) {
-        var DONUT_SPACING = 10;
-        
-        var totalWidth = container.node().offsetWidth;
-        var numDonuts = data.length;
-        // NOTE: 4 is magic to work around rounding error somewhere...
-        var widthPerDonut = Math.floor(totalWidth / numDonuts) - 4;
-        
-        if (totalWidth < 0 || widthPerDonut < 0) {
-            console.warn("Cannot draw donut series in container with width zero.");
-            return;
-        }
-        
-        // Clamp height to maximum if necessary
-        if (widthPerDonut > maxHeight) {
-            widthPerDonut = maxHeight;
-        }
-        
-        // Add donuts
-        _.each(data, function(donutData) {
-            var donutContainer = container.append("span").attr("class", "donut");
+            // TODO: Render a spinner
+            if (!data) {
+                return;
+            }
             
-            var donutSize = widthPerDonut - 2*DONUT_SPACING;
-            renderDonutChart(
-                donutData.data,
-                donutData.titleText,
-                donutData.centerText,
-                donutData.lowerText,
-                donutContainer,
-                donutSize,
-                30/170 * widthPerDonut);
+            var totalWidth = container.node().offsetWidth;
+            var numDonuts = data.length;
+            // NOTE: 4 is magic to work around rounding error somewhere...
+            var widthPerDonut = Math.floor(totalWidth / numDonuts) - 4;
             
-            donutContainer.node().style.marginLeft = DONUT_SPACING + "px";
-            donutContainer.node().style.marginRight = DONUT_SPACING + "px";
-        });
+            if (totalWidth < 0 || widthPerDonut < 0) {
+                console.warn("Cannot draw donut series in container with width zero.");
+                return;
+            }
+            
+            // Clamp height to maximum if necessary
+            if (widthPerDonut > maxHeight) {
+                widthPerDonut = maxHeight;
+            }
+            
+            // Add donuts
+            _.each(data, function(donutData) {
+                var donutContainer = container.append("span").attr("class", "donut");
+                
+                var donutSize = widthPerDonut - 2*DONUT_SPACING;
+                this._renderDonutChart(
+                    donutData.data,
+                    donutData.titleText,
+                    donutData.centerText,
+                    donutData.lowerText,
+                    donutContainer,
+                    donutSize,
+                    30/170 * widthPerDonut);
+                
+                donutContainer.node().style.marginLeft = DONUT_SPACING + "px";
+                donutContainer.node().style.marginRight = DONUT_SPACING + "px";
+            }, this);
+            
+            // Center the donuts by adding the correct padding
+            container.node().style.paddingLeft = (totalWidth - (widthPerDonut * numDonuts)) / 2 + "px";
+        },
         
-        // Center the donuts by adding the correct padding
-        container.node().style.paddingLeft = (totalWidth - (widthPerDonut * numDonuts)) / 2 + "px";
-    }
+        _renderDonutChart: function(
+            data, titleText, centerText, lowerText,
+            container, size, thickness)
+        {
+            var TITLE_AREA_HEIGHT = 30;
+            var TITLE_TEXT_PX_HEIGHT = 14;
+            
+            var radius = size / 2;
 
-    function renderDonutChart(
-        data, titleText, centerText, lowerText,
-        container, size, thickness)
-    {
-        var TITLE_AREA_HEIGHT = 30;
-        var TITLE_TEXT_PX_HEIGHT = 14;
-        
-        var radius = size / 2;
+            var arc = d3.svg.arc()
+                .outerRadius(radius)
+                .innerRadius(radius - thickness);
 
-        var arc = d3.svg.arc()
-            .outerRadius(radius)
-            .innerRadius(radius - thickness);
+            var pie = d3.layout.pie()
+                .sort(null)
+                .value(function(d) { return d.size; });
 
-        var pie = d3.layout.pie()
-            .sort(null)
-            .value(function(d) { return d.size; });
-
-        var svg = container.append("svg")
-            .attr("width", size)
-            .attr("height", size + TITLE_AREA_HEIGHT)
-          .append("g")
-            .attr("transform", "translate(" + size/2 + "," + (size/2 + TITLE_AREA_HEIGHT) + ")");
-        
-        // Add title
-        svg.append("text")
-            .attr("class", "titleText")
-            .attr("dy", (-(size / 2) - (TITLE_AREA_HEIGHT - TITLE_TEXT_PX_HEIGHT)/2) + "px")
-            .style("text-anchor", "middle")
-            .style("font-size", TITLE_TEXT_PX_HEIGHT + "px")
-            .text(titleText);
-        
-        // Add center text
-        svg.append("text")
-            .attr("class", "centerText")
-            .attr("dy", ".35em")
-            .style("text-anchor", "middle")
-            .style("font-size", size * 0.20 + "px")
-            .text(centerText);
-        
-        // Add lower text
-        svg.append("text")
-            .attr("class", "lowerText")
-            .attr("dy", "2.2em")
-            .style("text-anchor", "middle")
-            .style("font-size", size * 0.08 + "px")
-            .text(lowerText);
-        
-        // Draw arc segments
-        svg.selectAll(".arc")
-            .data(pie(data))
-          .enter().append("g")
-            .attr("class", "arc")
-            .append("path")
-            .attr("d", arc)
-            .style("fill", function(d) { return d.data.color; });
-    }
+            var svg = container.append("svg")
+                .attr("width", size)
+                .attr("height", size + TITLE_AREA_HEIGHT)
+              .append("g")
+                .attr("transform", "translate(" + size/2 + "," + (size/2 + TITLE_AREA_HEIGHT) + ")");
+            
+            // Add title
+            svg.append("text")
+                .attr("class", "titleText")
+                .attr("dy", (-(size / 2) - (TITLE_AREA_HEIGHT - TITLE_TEXT_PX_HEIGHT)/2) + "px")
+                .style("text-anchor", "middle")
+                .style("font-size", TITLE_TEXT_PX_HEIGHT + "px")
+                .text(titleText);
+            
+            // Add center text
+            svg.append("text")
+                .attr("class", "centerText")
+                .attr("dy", ".35em")
+                .style("text-anchor", "middle")
+                .style("font-size", size * 0.20 + "px")
+                .text(centerText);
+            
+            // Add lower text
+            svg.append("text")
+                .attr("class", "lowerText")
+                .attr("dy", "2.2em")
+                .style("text-anchor", "middle")
+                .style("font-size", size * 0.08 + "px")
+                .text(lowerText);
+            
+            // Draw arc segments
+            svg.selectAll(".arc")
+                .data(pie(data))
+              .enter().append("g")
+                .attr("class", "arc")
+                .append("path")
+                .attr("d", arc)
+                .style("fill", function(d) { return d.data.color; });
+        }
+    });
 });
