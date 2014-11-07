@@ -1,6 +1,7 @@
 require.config({
     paths: {
-        'kvstore': '../app/kvstore_backbone/lib/kvstore'
+        'kvstore': '../app/kvstore_backbone/lib/kvstore',
+        "jquery-serialize-object": "../app/warum_conducive_web/jquery-serialize-object"
     }
 });
 
@@ -8,6 +9,8 @@ require.config({
 require(['splunkjs/mvc/simplexml/ready!'], function() {
     require(
     [
+        'underscore',
+        'jquery-serialize-object',
         'kvstore'
     ], function() {
 
@@ -15,19 +18,32 @@ require(['splunkjs/mvc/simplexml/ready!'], function() {
         var max_fields      = 10; //maximum input boxes allowed
         var wrapper         = $(".input_fields_wrap"); //Fields wrapper
         var add_button      = $(".add_field_button"); //Add button ID
+
+        var _ = require('underscore');
+        var standard_input = 
+            _.template("<div><input type=\"text\" name=\"<%= name%>[]\"/><a href=\"#\" class=\"remove_field\"> Remove</a></div>");
         
+        var policies_input =
+            _.template("<div>Name: <input type=\"text\" name=\"policies[][name]\"/> Code: <input type=\"text\" name=\"policies[][code]\"/> Weight: <input type=\"text\" name=\"policies[][weight]\"/> <a href=\"#\" class=\"remove_field\">Remove</a></div>");
+
+
+
         $(add_button).click(function(e){ //on add input button click
             e.preventDefault();
-            parent = $(this).parent('div');
-            field_count = $(this).parent('div').children('div').children('input').length
+            parent = $(this).parent('h3').parent('div');
+            field_count = parent.children('div').length
             if(field_count < max_fields){ //max input box allowed
-                parent.append('<div><input type="text" name="' + parent[0].id + '[]"/> <a href="#" class="remove_field">Remove</a></div>'); //add input box
+                name = parent[0].id;
+                if (name == "policies")
+                    parent.append(policies_input({id: field_count}));
+                else
+                    parent.append(standard_input({name: name}));
             }
             else {
                 //TODO: Alert on max inputs
             }
         });
-        
+
         $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
             e.preventDefault(); $(this).parent('div').remove();
         })
@@ -71,7 +87,10 @@ require(['splunkjs/mvc/simplexml/ready!'], function() {
                             wrapper.children('div').first().children('input').val(value);
                         }
                         else {
-                            $(wrapper).append('<div><input type="text" name="' + wrapper[0].id  + '[]"/> <a href="#" class="remove_field">Remove</a></div>');
+                            $(wrapper)
+                                .append('<div><input type="text" name="' 
+                                    + wrapper[0].id  
+                                    + '[]"/> <a href="#" class="remove_field">Remove</a></div>');
                             $(wrapper).children('div').last().children('input').val(value);
                         }
                     });
@@ -106,30 +125,13 @@ require(['splunkjs/mvc/simplexml/ready!'], function() {
                 model_save = new RiSetupModel({_key: $("#_key").val() });
             }
 
-            // Set Multi-value arrays
-            divisions = [];
-            $("input[name='divisions[]']").each(function() {
-                divisions.push($(this).val());
-            });
-
-            locations = [];
-            $("input[name='locations[]']").each(function() {
-                locations.push($(this).val());
-            });
-
-            policies = [];
-            $("input[name='policies[]']").each(function() {
-                policies.push($(this).val());
-            });
+            frm = $(document.setup_form);
+            setup_form = frm.serializeObject();
 
             model_save.save({
-                divisions: { names: divisions},
-                locations: { names: locations},
-                code: {
-                    name: $("#code_name").val(),
-                    weight: $("#code_weight").val(),
-                    policies: policies
-                }
+                divisions: setup_form.divisions,
+                locations: setup_form.locations,
+                policies: setup_form.policies
             })
             .then(function() {
               console.log('Model saved with id ' + model.id);

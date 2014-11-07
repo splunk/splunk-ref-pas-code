@@ -2,37 +2,40 @@
 	<label>Setup</label>
 	<row>
 		<html>
-			<input id="_key" type="hidden"></input>
-			<div id="divisions" class="input_fields_wrap">
-			    <h3>Divisions: <button class="btn btn-primary btn-small add_field_button">Add Division</button></h3>
-			    <div>
-			    	<input type="text" name="divisions[]" class="form-control"></input>
-			    </div>
-			</div>
-			<hr/>
-			<div id="locations" class="input_fields_wrap">
-			    <h3>Locations: <button class="btn btn-primary btn-small add_field_button">Add Location</button></h3>
-			    <div><input type="text" name="locations[]" class="form-control"></input></div>
-			</div>
-			<hr/>
-			<div id="policies" class="input_fields_wrap">
-			    <h3>Policies: <button class="btn btn-primary btn-small add_field_button">Add Policy</button></h3>
-			    <div><input type="text" name="policies[]" class="form-control"></input></div>
-			</div>
-			<hr/>
-			<p>
-				Code Name: <input id="code_name" type="text"></input> <br/>
-				Code Weight: <input id="code_weight" type="text"></input> <br/>
-			</p>
-			<input type="button" id="save" class="btn btn-primary" value="Save"></input>
+			<form name="setup_form">
+				<input id="_key" type="hidden"></input>
+				<div id="divisions" class="input_fields_wrap">
+				    <h3>Divisions: <button class="btn btn-primary btn-small add_field_button">Add Division</button></h3>
+				    <div>
+				    	<input type="text" name="divisions[]" class="form-control"></input>
+				    </div>
+				</div>
+				<hr/>
+				<div id="locations" class="input_fields_wrap">
+				    <h3>Locations: <button class="btn btn-primary btn-small add_field_button">Add Location</button></h3>
+				    <div><input type="text" name="locations[]" class="form-control"></input></div>
+				</div>
+				<hr/>
+				<div id="policies" class="input_fields_wrap">
+				    <h3>Policies: <button class="btn btn-primary btn-small add_field_button">Add Policy</button></h3>
+				    <div>
+				    	Name: <input type="text" name="policies[][name]"/> 
+				    	Code: <input type="text" name="policies[][code]"/> 
+				    	Weight: <input type="text" name="policies[][weight]"/> 
+				    	<a href="#" class="remove_field">Remove</a>
+				    </div>
+				</div>
+				<hr/>
+				<input type="button" id="save" class="btn btn-primary" value="Save"></input>
 
-			<div id="saveModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-			  <div class="modal-dialog modal-sm">
-			    <div class="modal-content">
-			      Settings successfully saved. 
-			    </div>
-			  </div>
-			</div>
+				<div id="saveModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+				  <div class="modal-dialog modal-sm">
+				    <div class="modal-content">
+				      Settings successfully saved. 
+				    </div>
+				  </div>
+				</div>
+			</form>
 		</html>
 	</row>
 </dashboard>
