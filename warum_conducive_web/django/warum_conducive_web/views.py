@@ -13,4 +13,4 @@ def setup(request):
     return create_setup_view_context(
         request,
         SetupForm, 
-        reverse('warum_conducive_web:summary')) 
+        '/en-US/app/warum_conducive_web/summary')
