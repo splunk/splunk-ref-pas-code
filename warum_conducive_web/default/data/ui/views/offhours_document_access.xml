@@ -1,4 +1,4 @@
-<form script="setup_check.js">
+<form>
 	<label>Off-Hours Document Access</label>
 	<fieldset autoRun="true" submitButton="false">
 	    <input type="time" searchWhenChanged="true">

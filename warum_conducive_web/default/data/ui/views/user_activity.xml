@@ -1,4 +1,4 @@
-<form script="setup_check.js,user_activity.js" stylesheet="user_activity.css">
+<form script="user_activity.js" stylesheet="user_activity.css">
   <label>User Activity</label>
   <search id="base_search">
     <query>
