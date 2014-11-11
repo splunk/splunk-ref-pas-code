@@ -6,5 +6,5 @@
         <view name="terminated_employee_document_access"/>
         <view name="anomalous_activity"/>
     </collection>
-    <a href="/dj/redirector/warum_conducive_web/setup" default="true">Setup</a>
+    <view name="setup"/>
 </nav>

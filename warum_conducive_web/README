@@ -4,7 +4,12 @@ Describe your application here.
 
 Installation
 ------------
-Describe how to install your application here (if applicable).
+
+
+Prerequisites:
+
+1. Make sure Eventgen app is installed if you want data flow. (Get it from GitHub)
+2. Install the kvstore_backbone app from lib to etc/apps (symlink is fine)
 
 Usage
 -----

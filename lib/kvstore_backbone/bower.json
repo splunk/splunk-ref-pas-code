@@ -1,8 +1,0 @@
-{
-  "name": "kvstore_backbone",
-  "version": "0.0.0",
-  "dependencies": {
-    "mocha": "~2.0.1",
-    "chai": "~1.9.2"
-  }
-}
