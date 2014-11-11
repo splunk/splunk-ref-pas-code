@@ -61,12 +61,10 @@ require(['splunkjs/mvc/simplexml/ready!'], function() {
                 {
                     setup_information = data[0];
                     $("#_key").val(setup_information._key);
-                    $("#code_name").val(setup_information.code.name);
-                    $("#code_weight").val(setup_information.code.weight);
 
                     //populate multi-values for arrays
                     //TODO: encapsulate code
-                    divisions = setup_information.divisions.names;
+                    divisions = setup_information.divisions;
                     $.each(divisions,function (index,value) {
                         wrapper = $("#divisions");
                         if (index == 0)
@@ -79,23 +77,25 @@ require(['splunkjs/mvc/simplexml/ready!'], function() {
                         }
                     });
 
-                    policies = setup_information.code.policies;
+                    policies = setup_information.policies;
                     $.each(policies,function (index,value) {
                         wrapper = $("#policies");
                         if (index == 0)
                         {
-                            wrapper.children('div').first().children('input').val(value);
+                            wrapper.children('div').first().children('input')[0].value = value.name;
+                            wrapper.children('div').first().children('input')[1].value = value.code;
+                            wrapper.children('div').first().children('input')[2].value = value.weight;
                         }
                         else {
                             $(wrapper)
-                                .append('<div><input type="text" name="' 
-                                    + wrapper[0].id  
-                                    + '[]"/> <a href="#" class="remove_field">Remove</a></div>');
-                            $(wrapper).children('div').last().children('input').val(value);
+                                .append(policies_input({id: 0}));
+                            wrapper.children('div').last().children('input')[0].value = value.name;
+                            wrapper.children('div').last().children('input')[1].value = value.code;
+                            wrapper.children('div').last().children('input')[2].value = value.weight;
                         }
                     });
 
-                    locations = setup_information.locations.names;
+                    locations = setup_information.locations;
                     $.each(locations,function (index,value) {
                         wrapper = $("#locations");
                         if (index == 0)
