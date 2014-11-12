@@ -91,8 +91,10 @@ require([
         });
 
     $("#save").click(function (e) {
-        //validate 
+        // Clear previous validation error markers
         $('input').parent('div').removeClass("error");
+        
+        // Validate form fields and mark those in error
         var someEmpty = $('.control-group').children('input').filter(function(){
             return !$.trim(this.value);
         }).parent('div').addClass("error").length > 0;
@@ -100,8 +102,12 @@ require([
         var notNumbers = $('[name="policies[][weight]"').filter(function(){
             return !$.isNumeric(this.value);
         }).parent('div').addClass("error").length > 0;
-
-        if (someEmpty == 0 && notNumbers == 0)  {
+        
+        if (someEmpty !== 0) {
+            window.alert("Some required fields have been left blank.");
+        } else if (notNumbers !== 0) {
+            window.alert("Some specified policy weights are not numbers.");
+        } else {
             var model_save;
             if ($("#_key").val() == "_new") {
                 model_save = new RiSetupModel();
@@ -122,9 +128,6 @@ require([
                 console.log('Model saved with id ' + model.id);
                 window.location.href = "./summary";
             }); 
-        }
-        else {
-            alert("There are errors with the form.");
         }
     });
 });
