@@ -5,26 +5,19 @@
 			<form name="setup_form">
 				<input id="_key" type="hidden"></input>
 				<div id="divisions" class="input_fields_wrap">
-				    <h3>Divisions: <button class="btn btn-primary btn-small add_field_button">Add Division</button></h3>
-				    <div>
-				    	<input type="text" name="divisions[]" class="form-control"></input>
-				    </div>
+				    <h3>Divisions: </h3>
 				</div>
+				<button id="divisions_button" class="btn btn-primary btn-small add_field_button">Add Division</button>
 				<hr/>
 				<div id="locations" class="input_fields_wrap">
-				    <h3>Locations: <button class="btn btn-primary btn-small add_field_button">Add Location</button></h3>
-				    <div><input type="text" name="locations[]" class="form-control"></input></div>
+				    <h3>Locations:</h3>
 				</div>
+				<button class="btn btn-primary btn-small add_field_button" id="locations_button">Add Location</button>
 				<hr/>
-				<div id="policies" class="input_fields_wrap">
-				    <h3>Policies: <button class="btn btn-primary btn-small add_field_button">Add Policy</button></h3>
-				    <div>
-				    	Name: <input type="text" name="policies[][name]"/> 
-				    	Code: <input type="text" name="policies[][code]"/> 
-				    	Weight: <input type="text" name="policies[][weight]"/> 
-				    	<a href="#" class="remove_field">Remove</a>
-				    </div>
+				<div id="policies" class="input_fields_wrap" style="clear:both;">
+				    <h3>Policies:</h3>
 				</div>
+				<button id="policies_button" class="btn btn-primary btn-small add_field_button">Add Policy</button>
 				<hr/>
 				<input type="button" id="save" class="btn btn-primary" value="Save"></input>
 

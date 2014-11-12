@@ -18,14 +18,14 @@ require([
     var add_button      = $(".add_field_button"); //Add button ID
 
     var standard_input = 
-        _.template("<div><input type=\"text\" name=\"<%= name%>[]\"/><a href=\"#\" class=\"remove_field\"> Remove</a></div>");
+        _.template("<div class='control-group'><input type=\"text\" name=\"<%= name%>[]\"/><a href=\"#\" class=\"remove_field\"> Remove</a></div>");
     
     var policies_input =
-        _.template("<div>Name: <input type=\"text\" name=\"policies[][name]\"/> Code: <input type=\"text\" name=\"policies[][code]\"/> Weight: <input type=\"text\" name=\"policies[][weight]\"/> <a href=\"#\" class=\"remove_field\">Remove</a></div>");
+        _.template("<div class='policy'><div class='control-group' style='float:left'>Name: <input type=\"text\" name=\"policies[][name]\"/></div> <div class='control-group' style='float:left'>Code: <input type=\"text\" name=\"policies[][code]\"/></div><div class='control-group' style='float:left'> Weight: <input type=\"text\" name=\"policies[][weight]\"/> <a href=\"#\" class=\"remove_field\">Remove</a></div><div style='clear:both'></div></div>");
 
     $(add_button).click(function(e){ //on add input button click
         e.preventDefault();
-        parent = $(this).parent('h3').parent('div');
+        parent = $("#" + this.id.split("_")[0]);
         field_count = parent.children('div').length
         if (field_count < max_fields) { //max input box allowed
             name = parent[0].id;
@@ -60,45 +60,25 @@ require([
                 divisions = setup_information.divisions;
                 $.each(divisions,function (index,value) {
                     wrapper = $("#divisions");
-                    if (index == 0)
-                    {
-                        wrapper.children('div').first().children('input').val(value);
-                    }
-                    else {
-                        $(wrapper).append('<div><input type="text" name="' + wrapper[0].id + '[]"/> <a href="#" class="remove_field">Remove</a></div>');
-                        $(wrapper).children('div').last().children('input').val(value);
-                    }
+                    $(wrapper).append(standard_input({name: wrapper[0].id }));
+                    $(wrapper).children('div').last().children('input').val(value);
                 });
 
                 policies = setup_information.policies;
                 $.each(policies,function (index,value) {
                     wrapper = $("#policies");
-                    if (index == 0)
-                    {
-                        wrapper.children('div').first().children('input')[0].value = value.name;
-                        wrapper.children('div').first().children('input')[1].value = value.code;
-                        wrapper.children('div').first().children('input')[2].value = value.weight;
-                    }
-                    else {
-                        $(wrapper)
-                            .append(policies_input({id: 0}));
-                        wrapper.children('div').last().children('input')[0].value = value.name;
-                        wrapper.children('div').last().children('input')[1].value = value.code;
-                        wrapper.children('div').last().children('input')[2].value = value.weight;
-                    }
+                    $(wrapper)
+                        .append(policies_input({id: 0}));
+                    wrapper.children('div').last().children('div').children('input')[0].value = value.name;
+                    wrapper.children('div').last().children('div').children('input')[1].value = value.code;
+                    wrapper.children('div').last().children('div').children('input')[2].value = value.weight;
                 });
 
                 locations = setup_information.locations;
                 $.each(locations,function (index,value) {
                     wrapper = $("#locations");
-                    if (index == 0)
-                    {
-                        wrapper.children('div').first().children('input').val(value);
-                    }
-                    else {
-                        $(wrapper).append('<div><input type="text" name="' + wrapper[0].id + '[]"/> <a href="#" class="remove_field">Remove</a></div>');
-                        $(wrapper).children('div').last().children('input').val(value);
-                    }
+                    $(wrapper).append(standard_input({name: wrapper[0].id }));
+                    $(wrapper).children('div').last().children('input').val(value);
                 });
             }
             else {
@@ -111,25 +91,40 @@ require([
         });
 
     $("#save").click(function (e) {
-        var model_save;
-        if ($("#_key").val() == "_new") {
-            model_save = new RiSetupModel();
+        //validate 
+        $('input').parent('div').removeClass("error");
+        var someEmpty = $('.control-group').children('input').filter(function(){
+            return !$.trim(this.value);
+        }).parent('div').addClass("error").length > 0;
+
+        var notNumbers = $('[name="policies[][weight]"').filter(function(){
+            return !$.isNumeric(this.value);
+        }).parent('div').addClass("error").length > 0;
+
+        if (someEmpty == 0 && notNumbers == 0)  {
+            var model_save;
+            if ($("#_key").val() == "_new") {
+                model_save = new RiSetupModel();
+            }
+            else {
+                model_save = new RiSetupModel({_key: $("#_key").val() });
+            }
+
+            frm = $(document.setup_form);
+            setup_form = frm.serializeObject();
+
+            model_save.save({
+                divisions: setup_form.divisions,
+                locations: setup_form.locations,
+                policies: setup_form.policies
+            })
+            .then(function() {
+                console.log('Model saved with id ' + model.id);
+                $('#saveModal').modal();
+            }); 
         }
         else {
-            model_save = new RiSetupModel({_key: $("#_key").val() });
+            alert("There are errors with the form.");
         }
-
-        frm = $(document.setup_form);
-        setup_form = frm.serializeObject();
-
-        model_save.save({
-            divisions: setup_form.divisions,
-            locations: setup_form.locations,
-            policies: setup_form.policies
-        })
-        .then(function() {
-            console.log('Model saved with id ' + model.id);
-            $('#saveModal').modal();
-        }); 
     });
 });
