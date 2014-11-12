@@ -1,0 +1,17 @@
+#provider_stats {
+    float: right;
+    padding: .7em;
+    border: 1px solid #AAAAAA;
+}
+
+#provider_stats .provider_box {
+    display: inline-block;
+    width: 6em;
+}
+#provider_stats .provider_box:first-child { margin-left: 0; }
+#provider_stats .provider_box             { margin-left: 1em; }
+#provider_stats .provider_box .event_count {
+    font-family: sans-serif;
+    font-size: 36px;
+    line-height: 36px;
+}

@@ -1,8 +1,15 @@
-<form script="user_activity.js" stylesheet="user_activity.css">
+<form script="user_activity.js,provider_stats.js" stylesheet="user_activity.css,provider_stats.css">
     <label>User Activity</label>
     <search id="base_search">
         <query>
-            index=warum sourcetype=ri:pas:application user=$user$ | bucket span=5m _time | stats count by _time event_name event_target
+            index=warum sourcetype=ri:pas:application user=$user|s$ | bucket span=5m _time | stats count by _time event_name event_target
+        </query>
+        <earliest>$time.earliest$</earliest>
+        <latest>$time.latest$</latest>
+    </search>
+    <search id="provider_stats_search">
+        <query>
+            index=warum user=$user|s$ | stats count by sourcetype | table sourcetype, count
         </query>
         <earliest>$time.earliest$</earliest>
         <latest>$time.latest$</latest>
@@ -20,6 +27,16 @@
             </default>
         </input>
     </fieldset>
+    <row>
+        <panel>
+            <html>
+                <div style="float: left; padding: .7em; border: 1px dashed black;">
+                    Insert user information here. (DVPL-5839)
+                </div>
+                <div id="provider_stats"></div>
+            </html>
+        </panel>
+    </row>
     <row>
         <panel id="activity_levels_panel">
             <html>
