@@ -120,7 +120,7 @@ require([
             })
             .then(function() {
                 console.log('Model saved with id ' + model.id);
-                $('#saveModal').modal();
+                window.location.href = "./summary";
             }); 
         }
         else {
