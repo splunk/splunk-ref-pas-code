@@ -18,10 +18,21 @@ require([
     var add_button      = $(".add_field_button"); //Add button ID
 
     var standard_input = 
-        _.template("<div class='control-group'><input type=\"text\" name=\"<%= name%>[]\"/><a href=\"#\" class=\"remove_field\"> Remove</a></div>");
+        _.template(
+            "<div class='control-group'>" +
+                "<input type=\"text\" name=\"<%= name%>[]\"/>" +
+                "<a href=\"#\" class=\"remove_field\"> Remove</a>" +
+            "</div>");
     
     var policies_input =
-        _.template("<div class='policy'><div class='control-group' style='float:left'>Name: <input type=\"text\" name=\"policies[][name]\"/></div> <div class='control-group' style='float:left'>Code: <input type=\"text\" name=\"policies[][code]\"/></div><div class='control-group' style='float:left'> Weight: <input type=\"text\" name=\"policies[][weight]\"/> <a href=\"#\" class=\"remove_field\">Remove</a></div><div style='clear:both'></div></div>");
+        _.template(
+            "<div class='policy'>"+
+                "<div class='control-group' style='float:left'>Name: <input type=\"text\" name=\"policies[][name]\"/></div> " +
+                "<div class='control-group' style='float:left'>Code: <input type=\"text\" name=\"policies[][code]\"/></div>" +
+                "<div class='control-group' style='float:left'>Weight: <input type=\"text\" name=\"policies[][weight]\"/></div>" +
+                "<a href=\"#\" class=\"remove_field\">Remove</a>" +
+                "<div style='clear:both'></div>" +
+            "</div>");
 
     $(add_button).click(function(e){ //on add input button click
         e.preventDefault();
