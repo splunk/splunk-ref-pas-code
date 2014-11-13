@@ -1,2 +1,3 @@
+# Required for eventgen to work
 [eventgen]
 export = system

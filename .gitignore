@@ -15,7 +15,9 @@ test/warum-conducive-test.v12.suo
 
 # Splunk app local files
 local
-warum_conducive_web/metadata/local.meta
+# (Normally we'd exclude the entire "metadata" directory.
+#  However we must preserve metadata/default.meta so that eventgen works.)
+local.meta
 
 # Unknown
 build
