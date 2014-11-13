@@ -90,7 +90,9 @@ require([
     // displays it as a donut series in the dashboard.
     function updatePolicyViolations(donutSeriesView) {
         var dataSearch = new SearchManager({
-            search: '| inputlookup example_violation_data.csv | lookup violation_info ViolationType | eval isYellow=if(ViolationColor="Yellow",1,0) | eval isRed=if(ViolationColor="Red",1,0) | stats sum(isYellow) as NumYellows, sum(isRed) as NumReds, sum(ViolationWeight) as TotalWeight by Department | table Department, NumYellows, NumReds, TotalWeight'
+            search: '| pivot ri_pas_datamodel Invalid_Time_Access SPLITROW department count(Invalid_Time_Access) as Invalid_Time_Access | eval ViolationType="Invalid_Time_Access" | rename Invalid_Time_Access as ViolationCount | append [ | pivot ri_pas_datamodel Terminated_Access SPLITROW department count(Terminated_Access) as Terminated_Access | eval ViolationType="Terminated_Access" | rename Terminated_Access as ViolationCount ] | lookup violation_info ViolationType | eval TotalViolationWeight = ViolationCount*ViolationWeight | stats sum(TotalViolationWeight) as TotalWeight, sum(ViolationCount) as ViolationCount by department, ViolationColor | eval NumYellows=if(ViolationColor="Yellow", TotalWeight, 0) | eval NumReds=if(ViolationColor="Red", TotalWeight, 0) | stats sum(NumReds) as NumReds, sum(NumYellows) as NumYellows, sum(TotalWeight) as TotalWeight by department | table department, NumYellows, NumReds, TotalWeight',
+            earliest_time: '@d',
+            latest_time: 'now'
         });
         
         dataSearch.data("results").on("data", function(resultsModel) {

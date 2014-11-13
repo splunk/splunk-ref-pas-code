@@ -3,3 +3,5 @@ BigRed,Red,8
 LittleRed,Red,4
 BigYellow,Yellow,2
 LittleYellow,Yellow,1
+Invalid_Time_Access,Yellow,1.2
+Terminated_Access,Red,3.0
