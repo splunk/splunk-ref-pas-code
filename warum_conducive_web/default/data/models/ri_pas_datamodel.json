@@ -449,7 +449,7 @@
             ],
             "constraints": [
                 {
-                    "search": "`index_macro` `application_sourcetype` OR `file_sourcetype` OR `database_sourcetype`",
+                    "search": "`warum_index`",
                     "owner": "Root_Event"
                 }
             ],
@@ -705,7 +705,116 @@
             "objectName": "Policy_Violation",
             "displayName": "Policy Violation",
             "parentName": "Root_Event",
-            "fields": [],
+            "fields": [
+                {
+                    "fieldName": "action",
+                    "owner": "Root_Event",
+                    "type": "string",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "action",
+                    "comment": "",
+                    "fieldSearch": ""
+                },
+                {
+                    "fieldName": "command",
+                    "owner": "Root_Event",
+                    "type": "string",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "command",
+                    "comment": "",
+                    "fieldSearch": ""
+                },
+                {
+                    "fieldName": "object",
+                    "owner": "Root_Event",
+                    "type": "string",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "object",
+                    "comment": "",
+                    "fieldSearch": ""
+                },
+                {
+                    "fieldName": "src",
+                    "owner": "Root_Event",
+                    "type": "string",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "src",
+                    "comment": "",
+                    "fieldSearch": ""
+                },
+                {
+                    "fieldName": "user",
+                    "owner": "Root_Event",
+                    "type": "string",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "user",
+                    "comment": "",
+                    "fieldSearch": ""
+                },
+                {
+                    "fieldName": "_time",
+                    "owner": "BaseEvent",
+                    "type": "timestamp",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "_time",
+                    "comment": "",
+                    "fieldSearch": ""
+                },
+                {
+                    "fieldName": "host",
+                    "owner": "BaseEvent",
+                    "type": "string",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "host",
+                    "comment": "",
+                    "fieldSearch": ""
+                },
+                {
+                    "fieldName": "source",
+                    "owner": "BaseEvent",
+                    "type": "string",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "source",
+                    "comment": "",
+                    "fieldSearch": ""
+                },
+                {
+                    "fieldName": "sourcetype",
+                    "owner": "BaseEvent",
+                    "type": "string",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "sourcetype",
+                    "comment": "",
+                    "fieldSearch": ""
+                }
+            ],
             "calculations": [],
             "constraints": [
                 {
