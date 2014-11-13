@@ -15,7 +15,7 @@ test/warum-conducive-test.v12.suo
 
 # Splunk app local files
 local
-metadata
+warum_conducive_web/metadata/local.meta
 
 # Unknown
 build
