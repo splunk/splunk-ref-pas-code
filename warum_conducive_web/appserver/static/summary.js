@@ -89,11 +89,10 @@ require([
     // Fetches the latest policy violation information and
     // displays it as a donut series in the dashboard.
     function updatePolicyViolations(donutSeriesView) {
-        var dataSearch = new SearchManager({
-            search: '| pivot ri_pas_datamodel Invalid_Time_Access SPLITROW department count(Invalid_Time_Access) as Invalid_Time_Access | eval ViolationType="Invalid_Time_Access" | rename Invalid_Time_Access as ViolationCount | append [ | pivot ri_pas_datamodel Terminated_Access SPLITROW department count(Terminated_Access) as Terminated_Access | eval ViolationType="Terminated_Access" | rename Terminated_Access as ViolationCount ] | lookup violation_info ViolationType | eval TotalViolationWeight = ViolationCount*ViolationWeight | stats sum(TotalViolationWeight) as TotalWeight, sum(ViolationCount) as ViolationCount by department, ViolationColor | eval NumYellows=if(ViolationColor="Yellow", TotalWeight, 0) | eval NumReds=if(ViolationColor="Red", TotalWeight, 0) | stats sum(NumReds) as NumReds, sum(NumYellows) as NumYellows, sum(TotalWeight) as TotalWeight by department | table department, NumYellows, NumReds, TotalWeight',
-            earliest_time: '@d',
-            latest_time: 'now'
-        });
+        var dataSearch = mvc.Components.get('policy_violations_search');
+        
+        // Rerun search
+        dataSearch.startSearch();
         
         dataSearch.data("results").on("data", function(resultsModel) {
             var rows = resultsModel.data().rows;
