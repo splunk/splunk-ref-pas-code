@@ -15,6 +15,12 @@
                        | rename Terminated_Access as ViolationCount ]
             | lookup violation_info ViolationType
             | eval TotalViolationWeight = ViolationCount*ViolationWeight
+        </query>
+        <earliest>@d</earliest>
+        <latest>now</latest>
+    </search>
+    <search id="policy_violations_color_summary" base="policy_violations_search">
+        <query>
             | stats sum(TotalViolationWeight) as TotalWeight,
                     sum(ViolationCount)       as ViolationCount
               by department, ViolationColor
@@ -54,11 +60,19 @@
             </html>
         </panel>
         <panel id="policy_single_panel">
-            <single id="policy_single">
-                <title>Policy Violations</title>
-                <searchString>| pivot ri_pas_datamodel Policy_Violation count(Policy_Violation) AS count FILTER command isNotNull $filter$ $exclude$ ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 0 SHOWOTHER 1</searchString>
-                <option name="beforeLabel">Policy Violations:</option>
-            </single>
+            <table>
+                <title>Suspicious Activity</title>
+                <search id="policy_violations_type_summary" base="policy_violations_search">
+                    <query>
+                        | stats values(ViolationColor) as ViolationColor, sum(ViolationCount) as ViolationCount by ViolationType
+                        | eval Type = ViolationType . " (" . ViolationCount . ")"
+                        | rename ViolationColor as C
+                        | table C, Type
+                    </query>
+                    <earliest>@d</earliest>
+                    <latest>now</latest>
+                </search>
+            </table>
         </panel>
     </row>
     <row>

@@ -89,7 +89,7 @@ require([
     // Fetches the latest policy violation information and
     // displays it as a donut series in the dashboard.
     function updatePolicyViolations(donutSeriesView) {
-        var dataSearch = mvc.Components.get('policy_violations_search');
+        var dataSearch = mvc.Components.get('policy_violations_color_summary');
         
         // Rerun search
         dataSearch.startSearch();
