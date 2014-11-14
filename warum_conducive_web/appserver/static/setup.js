@@ -114,9 +114,9 @@ require([
             return !$.isNumeric(this.value);
         }).parent('div').addClass("error").length > 0;
         
-        if (someEmpty !== 0) {
+        if (someEmpty) {
             window.alert("Some required fields have been left blank.");
-        } else if (notNumbers !== 0) {
+        } else if (notNumbers) {
             window.alert("Some specified policy weights are not numbers.");
         } else {
             var model_save;
