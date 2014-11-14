@@ -3,7 +3,7 @@
     "displayName": "PAS Data Model",
     "description": "",
     "objectSummary": {
-        "Event-Based": 4,
+        "Event-Based": 3,
         "Transaction-Based": 0,
         "Search-Based": 0
     },
@@ -70,6 +70,18 @@
                     "hidden": false,
                     "editable": true,
                     "displayName": "user",
+                    "comment": "",
+                    "fieldSearch": ""
+                },
+                {
+                    "fieldName": "department",
+                    "owner": "Root_Event",
+                    "type": "string",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "department",
                     "comment": "",
                     "fieldSearch": ""
                 },
@@ -457,7 +469,7 @@
         },
         {
             "objectName": "Invalid_Time_Access",
-            "displayName": "Invalid Time Access",
+            "displayName": "Off-Hours Document Access",
             "parentName": "Root_Event",
             "fields": [
                 {
@@ -580,7 +592,7 @@
         },
         {
             "objectName": "Terminated_Access",
-            "displayName": "Terminated Access",
+            "displayName": "Terminated Employee Document Access",
             "parentName": "Root_Event",
             "fields": [
                 {
@@ -700,135 +712,11 @@
                 }
             ],
             "lineage": "Root_Event.Terminated_Access"
-        },
-        {
-            "objectName": "Policy_Violation",
-            "displayName": "Policy Violation",
-            "parentName": "Root_Event",
-            "fields": [
-                {
-                    "fieldName": "action",
-                    "owner": "Root_Event",
-                    "type": "string",
-                    "required": false,
-                    "multivalue": false,
-                    "hidden": false,
-                    "editable": true,
-                    "displayName": "action",
-                    "comment": "",
-                    "fieldSearch": ""
-                },
-                {
-                    "fieldName": "command",
-                    "owner": "Root_Event",
-                    "type": "string",
-                    "required": false,
-                    "multivalue": false,
-                    "hidden": false,
-                    "editable": true,
-                    "displayName": "command",
-                    "comment": "",
-                    "fieldSearch": ""
-                },
-                {
-                    "fieldName": "object",
-                    "owner": "Root_Event",
-                    "type": "string",
-                    "required": false,
-                    "multivalue": false,
-                    "hidden": false,
-                    "editable": true,
-                    "displayName": "object",
-                    "comment": "",
-                    "fieldSearch": ""
-                },
-                {
-                    "fieldName": "src",
-                    "owner": "Root_Event",
-                    "type": "string",
-                    "required": false,
-                    "multivalue": false,
-                    "hidden": false,
-                    "editable": true,
-                    "displayName": "src",
-                    "comment": "",
-                    "fieldSearch": ""
-                },
-                {
-                    "fieldName": "user",
-                    "owner": "Root_Event",
-                    "type": "string",
-                    "required": false,
-                    "multivalue": false,
-                    "hidden": false,
-                    "editable": true,
-                    "displayName": "user",
-                    "comment": "",
-                    "fieldSearch": ""
-                },
-                {
-                    "fieldName": "_time",
-                    "owner": "BaseEvent",
-                    "type": "timestamp",
-                    "required": false,
-                    "multivalue": false,
-                    "hidden": false,
-                    "editable": true,
-                    "displayName": "_time",
-                    "comment": "",
-                    "fieldSearch": ""
-                },
-                {
-                    "fieldName": "host",
-                    "owner": "BaseEvent",
-                    "type": "string",
-                    "required": false,
-                    "multivalue": false,
-                    "hidden": false,
-                    "editable": true,
-                    "displayName": "host",
-                    "comment": "",
-                    "fieldSearch": ""
-                },
-                {
-                    "fieldName": "source",
-                    "owner": "BaseEvent",
-                    "type": "string",
-                    "required": false,
-                    "multivalue": false,
-                    "hidden": false,
-                    "editable": true,
-                    "displayName": "source",
-                    "comment": "",
-                    "fieldSearch": ""
-                },
-                {
-                    "fieldName": "sourcetype",
-                    "owner": "BaseEvent",
-                    "type": "string",
-                    "required": false,
-                    "multivalue": false,
-                    "hidden": false,
-                    "editable": true,
-                    "displayName": "sourcetype",
-                    "comment": "",
-                    "fieldSearch": ""
-                }
-            ],
-            "calculations": [],
-            "constraints": [
-                {
-                    "search": "terminated_access=1 OR valid_time_access=0",
-                    "owner": "Root_Event.Policy_Violation"
-                }
-            ],
-            "lineage": "Root_Event.Policy_Violation"
         }
     ],
     "objectNameList": [
         "Root_Event",
         "Invalid_Time_Access",
-        "Terminated_Access",
-        "Policy_Violation"
+        "Terminated_Access"
     ]
 }
