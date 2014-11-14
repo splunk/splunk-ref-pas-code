@@ -1,3 +1,3 @@
-ViolationType,ViolationColor,ViolationWeight
-Invalid_Time_Access,Yellow,1.2
-Terminated_Access,Red,3.0
+ViolationType,ViolationTypeTitle,ViolationColor,ViolationWeight
+Invalid_Time_Access,"Off-Hours Document Access",Yellow,1.2
+Terminated_Access,"Terminated Employee Document Access",Red,3.0

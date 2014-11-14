@@ -64,8 +64,11 @@
                 <title>Suspicious Activity</title>
                 <search id="policy_violations_type_summary" base="policy_violations_search">
                     <query>
-                        | stats values(ViolationColor) as ViolationColor, sum(ViolationCount) as ViolationCount by ViolationType
-                        | eval Type = ViolationType . " (" . ViolationCount . ")"
+                        | stats values(ViolationColor)     as ViolationColor,
+                                values(ViolationTypeTitle) as ViolationTypeTitle
+                                sum(ViolationCount)        as ViolationCount
+                          by ViolationType
+                        | eval Type = ViolationTypeTitle . " (" . ViolationCount . ")"
                         | rename ViolationColor as C
                         | table C, Type
                     </query>
