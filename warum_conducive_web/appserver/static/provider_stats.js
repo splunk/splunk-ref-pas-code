@@ -62,6 +62,12 @@ require([
             var apps = appsCollection.list();
             var numAppsLeft = apps.length;
             _.each(apps, function(app) {
+                if (app.properties().disabled) {
+                    // Avoid querying information about disabled apps because
+                    // it causes JS errors.
+                    return;
+                }
+                
                 var configFileCollection = service.configurations({
                     owner: "nobody",
                     app: app.name,
