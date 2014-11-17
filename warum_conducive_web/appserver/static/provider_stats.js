@@ -65,6 +65,7 @@ require([
                 if (app.properties().disabled) {
                     // Avoid querying information about disabled apps because
                     // it causes JS errors.
+                    finishedCheckingApp();
                     return;
                 }
                 
