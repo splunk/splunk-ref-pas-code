@@ -13,6 +13,16 @@
             | append [ | pivot ri_pas_datamodel Terminated_Access   SPLITROW department count(Terminated_Access)   as Terminated_Access
                        | eval ViolationType="Terminated_Access"
                        | rename Terminated_Access as ViolationCount ]
+            | append [ | search index=warum
+                       | fields _time, user
+                       | bucket _time span=1h
+                       | stats count as ops by _time, user
+                       | where ops!=0
+                       | stats stdev(ops) as SD, avg(ops) as MEAN, latest(ops) as LAST_OPS by user
+                       | where LAST_OPS > (MEAN + SD*1)
+                       | lookup employee_details user
+                       | stats count as ViolationCount by department
+                       | eval ViolationType="Excessive_Access" ]
             | lookup violation_info ViolationType
             | eval TotalViolationWeight = ViolationCount*ViolationWeight
         </query>
