@@ -32,7 +32,7 @@ require([
     
     FilterComponent.initialize(mvc);
 
-    var menuData = [
+    var includeExcludeMenu = [
         {
             text: 'Include', 
             splunk_action: 'include'
@@ -41,16 +41,18 @@ require([
             text: 'Exclude', 
             splunk_action: 'exclude'
         },
-        {
-            text: 'Drilldown', 
-            splunk_action: 'drilldown',
-            search: "index=* sourcetype=Events $criteria$ | table _time Event_ID User_Name, Computer_Name, Application, Operation, Email_Domain, DNS_Hostname, Source_Directory, Source_File_Extension, Destination_Directory, Destination_File_Extension"
-        }
     ];
+    
+    var includeExcludeDrilldownMenu = _.clone(includeExcludeMenu);
+    includeExcludeDrilldownMenu.push({
+        text: 'Drilldown', 
+        splunk_action: 'drilldown',
+        search: "index=* sourcetype=Events $criteria$ | table _time Event_ID User_Name, Computer_Name, Application, Operation, Email_Domain, DNS_Hostname, Source_Directory, Source_File_Extension, Destination_Directory, Destination_File_Extension"
+    })
 
     // Setup custom contextual menu that appears when clicking on the tables
     context.init({preventDoubleContext: false});
-    context.attachToChart(trendChart, menuData);
-    context.attachToTable(userTable, menuData);
-    context.attachToTable(documentTable, menuData);
+    context.attachToChart(trendChart, includeExcludeMenu);
+    context.attachToTable(userTable, includeExcludeDrilldownMenu);
+    context.attachToTable(documentTable, includeExcludeMenu);
 });
