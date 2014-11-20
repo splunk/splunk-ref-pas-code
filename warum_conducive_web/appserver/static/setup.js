@@ -75,7 +75,7 @@ require([
                 $("#_key").val(setup_information._key);
                 
                 /* Populate UI using setup information */
-                departmentsDropdown.val(setup_information.divisions);
+                departmentsDropdown.val(setup_information.departments);
 
                 policies = setup_information.policies;
                 $.each(policies, function (index,value) {
@@ -134,7 +134,7 @@ require([
             setup_form = frm.serializeObject();
 
             model_save.save({
-                divisions: departmentsDropdown.val(),
+                departments: departmentsDropdown.val(),
                 locations: setup_form.locations,
                 policies: setup_form.policies
             })
