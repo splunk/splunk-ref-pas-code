@@ -1,0 +1,23 @@
+/* Policy Violations */
+#policy_violations_panel { width: 66% !important; }
+#policy_single_panel { width: 33% !important; }
+
+/* Grigori prefers the default Splunk styles here */
+/*
+.donut .arc path {
+    stroke: #fff;
+}
+.donut .centerText {
+    font-family: sans-serif;
+}
+.donut .lowerText {
+    font-family: sans-serif;
+    stroke: gray;
+    fill: gray;
+    font-weight: lighter;
+}
+.donut .titleText {
+    font-family: sans-serif;
+    font-weight: bold;
+}
+*/
