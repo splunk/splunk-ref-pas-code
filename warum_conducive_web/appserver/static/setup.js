@@ -60,11 +60,11 @@ require([
         collectionName: 'ri_setup_coll'
     });
     
-    var divisionsDropdown = new MultiDropdownView({
-        managerid: "divisions_search",
+    var departmentsDropdown = new MultiDropdownView({
+        managerid: "departments_search",
         labelField: "department",
         valueField: "department",
-        el: $("#divisions_dropdown")
+        el: $("#departments_dropdown")
     }).render();
 
     var model = new RiSetupModel();
@@ -75,7 +75,7 @@ require([
                 $("#_key").val(setup_information._key);
                 
                 /* Populate UI using setup information */
-                divisionsDropdown.val(setup_information.divisions);
+                departmentsDropdown.val(setup_information.divisions);
 
                 policies = setup_information.policies;
                 $.each(policies, function (index,value) {
@@ -134,7 +134,7 @@ require([
             setup_form = frm.serializeObject();
 
             model_save.save({
-                divisions: divisionsDropdown.val(),
+                divisions: departmentsDropdown.val(),
                 locations: setup_form.locations,
                 policies: setup_form.policies
             })
