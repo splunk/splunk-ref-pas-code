@@ -35,6 +35,11 @@
                     sum(ViolationCount)       as ViolationCount
               by department, ViolationColor
             
+            | join type=inner department [ | inputlookup ri_setup
+                                           | fields divisions
+                                           | mvexpand divisions
+                                           | rename divisions as department ]
+            
             | eval NumYellows=if(ViolationColor="Yellow", ViolationCount, 0)
             | eval NumReds=   if(ViolationColor="Red",    ViolationCount, 0)
             | stats sum(NumReds)     as NumReds,
