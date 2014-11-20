@@ -9,22 +9,23 @@ require([
     'splunkjs/mvc/simplexml/ready!',
     'underscore',
     'jquery-serialize-object',
-    'kvstore'
-], function(ignored, _, ignored, KVStore) {
+    'kvstore',
+    'splunkjs/mvc/multidropdownview'
+], function(ignored, _, ignored, KVStore, MultiDropdownView) {
 
     //Multiple field handling
     var max_fields      = 10; //maximum input boxes allowed
     var wrapper         = $(".input_fields_wrap"); //Fields wrapper
     var add_button      = $(".add_field_button"); //Add button ID
 
-    var standard_input = 
+    var STANDARD_INPUT_TEMPLATE =
         _.template(
             "<div class='control-group'>" +
                 "<input type=\"text\" name=\"<%= name%>[]\"/>" +
                 "<a href=\"#\" class=\"remove_field\"> Remove</a>" +
             "</div>");
     
-    var policies_input =
+    var POLICIES_INPUT_TEMPLATE =
         _.template(
             "<div class='policy'>"+
                 "<div class='control-group' style='float:left'>Name: <input type=\"text\" name=\"policies[][name]\"/></div> " +
@@ -40,13 +41,14 @@ require([
         field_count = parent.children('div').length
         if (field_count < max_fields) { //max input box allowed
             name = parent[0].id;
-            if (name == "policies")
-                parent.append(policies_input({id: field_count}));
-            else
-                parent.append(standard_input({name: name}));
+            if (name == "policies") {
+                parent.append(POLICIES_INPUT_TEMPLATE({id: field_count}));
+            } else {
+                parent.append(STANDARD_INPUT_TEMPLATE({name: name}));
+            }
         }
         else {
-            //TODO: Alert on max inputs
+            window.alert("Only " + max_fields + " fields are allowed per section.");
         }
     });
 
@@ -57,39 +59,40 @@ require([
     var RiSetupModel = KVStore.Model.extend({
         collectionName: 'ri_setup_coll'
     });
+    
+    var departmentsDropdown = new MultiDropdownView({
+        managerid: "departments_search",
+        labelField: "department",
+        valueField: "department",
+        el: $("#departments_dropdown")
+    }).render();
 
     var model = new RiSetupModel();
     model.fetch()
         .done(function(data, textStatus, jqXHR) {
-            if (data.length > 0)
-            {
+            if (data.length > 0) {
                 setup_information = data[0];
                 $("#_key").val(setup_information._key);
-
-                //populate multi-values for arrays
-                //TODO: encapsulate code
-                divisions = setup_information.divisions;
-                $.each(divisions,function (index,value) {
-                    wrapper = $("#divisions");
-                    $(wrapper).append(standard_input({name: wrapper[0].id }));
-                    $(wrapper).children('div').last().children('input').val(value);
-                });
+                
+                /* Populate UI using setup information */
+                departmentsDropdown.val(setup_information.departments);
 
                 policies = setup_information.policies;
-                $.each(policies,function (index,value) {
+                $.each(policies, function (index,value) {
                     wrapper = $("#policies");
-                    $(wrapper)
-                        .append(policies_input({id: 0}));
+                    wrapper.append(POLICIES_INPUT_TEMPLATE({
+                        id: 0
+                    }));
                     wrapper.children('div').last().children('div').children('input')[0].value = value.name;
                     wrapper.children('div').last().children('div').children('input')[1].value = value.code;
                     wrapper.children('div').last().children('div').children('input')[2].value = value.weight;
                 });
 
                 locations = setup_information.locations;
-                $.each(locations,function (index,value) {
+                $.each(locations, function (index,value) {
                     wrapper = $("#locations");
-                    $(wrapper).append(standard_input({name: wrapper[0].id }));
-                    $(wrapper).children('div').last().children('input').val(value);
+                    wrapper.append(STANDARD_INPUT_TEMPLATE({name: wrapper[0].id }));
+                    wrapper.children('div').last().children('input').val(value);
                 });
             }
             else {
@@ -124,14 +127,14 @@ require([
                 model_save = new RiSetupModel();
             }
             else {
-                model_save = new RiSetupModel({_key: $("#_key").val() });
+                model_save = new RiSetupModel({ _key: $("#_key").val() });
             }
 
             frm = $(document.setup_form);
             setup_form = frm.serializeObject();
 
             model_save.save({
-                divisions: setup_form.divisions,
+                departments: departmentsDropdown.val(),
                 locations: setup_form.locations,
                 policies: setup_form.policies
             })
