@@ -17,14 +17,16 @@ require([
     "underscore",
     "../app/warum_conducive_web/filter_component",
     "../app/warum_conducive_web/components/d3/d3",   // for donut series
-    "splunkjs/mvc/searchmanager"
+    "splunkjs/mvc/searchmanager",
+    "../app/warum_conducive_web/context",
 ], function(
     mvc,
     ignored,
     _,
     FilterComponent,
     d3,
-    SearchManager
+    SearchManager,
+    context
 ) {
     var trendChart = mvc.Components.getInstance("trend_chart");
     var userTable = mvc.Components.getInstance("user_table");

@@ -2,7 +2,16 @@
  * Context.js
  * Copyright Jacob Kelley
  * MIT License
+ * 
+ * Subsequent modifications have been made as part of the Warum project at
+ * Splunk, so you cannot simply drop in an upgrade for this dependency.
+ * 
+ * Modifying dependencies is generally a disrecommended practice.
  */
+ 
+define(function(require, exports, module) {
+  
+// BEGIN LIBRARY CODE
 
 var context = context || (function () {
     
@@ -251,3 +260,8 @@ var context = context || (function () {
     attachToTable: addContextToTable,
   };
 })();
+
+// END LIBRARY CODE
+
+  return context;
+});

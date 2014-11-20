@@ -1,7 +1,6 @@
 define(function(require, exports, module) {
     var mvc = require("splunkjs/mvc/mvc");
     
-    require("./context");
     require("bootstrap-tagsinput");
     
     var FilterComponent = {
