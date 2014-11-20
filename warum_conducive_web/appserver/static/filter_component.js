@@ -30,13 +30,6 @@ define(function(require, exports, module) {
             //initalize time picker and radio controls
             var timerange = mvc.Components.get("timerange");
 
-            // Event Handling
-            $("#reset_filter").on("click", function(e) {
-                $("#filter_header").hide();
-                tokens.set("filter", "*");
-                tokens.set("exclude", "*");
-            });
-
             $(document).on("click:menu", function(e) {
                 action = e.action;
                 if (e.drilldown_search != "") {

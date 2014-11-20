@@ -33,15 +33,6 @@ require([
     var tokens = mvc.Components.get("default");
     
     FilterComponent.initialize(mvc);
-    
-    // TODO: Filtering functionality triggered by clicking on the legend
-    //       of the Trend chart is currently broken. Please fix or remove.
-    tokens.set("command", "*");
-    trendChart.on("click:legend", function(e) {
-        e.preventDefault();
-        tokens.set("command", e.name2);
-        $("#filter_header").show();
-    });
 
     var menuData = [
         {
