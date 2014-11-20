@@ -22,8 +22,6 @@ require([
 ) {
     var zoomChart = mvc.Components.get("zoom_chart");
     var zoomSearch = mvc.Components.get("zoom_search");
-    var topDocumentsSearch = mvc.Components.get("top_documents_search");
-    var topEventsSearch = mvc.Components.get("top_events_search");
     
     // Update both "default" and "submitted" tokens at the same time so that
     // everything on the page gets updated appropriately.
