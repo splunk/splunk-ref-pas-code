@@ -24,35 +24,43 @@ require([
     FilterComponent,
     context
 ) {
-    var trendChart = mvc.Components.getInstance("trend_chart");
-    var userTable = mvc.Components.getInstance("user_table");
-    var documentTable = mvc.Components.getInstance("document_table");
+    // Setup a custom contextual menu that appears when clicking on
+    // the Trend chart, the Top Users table, and the Top Documents table.
+    // 
+    // The contextual menu emits "click:menu" events on the root
+    // document object when menuitems are selected.
+    setupPopupMenus();
     
-    var tokens = mvc.Components.get("default");
-    
+    // Listen for "click:menu" events and take the appropriate action,
+    // usually adding items to the custom Filter Criteria panel.
     FilterComponent.initialize(mvc);
-
-    var includeExcludeMenu = [
-        {
-            text: 'Include', 
-            splunk_action: 'include'
-        },
-        {
-            text: 'Exclude', 
-            splunk_action: 'exclude'
-        },
-    ];
     
-    var includeExcludeDrilldownMenu = _.clone(includeExcludeMenu);
-    includeExcludeDrilldownMenu.push({
-        text: 'Drilldown', 
-        splunk_action: 'drilldown',
-        search: "index=* sourcetype=Events $criteria$ | table _time Event_ID User_Name, Computer_Name, Application, Operation, Email_Domain, DNS_Hostname, Source_Directory, Source_File_Extension, Destination_Directory, Destination_File_Extension"
-    })
+    function setupPopupMenus() {
+        var trendChart = mvc.Components.getInstance("trend_chart");
+        var userTable = mvc.Components.getInstance("user_table");
+        var documentTable = mvc.Components.getInstance("document_table");
+        
+        var includeExcludeMenu = [
+            {
+                text: 'Include', 
+                splunk_action: 'include'
+            },
+            {
+                text: 'Exclude', 
+                splunk_action: 'exclude'
+            },
+        ];
+        
+        var includeExcludeDrilldownMenu = _.clone(includeExcludeMenu);
+        includeExcludeDrilldownMenu.push({
+            text: 'Drilldown', 
+            splunk_action: 'drilldown',
+            search: "index=* sourcetype=Events $criteria$ | table _time Event_ID User_Name, Computer_Name, Application, Operation, Email_Domain, DNS_Hostname, Source_Directory, Source_File_Extension, Destination_Directory, Destination_File_Extension"
+        })
 
-    // Setup custom contextual menu that appears when clicking on the tables
-    context.init({preventDoubleContext: false});
-    context.attachToChart(trendChart, includeExcludeMenu);
-    context.attachToTable(userTable, includeExcludeDrilldownMenu);
-    context.attachToTable(documentTable, includeExcludeMenu);
+        context.init({preventDoubleContext: false});
+        context.attachToChart(trendChart, includeExcludeMenu);
+        context.attachToTable(userTable, includeExcludeDrilldownMenu);
+        context.attachToTable(documentTable, includeExcludeMenu);
+    }
 });

@@ -6,6 +6,12 @@
  * Subsequent modifications have been made as part of the Warum project at
  * Splunk, so you cannot simply drop in an upgrade for this dependency.
  * 
+ * Warum-specific modifications include, at minimum:
+ *    - Make this library compatible with require.js.
+ *    - Fires a custom "click:menu" event on the root document object
+ *      when an item in a contextual menu is selected. Splunk-specific
+ *      data is appended.
+ * 
  * Modifying dependencies is generally a disrecommended practice.
  */
  
