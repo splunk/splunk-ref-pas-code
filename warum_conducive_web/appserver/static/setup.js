@@ -6,12 +6,13 @@ require.config({
 });
 
 require([
+    'splunkjs/ready!',
     'splunkjs/mvc/simplexml/ready!',
     'underscore',
     'jquery-serialize-object',
     'kvstore',
     'splunkjs/mvc/multidropdownview'
-], function(ignored, _, ignored, KVStore, MultiDropdownView) {
+], function(mvc, ignored, _, ignored, KVStore, MultiDropdownView) {
 
     //Multiple field handling
     var max_fields      = 10; //maximum input boxes allowed
