@@ -18,7 +18,8 @@
                     | where ops!=0
                     | stats stdev(ops) as SD,
                             avg(ops) as MEAN,
-                            sparkline latest(ops) as LAST_OPS by user
+                            sparkline,
+                            latest(ops) as LAST_OPS by user
                     | eval sig_mult=SD*1
                     | eval threshold = sig_mult+MEAN
                     | table user MEAN SD threshold LAST_OPS sparkline
