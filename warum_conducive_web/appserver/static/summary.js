@@ -1,5 +1,5 @@
-// Define a fake require module "tagmanager" that wraps the
-// non-require-compatible 3rd-party tagmanager.js JQuery plugin.
+// Define a fake require module "bootstrap-tagsinput" that wraps the
+// non-require-compatible 3rd-party bootstrap-tagsinput.js JQuery plugin.
 require.config({
     paths: {
         "bootstrap-tagsinput": "../app/warum_conducive_web/bootstrap-tagsinput",
