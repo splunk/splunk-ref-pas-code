@@ -49,12 +49,16 @@ class MyScript(Script):
 			# Redirect URI for installed apps
             REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob'
 
-            storage = Storage('/Volumes/DATA/clients/splunk/warum/warum-code-conducive/TA-googledrive/bin/google_drive_creds')
+            storage = Storage('google_drive_creds')
+            storage._create_file_if_needed()
             credentials = storage.get()
 
             # Create an httplib2.Http object and authorize it with our credentials
             http = httplib2.Http()
+
+            #TODO: Fix cert validation - THIS IS BAD
             http.disable_ssl_certificate_validation = True
+
             http = credentials.authorize(http)
 
             reports_service = build('admin', 'reports_v1', http=http)
