@@ -9,8 +9,9 @@ require([
     'splunkjs/mvc/simplexml/ready!',
     'underscore',
     'jquery-serialize-object',
-    'kvstore'
-], function(ignored, _, ignored, KVStore) {
+    'kvstore',
+    'splunkjs/mvc/multidropdownview'
+], function(ignored, _, ignored, KVStore, MultiDropdownView) {
 
     //Multiple field handling
     var max_fields      = 10; //maximum input boxes allowed
@@ -58,6 +59,13 @@ require([
     var RiSetupModel = KVStore.Model.extend({
         collectionName: 'ri_setup_coll'
     });
+    
+    var divisionsDropdown = new MultiDropdownView({
+        managerid: "divisions_search",
+        labelField: "department",
+        valueField: "department",
+        el: $("#divisions_dropdown")
+    }).render();
 
     var model = new RiSetupModel();
     model.fetch()
@@ -65,16 +73,9 @@ require([
             if (data.length > 0) {
                 setup_information = data[0];
                 $("#_key").val(setup_information._key);
-
-                // Populate UI using setup information
-                divisions = setup_information.divisions;
-                $.each(divisions, function (index,value) {
-                    wrapper = $("#divisions");
-                    wrapper.append(STANDARD_INPUT_TEMPLATE({
-                        name: wrapper[0].id
-                    }));
-                    wrapper.children('div').last().children('input').val(value);
-                });
+                
+                /* Populate UI using setup information */
+                divisionsDropdown.val(setup_information.divisions);
 
                 policies = setup_information.policies;
                 $.each(policies, function (index,value) {
@@ -133,7 +134,7 @@ require([
             setup_form = frm.serializeObject();
 
             model_save.save({
-                divisions: setup_form.divisions,
+                divisions: divisionsDropdown.val(),
                 locations: setup_form.locations,
                 policies: setup_form.policies
             })

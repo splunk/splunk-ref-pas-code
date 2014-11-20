@@ -1,11 +1,22 @@
 <dashboard script="setup.js">
     <label>Setup</label>
+    <search id="divisions_search">
+        <query>
+            `warum_index` | stats count by department
+        </query>
+        <earliest>@d</earliest>
+        <latest>now</latest>
+    </search>
     <row>
         <html>
             <form name="setup_form">
                 <input id="_key" type="hidden"></input>
                 <div id="divisions" class="input_fields_wrap">
                     <h3>Divisions: </h3>
+                    <div id="divisions_dropdown"></div>
+                    <p>
+                        <em>If the dropdown above has no choices then no events have been generated yet.</em>
+                    </p>
                 </div>
                 <button id="divisions_button" class="btn btn-primary btn-small add_field_button">Add Division</button>
                 <hr/>
