@@ -1,7 +1,9 @@
-#activity_levels_panel {
-    width: 33% !important;
-}
+/* Custom layout for first row */
+#activity_levels_panel { width: 33% !important; }
+#trend_panel { width: 67% !important; }
 
-#trend_panel {
-    width: 67% !important;
+/* Force calendar to only show one month by limiting width */
+#activity_levels_panel .panel-element-row {
+    width: 250px;
+    margin-left: auto; margin-right: auto;
 }
