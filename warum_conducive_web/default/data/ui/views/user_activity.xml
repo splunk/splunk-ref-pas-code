@@ -40,7 +40,7 @@
     <row>
         <panel id="activity_levels_panel">
             <html>
-                <h3>Activity Levels</h3>
+                <h3>Activity Level Heatmap</h3>
                 
                 <div id="activity_levels"></div>
             </html>

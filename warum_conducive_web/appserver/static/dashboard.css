@@ -1,0 +1,3 @@
+/* Hide dashboard editing buttons */
+.splunk-dashboard-controls .edit-btn { display: none; }
+.splunk-dashboard-controls .more-info-btn { display: none; }

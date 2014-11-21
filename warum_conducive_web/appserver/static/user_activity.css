@@ -1,6 +1,6 @@
 /* Custom layout for first row */
-#activity_levels_panel { width: 33% !important; }
-#trend_panel { width: 67% !important; }
+#activity_levels_panel { width: 30% !important; }
+#trend_panel { width: 70% !important; }
 
 /* Force calendar to only show one month by limiting width */
 #activity_levels_panel .panel-element-row {
