@@ -22,12 +22,12 @@
                 <div id="locations" class="input_fields_wrap">
                     <h3>Locations:</h3>
                 </div>
-                <button class="btn btn-primary btn-small add_field_button" id="locations_button">Add Location</button>
+                <button id="locations_button" class="btn btn-primary btn-small add_field_button">Add Location</button>
                 <hr/>
                 <div id="policies" class="input_fields_wrap" style="clear:both;">
                     <h3>Policies:</h3>
                 </div>
-                <button class="btn btn-primary btn-small add_field_button">Add Policy</button>
+                <button id="policies_button" class="btn btn-primary btn-small add_field_button">Add Policy</button>
                 <hr/>
                 <input type="button" id="save" class="btn btn-primary" value="Save"></input>
 

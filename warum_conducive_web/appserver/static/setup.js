@@ -76,9 +76,9 @@ require([
                 $("#_key").val(setup_information._key);
                 
                 /* Populate UI using setup information */
-                departmentsDropdown.val(setup_information.departments);
+                departmentsDropdown.val(setup_information.departments || []);
 
-                policies = setup_information.policies;
+                policies = setup_information.policies || [];
                 $.each(policies, function (index,value) {
                     wrapper = $("#policies");
                     wrapper.append(POLICIES_INPUT_TEMPLATE({
@@ -89,7 +89,7 @@ require([
                     wrapper.children('div').last().children('div').children('input')[2].value = value.weight;
                 });
 
-                locations = setup_information.locations;
+                locations = setup_information.locations || [];
                 $.each(locations, function (index,value) {
                     wrapper = $("#locations");
                     wrapper.append(STANDARD_INPUT_TEMPLATE({name: wrapper[0].id }));
