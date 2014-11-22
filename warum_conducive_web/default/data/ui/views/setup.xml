@@ -1,4 +1,4 @@
-<dashboard script="setup.js">
+<dashboard script="setup.js" stylesheet="setup.css">
     <label>Setup</label>
     <search id="departments_search">
         <query>
@@ -9,9 +9,9 @@
     </search>
     <row>
         <html>
-            <form name="setup_form">
+            <form>
                 <input id="_key" type="hidden"></input>
-                <div id="departments" class="input_fields_wrap">
+                <div id="departments">
                     <h3>Departments to show on Summary dashboard: </h3>
                     <div id="departments_dropdown"></div>
                     <p>
@@ -19,25 +19,16 @@
                     </p>
                 </div>
                 <hr/>
-                <div id="locations" class="input_fields_wrap">
+                <div id="violation_types">
+                    <h3>Violation Types:</h3>
+                </div>
+                <hr/>
+                <div id="locations">
                     <h3>Locations:</h3>
+                    <input type="checkbox"/> Enabled<br/>
                 </div>
-                <button id="locations_button" class="btn btn-primary btn-small add_field_button">Add Location</button>
                 <hr/>
-                <div id="policies" class="input_fields_wrap" style="clear:both;">
-                    <h3>Policies:</h3>
-                </div>
-                <button id="policies_button" class="btn btn-primary btn-small add_field_button">Add Policy</button>
-                <hr/>
-                <input type="button" id="save" class="btn btn-primary" value="Save"></input>
-
-                <div id="saveModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-sm">
-                        <div class="modal-content">
-                            Settings successfully saved. 
-                        </div>
-                    </div>
-                </div>
+                <input id="save" type="button" class="btn btn-primary" value="Save"/>
             </form>
         </html>
     </row>
