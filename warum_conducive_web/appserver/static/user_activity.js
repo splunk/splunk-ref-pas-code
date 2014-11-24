@@ -20,9 +20,6 @@ require([
     $,
     SearchManager
 ) {
-    var zoomChart = mvc.Components.get("zoom_chart");
-    var zoomSearch = mvc.Components.get("zoom_search");
-    
     // Update both "default" and "submitted" tokens at the same time so that
     // everything on the page gets updated appropriately.
     var defaultTokens = mvc.Components.get("default");
@@ -42,34 +39,44 @@ require([
         }
     };
     
-    zoomChart.on("selection", function(e) {
-        // Prevent the zoom chart from automatically zooming to the selection
-        e.preventDefault();
-        
-        // Update trend chart's time range
-        tokens.set({
-            "trendTime.earliest": e.startValue,
-            "trendTime.latest": e.endValue
-        });
-    });
+    linkTrendChartToZoomChart();
+    createCalendarHeatmap();
     
-    // Propagate times from global -> trend continuously
-    tokens.set({
-        "trendTime.earliest": tokens.get("time.earliest"),
-        "trendTime.latest": tokens.get("time.latest")
-    });
-    tokens.on("change:time.earliest change:time.latest", function(model, value) {
+    function linkTrendChartToZoomChart() {
+        var zoomChart = mvc.Components.get("zoom_chart");
+        var zoomSearch = mvc.Components.get("zoom_search");
+        
+        zoomChart.on("selection", function(e) {
+            // Prevent the zoom chart from automatically zooming to the selection
+            e.preventDefault();
+            
+            // Update trend chart's time range
+            tokens.set({
+                "trendTime.earliest": e.startValue,
+                "trendTime.latest": e.endValue
+            });
+        });
+        
+        // Propagate times from global -> trend continuously
         tokens.set({
             "trendTime.earliest": tokens.get("time.earliest"),
             "trendTime.latest": tokens.get("time.latest")
         });
-    });
+        tokens.on("change:time.earliest change:time.latest", function(model, value) {
+            tokens.set({
+                "trendTime.earliest": tokens.get("time.earliest"),
+                "trendTime.latest": tokens.get("time.latest")
+            });
+        });
+    }
     
-    new CalendarHeatMap({
-        id: "activity_levels",
-        managerid: "activity_levels_search",
-        domain: "month",
-        subDomain: "x_day",
-        el: $("#activity_levels")
-    }).render();
+    function createCalendarHeatmap() {
+        new CalendarHeatMap({
+            id: "activity_levels",
+            managerid: "activity_levels_search",
+            domain: "month",
+            subDomain: "x_day",
+            el: $("#activity_levels")
+        }).render();
+    }
 });
