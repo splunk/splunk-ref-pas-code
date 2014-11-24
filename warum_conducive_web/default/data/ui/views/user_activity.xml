@@ -1,4 +1,4 @@
-<form script="user_activity.js,provider_stats.js" stylesheet="user_activity.css,provider_stats.css">
+<form script="user_activity.js,provider_stats.js,user_info.js" stylesheet="user_activity.css,provider_stats.css,user_info.css">
     <label>User Activity</label>
     <search id="base_search">
         <query>
@@ -21,6 +21,11 @@
         <earliest>$time.earliest$</earliest>
         <latest>$time.latest$</latest>
     </search>
+	<search id="user_info_search">
+        <query>
+            | warumgetuserinfo user=$user|s$
+        </query>
+    </search>
     <fieldset submitButton="false">
         <input type="text" token="user">
             <label>Username</label>
@@ -37,9 +42,7 @@
     <row>
         <panel>
             <html>
-                <div style="float: left; padding: .7em; border: 1px dashed black;">
-                    Insert user information here. (DVPL-5839)
-                </div>
+                <div id="user_info"></div>
                 <div id="provider_stats"></div>
             </html>
         </panel>
