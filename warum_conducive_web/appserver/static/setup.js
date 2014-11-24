@@ -11,6 +11,9 @@ require([
     'kvstore',
     'splunkjs/mvc/multidropdownview'
 ], function(mvc, ignored, _, KVStore, MultiDropdownView) {
+    // TODO: Add error handling for I/O errors.
+    //       No time to fix now since feature freeze in a few hours...
+    
     var VIOLATION_TYPE_ROW_TEMPLATE =
         _.template(
             "<div class='violation_type'>"+
@@ -51,23 +54,36 @@ require([
         collectionName: 'ri_setup_coll'
     });
     
+    var ViolationTypeModel = KVStore.Model.extend({
+        collectionName: 'violation_types'
+    });
+    
+    var ViolationTypeCollection = KVStore.Collection.extend({
+        collectionName: 'violation_types',
+        model: ViolationTypeModel
+    });
+    
+    var oldSetupModelId;
+    
     // Fetch setup data and populate form
-    new SetupModel().fetch()
-        .done(function(data, textStatus, jqXHR) {
-            if (data.length == 0) {
-                // No preexisting setup model exists
-                $("#_key").val("_new");
+    new SetupModel().fetch().then(function(setupDatas, textStatus, jqXHR) {
+        new ViolationTypeCollection().fetch().then(function(violationTypes, textStatus, jqXHR) {
+            if (setupDatas.length == 0) {
+                // Create new model upon save
+                oldSetupModelId = "_new";
             } else {
-                var setupData = data[0];
+                var setupData = setupDatas[0];
                 
-                // Save original model ID in form
-                $("#_key").val(setupData._key);
+                // Update existing model upon save
+                oldSetupModelId = setupData._key
                 
                 // Populate departments in the UI
                 departmentsDropdown.val(setupData.departments || []);
 
                 // Populate violation types in the UI
-                var violationTypes = setupData.violationTypes || DEFAULT_VIOLATION_TYPES;
+                if (violationTypes.length == 0) {
+                    violationTypes = DEFAULT_VIOLATION_TYPES
+                }
                 _.each(violationTypes, function(violationType) {
                     var rowElement = $(VIOLATION_TYPE_ROW_TEMPLATE())
                         .appendTo($("#violation_types"));
@@ -77,13 +93,18 @@ require([
                     $('.weight input', rowElement).val(violationType.weight);
                 });
             }
-        })
-        .fail(function(jqXHR, textStatus, errorThrown) {
-            // nothing
+            
+            // Now that form is loaded, allow it to be saved
+            $('#save').removeClass('disabled');
         });
-
+    });
+    
     // When save button clicked, update setup configuration
     $("#save").click(function() {
+        if ($('#save').hasClass('disabled')) {
+            return;
+        }
+        
         // Clear previous validation error markers
         $('.violation_type .weight input').parent('span').removeClass("error");
         
@@ -101,11 +122,6 @@ require([
         } else if (notNumbers) {
             window.alert("Some specified violation type weights are not numbers.");
         } else {
-            var oldModelId = $("#_key").val();
-            var newModel = (oldModelId == "_new")
-                ? new SetupModel()
-                : new SetupModel({ _key: oldModelId });
-
             var violationTypes = [];
             _.each($('.violation_type'), function(violationTypeEl, index) {
                 violationTypes.push({
@@ -119,14 +135,68 @@ require([
             var newSetupData = {
                 departments: departmentsDropdown.val(),
                 // TODO: Delete unused field
-                locations: [],
-                violationTypes: violationTypes
+                locations: []
             };
             
-            newModel.save(newSetupData).then(function() {
-                console.log('Model saved with id ' + newModel.id);
-                window.location.href = "./summary";
+            var newSetupModel = (oldSetupModelId == "_new")
+                ? new SetupModel()
+                : new SetupModel({ _key: oldSetupModelId });
+            
+            newSetupModel.save(newSetupData).then(function() {
+                setCollectionData(
+                    ViolationTypeCollection,
+                    ViolationTypeModel,
+                    violationTypes,
+                    function() {
+                        console.log('Model saved with id ' + newSetupModel.id);
+                        window.location.href = "./summary";
+                    });
             });
         }
     });
+
+    // Replaces the contents of the specified collection with
+    // new models initialized with the specified data.
+    function setCollectionData(Collection, Model, modelDatas, done) {
+        destroyModelsIn(Collection, function() {
+            saveModels(Model, modelDatas, done);
+        });
+    }
+    
+    // Destroys all models in the specified KV Store collection.
+    function destroyModelsIn(Collection, done) {
+        var collection = new Collection();
+        collection.fetch().then(function() {
+            var modelIndex = collection.models.length - 1;
+            
+            var deleteLoop = function() {
+                if (modelIndex >= 0) {
+                    collection.models[modelIndex].destroy().then(function() {
+                        modelIndex--;
+                        deleteLoop();
+                    });
+                } else {
+                    done();
+                }
+            };
+            deleteLoop();
+        });
+    }
+    
+    // Saves all specified models.
+    function saveModels(Model, modelDatas, done) {
+        var modelIndex = 0;
+        
+        var saveLoop = function() {
+            if (modelIndex < modelDatas.length) {
+                new Model().save(modelDatas[modelIndex]).then(function() {
+                    modelIndex++;
+                    saveLoop();
+                });
+            } else {
+                done();
+            }
+        };
+        saveLoop();
+    }
 });
