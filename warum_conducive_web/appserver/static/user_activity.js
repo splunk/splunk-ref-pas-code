@@ -65,18 +65,6 @@ require([
         });
     });
     
-    new SearchManager({
-        "id": "activity_levels_search",
-        "earliest_time": mvc.tokenSafe("$time.earliest$"),
-        "latest_time": mvc.tokenSafe("$time.latest$"),
-        "cancelOnUnload": true,
-        "status_buckets": 0,
-        "search": mvc.tokenSafe("index=warum user=$user$ | timechart span=1d count"),
-        "auto_cancel": 90,
-        "preview": true,
-        "runWhenTimeIsUndefined": false
-    });
-    
     new CalendarHeatMap({
         id: "activity_levels",
         managerid: "activity_levels_search",
