@@ -1104,6 +1104,7 @@ def credentials_from_code(client_id, client_secret, scope, code,
                              redirect_uri=redirect_uri, user_agent=user_agent,
                              auth_uri=auth_uri, token_uri=token_uri,
                              revoke_uri=revoke_uri)
+  
 
   credentials = flow.step2_exchange(code, http=http)
   return credentials
@@ -1278,6 +1279,8 @@ class OAuth2WebServerFlow(Flow):
 
     if http is None:
       http = httplib2.Http()
+    #TODO: Fix cert validation - THIS IS BAD
+    http.disable_ssl_certificate_validation = True
 
     resp, content = http.request(self.token_uri, method='POST', body=body,
                                  headers=headers)

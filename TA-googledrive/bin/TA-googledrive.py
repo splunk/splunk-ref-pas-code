@@ -1,4 +1,5 @@
 import sys
+import os
 
 from splunklib.modularinput import *
 import httplib2
@@ -40,17 +41,20 @@ class MyScript(Script):
         # and waits for XML on stdout describing events.
         for input_name,input_item in inputs.inputs.iteritems():
         	# Copy your credentials from the console
+            ew.log("INFO","Starting input")
             CLIENT_ID = input_item["client_id"]
             CLIENT_SECRET = input_item["client_secret"]
-
+            INTERVAL = input_item["interval"]
+            ew.log("INFO", 'client_id=%s client_secret=%s interval=%s' % (CLIENT_ID,CLIENT_SECRET,INTERVAL))
             # Check https://developers.google.com/admin-sdk/reports/v1/guides/authorizing for all available scopes
             OAUTH_SCOPE = 'https://www.googleapis.com/auth/admin.reports.audit.readonly'
 
 			# Redirect URI for installed apps
             REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob'
 
-            storage = Storage('google_drive_creds')
-            storage._create_file_if_needed()
+            ew.log("INFO","Getting credentials")
+            ew.log("INFO",os.path.expandvars('$SPLUNK_HOME/bin/google_drive_creds'))
+            storage = Storage(os.path.expandvars('$SPLUNK_HOME/bin/google_drive_creds'))
             credentials = storage.get()
 
             # Create an httplib2.Http object and authorize it with our credentials
@@ -58,48 +62,53 @@ class MyScript(Script):
 
             #TODO: Fix cert validation - THIS IS BAD
             http.disable_ssl_certificate_validation = True
-
             http = credentials.authorize(http)
-
             reports_service = build('admin', 'reports_v1', http=http)
 
-            # Set start time to one week ago, to avoid too many results
             dtnow = datetime.now()
             dtutcnow = datetime.utcnow()
             delta = dtnow - dtutcnow
             hh,mm = divmod((delta.days * 24*60*60 + delta.seconds + 30) // 60, 60)
             timezone = "%+03d:%02d" % (hh, mm)
 
-            today = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
-            yesterday = today - timedelta(days=1)
-            start_time = yesterday.isoformat('T') + timezone
-            end_time = today.isoformat('T') + timezone
+            now = datetime.now().replace(second=0, microsecond=0)
+            begin = now - timedelta(seconds=int(INTERVAL))
+            start_time = begin.isoformat('T') + timezone
+            end_time = now.isoformat('T') + timezone
+
 
             activity_stream = []
             page_token = None
             params = {'applicationName': 'drive', 'userKey': 'all', 'startTime': start_time, 'endTime' : end_time}
-
             while True:
                 try:
                     if page_token:
                         param['pageToken'] = page_token
                     current_page = reports_service.activities().list(**params).execute()
-                    activity_stream.extend(current_page['items'])
+                    if current_page.get('items'):
+                        activity_stream.extend(current_page['items'])
                     page_token = current_page.get('nextPageToken')
                     if not page_token:
                         break
                 except errors.HttpError as error:
-                    print 'An error occurred: %s' % error
+                    ew.log("ERROR",'An error occurred: %s' % error)
                     break
-
             for activity in activity_stream:
                 time = activity["id"]["time"]
-                user = activity["actor"]["email"]
+                email = activity["actor"]["email"]
                 ip_address = activity.get("ipAddress")
                 for event in activity["events"]:
+                    event_type = event["type"]
+                    event_name = event["name"]
+                    parameters = ""
+                    for parameter in event["parameters"]:
+                        value = parameter.get("value")
+                        if value == None:
+                            value = parameter.get("boolValue")
+                        parameters += '%s="%s" ' % (parameter["name"], value)
                     raw_event = Event()
                     raw_event.stanza = input_name
-                    raw_event.data = '%s user=%s src_ip=%s type=%s' % (time,user,ip_address,event["type"])
+                    raw_event.data = '%s email=%s src=%s type=%s event=%s %s' % (time,email,ip_address,event_type,event_name,parameters)
                     ew.write_event(raw_event)
 
 if __name__ == "__main__":
