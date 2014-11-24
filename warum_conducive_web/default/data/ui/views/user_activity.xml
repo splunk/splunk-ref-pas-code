@@ -2,7 +2,7 @@
     <label>User Activity</label>
     <search id="base_search">
         <query>
-            index=warum sourcetype=ri:pas:application user=$user|s$ | bucket span=5m _time | stats count by _time event_name event_target
+            index=warum user=$user|s$ | bucket span=5m _time | stats count by _time event_name event_target
         </query>
         <earliest>$time.earliest$</earliest>
         <latest>$time.latest$</latest>
@@ -56,7 +56,7 @@
             <chart id="trend_chart">
                 <title>Trend</title>
                 <search>
-                    <query>index=warum sourcetype=ri:pas:application user=$user$ | bucket span=5m _time | stats count by _time event_name event_target | timechart sum(count) by event_name</query>
+                    <query>index=warum user=$user$ | bucket span=5m _time | stats count by _time event_name event_target | timechart sum(count) by event_name</query>
                     <earliest>$trendTime.earliest$</earliest>
                     <latest>$trendTime.latest$</latest>
                 </search>
@@ -67,7 +67,7 @@
             </chart>
             <chart id="zoom_chart">
                 <search id="zoom_search">
-                    <query>index=warum sourcetype=ri:pas:application user=$user$ | bucket span=5m _time | stats count by _time event_name user | timechart sum(count)</query>
+                    <query>index=warum user=$user$ | bucket span=5m _time | stats count by _time event_name user | timechart sum(count)</query>
                     <earliest>$time.earliest$</earliest>
                     <latest>$time.latest$</latest>
                 </search>
