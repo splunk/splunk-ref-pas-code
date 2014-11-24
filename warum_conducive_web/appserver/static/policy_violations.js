@@ -52,6 +52,12 @@ require([
                 var numReds = row[2];
                 var totalWeight = row[3];
                 
+                if (totalWeight == null) {
+                    totalWeight = 0;
+                } else {
+                    totalWeight = Math.round(totalWeight);
+                }
+                
                 var colorData = [];
                 if (numYellows == 0 && numReds == 0) {
                     colorData = [{ color: 'gray', size: 1 }];
@@ -69,7 +75,7 @@ require([
                 donutSeriesData.push({
                     data: colorData,
                     titleText: department,
-                    centerText: (totalWeight == null) ? "0" : totalWeight,
+                    centerText: totalWeight,
                     // TODO: Compute % difference from last period
                     lowerText: ""
                 });
