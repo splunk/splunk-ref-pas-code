@@ -24,7 +24,10 @@
                        | lookup employee_details user
                        | stats count as ViolationCount by department
                        | eval ViolationType="Excessive_Access" ]
-            | lookup violation_info ViolationType
+            | lookup violation_types id AS ViolationType
+                           OUTPUTNEW title AS ViolationTypeTitle,
+                                     color AS ViolationColor,
+                                     weight AS ViolationWeight,
             | eval TotalViolationWeight = ViolationCount*ViolationWeight
         </query>
         <earliest>@d</earliest>
