@@ -1,7 +1,7 @@
 <nav color="205365">
     <view name="summary" default="true"/>
     <view name="user_activity"/>
-    <collection label="Suspicious Document Access">
+    <collection label="Suspicious Activity">
         <view name="offhours_document_access"/>
         <view name="terminated_employee_document_access"/>
         <view name="anomalous_activity"/>

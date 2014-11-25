@@ -1,5 +1,5 @@
 <form>
-    <label>Off-Hours Document Access</label>
+    <label>Off-Hours Accesses</label>
     <fieldset autoRun="true" submitButton="false">
         <input type="time" searchWhenChanged="true">
             <default>
@@ -10,7 +10,7 @@
     </fieldset>
     <row>
         <chart>
-            <title>Documents Accessed Outside Working Hours</title>
+            <title>Accesses Outside Working Hours</title>
             <searchString>| pivot ri_pas_datamodel Invalid_Time_Access count(Invalid_Time_Access) AS count SPLITROW _time AS _time PERIOD auto SORT 0 _time ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 0 SHOWOTHER 1</searchString>
             <option name="charting.chart">line</option>
         </chart>
