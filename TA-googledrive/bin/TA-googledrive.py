@@ -40,13 +40,11 @@ class MyScript(Script):
         # streams XML describing the inputs to stdin,
         # and waits for XML on stdout describing events.
         for input_name,input_item in inputs.inputs.iteritems():
-        	# Copy your credentials from the console
             ew.log("INFO","Starting input")
             CLIENT_ID = input_item["client_id"]
             CLIENT_SECRET = input_item["client_secret"]
             INTERVAL = input_item["interval"]
             ew.log("INFO", 'client_id=%s client_secret=%s interval=%s' % (CLIENT_ID,CLIENT_SECRET,INTERVAL))
-            # Check https://developers.google.com/admin-sdk/reports/v1/guides/authorizing for all available scopes
             OAUTH_SCOPE = 'https://www.googleapis.com/auth/admin.reports.audit.readonly'
 
 			# Redirect URI for installed apps
