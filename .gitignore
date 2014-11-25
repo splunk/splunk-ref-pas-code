@@ -23,3 +23,5 @@ local.meta
 build
 .build
 *.orig.pre41
+
+TA-googledrive/bin/google_drive_creds
