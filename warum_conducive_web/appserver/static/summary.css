@@ -5,3 +5,11 @@
 }
 .filter { background-color: #273542; }
 .exclude { background-color: #E73E2E; }
+
+/* Make contextual menus appear at a sane location and size,
+ * overriding Splunk's Bootstrap. */
+.dropdown-menu {
+    margin-top: -20px;
+    margin-left: 0px;
+    width: 10em;
+}
