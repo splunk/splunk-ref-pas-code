@@ -1,5 +1,5 @@
 <form>
-    <label>Anomalous Activity</label>
+    <label>Users with Excessive Accesses</label>
     <fieldset autoRun="true" submitButton="false">
         <input type="time" searchWhenChanged="true">
             <default>

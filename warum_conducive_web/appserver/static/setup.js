@@ -37,7 +37,7 @@ require([
         },
         {
             id: 'Excessive_Access',
-            title: 'Users with Excessive Hourly Accesses',
+            title: 'Users with Excessive Accesses',
             color: 'Yellow',
             weight: 1.0
         }
