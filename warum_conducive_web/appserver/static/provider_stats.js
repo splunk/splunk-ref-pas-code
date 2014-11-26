@@ -22,7 +22,13 @@ require([
         view.html("Looking for events...");
         
         var providerStatsSearch = mvc.Components.get("provider_stats_search");
-        providerStatsSearch.data("results").on("data", function(resultsModel) {
+        providerStatsSearch.data("results", {
+            // HACK: By default, no "data" event is fired when no results are
+            //       found. Override so that it does fire in this case.
+            condition: function(manager, job) {
+                return (job.properties() || {}).isDone;
+            }
+        }).on("data", function(resultsModel) {
             var rows = resultsModel.data().rows;
             if (rows.length === 0) {
                 view.html("No data providers found.");
