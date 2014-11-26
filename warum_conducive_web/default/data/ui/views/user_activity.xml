@@ -21,7 +21,7 @@
         <earliest>$time.earliest$</earliest>
         <latest>$time.latest$</latest>
     </search>
-	<search id="user_info_search">
+    <search id="user_info_search">
         <query>
             | warumgetuserinfo user=$user|s$
         </query>

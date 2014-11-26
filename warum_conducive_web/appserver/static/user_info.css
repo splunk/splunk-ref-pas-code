@@ -11,48 +11,48 @@
 #user_info .user_info_box:first-child { margin-left: 0; }
 #user_info .user_info_box             { margin-left: 1em; }
 #user_info .user_info_box .user_fullname {
-	float:left; /* add this */
+    float:left; /* add this */
     font-family: sans-serif;
     font-size: 16px;
     line-height: 16px;
-	margin-right:2px;
-	border-right:1px solid black;
-	padding-right: 2px;
+    margin-right:2px;
+    border-right:1px solid black;
+    padding-right: 2px;
 }
 #user_info .user_info_box .user_email {
-	float:left;
-	border-right:1px solid black;
-	padding-right: 2px;
-	padding-left: 2px;
+    float:left;
+    border-right:1px solid black;
+    padding-right: 2px;
+    padding-left: 2px;
 }
 #user_info .user_info_box .user_phone {
-	float:left;
-	padding-left: 2px;
+    float:left;
+    padding-left: 2px;
 }
 #user_info .user_info_box .company_name {
-	float:left;
-	border-right:1px solid black;
-	padding-right: 2px;
-	clear: both;
+    float:left;
+    border-right:1px solid black;
+    padding-right: 2px;
+    clear: both;
 }
 #user_info .user_info_box .user_role {
-	float:left;
-	padding-left: 2px;
+    float:left;
+    padding-left: 2px;
 }
 #user_info .user_info_box .company_address {
-	float:left;
-	border-right:1px solid black;
-	padding-right: 2px;
-	clear: both;
+    float:left;
+    border-right:1px solid black;
+    padding-right: 2px;
+    clear: both;
 }
 #user_info .user_info_box .company_phone {
-	float:left;
-	padding-left: 2px;
-	
+    float:left;
+    padding-left: 2px;
+    
 }
 #user_info .user_info_box .user_image {
-	float:left;
-	padding-right: 2px;
-	clear: both;
+    float:left;
+    padding-right: 2px;
+    clear: both;
 }
 
