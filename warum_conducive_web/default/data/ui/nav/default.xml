@@ -6,5 +6,6 @@
         <view name="terminated_employee_document_access"/>
         <view name="anomalous_activity"/>
     </collection>
+    <view name="customer_monitor"/>
     <view name="setup"/>
 </nav>
