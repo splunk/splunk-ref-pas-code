@@ -54,7 +54,7 @@
                     }
                 }'></div>
                 
-                <div id="dendrogram" class="splunk-view" data-require="app/warum_conducive_web/dendrogram/dendrogram" data-options='{
+                <div id="dendrogram" class="splunk-view" data-require="app/warum_conducive_web/components/dendrogram/dendrogram" data-options='{
                     "managerid": "dendrogram_search",
                     "root_label": {
                         "type": "token_safe",
