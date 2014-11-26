@@ -1,72 +1,72 @@
 <form script="autodiscover.js">
-  <label>Customer Monitor</label>
-  <fieldset submitButton="false" autoRun="true">
-    <input type="text" token="customer" searchWhenChanged="true">
-      <label>Enter customer name:</label>
-      <default>*</default>
-    </input>
-    <input type="time">
-      <label></label>
-      <default>
-        <earliest>-24h@h</earliest>
-        <latest>now</latest>
-      </default>
-    </input>
-  </fieldset>
-  <row>
-    <single>
-      <title>Total events by all users</title>
-      <searchString>
-        index=warum customer_name=$customer$ | stats count
-      </searchString>   
-    </single>
-    <single>
-      <title>Total number of departments involved</title>
-      <searchString>
-        index=warum customer_name=$customer$ | stats dc(department)
-      </searchString>   
-    </single>    
-    <single>
-      <title>Total number of users involved</title>
-      <searchString>
-        index=warum customer_name=$customer$ | stats dc(user)
-      </searchString>   
-    </single>
-  </row>
-  <row>
-    <panel>
-      <html>
-        <h2>Breakdown by departments and users interacting with PII documents pertaining to the customer(s):</h2>
-        
-        <div id="dendrogram_search" class="splunk-manager" data-require="splunkjs/mvc/searchmanager" data-options='{
-          "search": {
-            "type": "token_safe",
-            "value": "index=warum customer_name=$$customer$$| stats count by department department_group user "
-          },
-          "preview": true,
-          "earliest_time": {
-            "type": "token_safe",
-            "value": "$$earliest$$"
-          },
-          "latest_time": {
-            "type": "token_safe",
-            "value": "$$latest$$"
-          }
-        }'></div>
-        
-        <div id="dendrogram" class="splunk-view" data-require="app/warum_conducive_web/dendrogram/dendrogram" data-options='{
-          "managerid": "dendrogram_search",
-          "root_label": {
-            "type": "token_safe",
-            "value":"$$customer$$"
-          },
-          "right": 600,
-          "height": 600,
-          "initial_open_lavel": 2,
-          "node_outline_color": "#415e70",
-          "node_close_color": "#b9d8eb"
-        }'></div>
-      </html>
-    </panel>
-  </row>
+    <label>Customer Monitor</label>
+    <fieldset submitButton="false" autoRun="true">
+        <input type="text" token="customer" searchWhenChanged="true">
+            <label>Enter customer name:</label>
+            <default>*</default>
+        </input>
+        <input type="time">
+            <label></label>
+            <default>
+                <earliest>-24h@h</earliest>
+                <latest>now</latest>
+            </default>
+        </input>
+    </fieldset>
+    <row>
+        <single>
+            <title>Total events by all users</title>
+            <searchString>
+                index=warum customer_name=$customer$ | stats count
+            </searchString>   
+        </single>
+        <single>
+            <title>Total number of departments involved</title>
+            <searchString>
+                index=warum customer_name=$customer$ | stats dc(department)
+            </searchString>   
+        </single>    
+        <single>
+            <title>Total number of users involved</title>
+            <searchString>
+                index=warum customer_name=$customer$ | stats dc(user)
+            </searchString>   
+        </single>
+    </row>
+    <row>
+        <panel>
+            <html>
+                <h2>Breakdown by departments and users interacting with PII documents pertaining to the customer(s):</h2>
+                
+                <div id="dendrogram_search" class="splunk-manager" data-require="splunkjs/mvc/searchmanager" data-options='{
+                    "search": {
+                        "type": "token_safe",
+                        "value": "index=warum customer_name=$$customer$$| stats count by department department_group user "
+                    },
+                    "preview": true,
+                    "earliest_time": {
+                        "type": "token_safe",
+                        "value": "$$earliest$$"
+                    },
+                    "latest_time": {
+                        "type": "token_safe",
+                        "value": "$$latest$$"
+                    }
+                }'></div>
+                
+                <div id="dendrogram" class="splunk-view" data-require="app/warum_conducive_web/dendrogram/dendrogram" data-options='{
+                    "managerid": "dendrogram_search",
+                    "root_label": {
+                        "type": "token_safe",
+                        "value":"$$customer$$"
+                    },
+                    "right": 600,
+                    "height": 600,
+                    "initial_open_lavel": 2,
+                    "node_outline_color": "#415e70",
+                    "node_close_color": "#b9d8eb"
+                }'></div>
+            </html>
+        </panel>
+    </row>
 </form>
