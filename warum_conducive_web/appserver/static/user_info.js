@@ -26,7 +26,13 @@ require([
     view.html("Getting user info...");
     var userInfoSearch = mvc.Components.get("user_info_search");
     
-    userInfoSearch.data("results").on("data", function(resultsModel) {
+    userInfoSearch.data("results", {
+        // HACK: By default, no "data" event is fired when no results are
+        //       found. Override so that it does fire in this case.
+        condition: function(manager, job) {
+            return (job.properties() || {}).isDone;
+        }
+    }).on("data", function(resultsModel) {
         var rows = resultsModel.data().rows;
         if (rows.length === 0) {
             view.html("No user information found.");
