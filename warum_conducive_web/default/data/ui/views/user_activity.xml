@@ -1,4 +1,4 @@
-<form script="user_activity.js,provider_stats.js,user_info.js" stylesheet="user_activity.css,provider_stats.css,user_info.css">
+<form script="user_activity.js,provider_stats.js,user_info.js,table_icons_rangemap.js" stylesheet="user_activity.css,provider_stats.css,user_info.css,table_decorations.css">
     <label>User Activity</label>
     <search id="base_search">
         <query>
@@ -112,5 +112,14 @@
                 <option name="count">10</option>
             </table>
         </panel>
+    </row>
+	 <row>
+		<table id="table1">
+			<title>Activity Log: All</title>
+			<searchString>`warum_index` user=$user$  DOCUMENT=* | eval range_color=case(command == "Connect", 1, command == "Select", 1, command == "Update", 2, command == "Insert", 2, command == "read", 1, command == "download", 1, command == "getattr", 1, command == "edit", 2) | rangemap field=range_color low=0-1 elevated=2-3 default=severe| table range, DOCUMENT, _time, command| rename DOCUMENT as "Source File or URL", _time as Time, command as Type |convert ctime(Time)</searchString>
+			<earliest>$time.earliest$</earliest>
+            <latest>$time.latest$</latest>
+			<option name="drilldown">none</option>
+		</table>
     </row>
 </form>
