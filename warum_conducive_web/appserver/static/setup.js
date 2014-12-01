@@ -133,9 +133,7 @@ require([
             });
             
             var newSetupData = {
-                departments: departmentsDropdown.val(),
-                // TODO: Delete unused field
-                locations: []
+                departments: departmentsDropdown.val()
             };
             
             var newSetupModel = (oldSetupModelId == "_new")

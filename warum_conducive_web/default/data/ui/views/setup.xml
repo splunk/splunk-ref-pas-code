@@ -23,11 +23,6 @@
                     <h3>Violation Types:</h3>
                 </div>
                 <hr/>
-                <div id="locations">
-                    <h3>Locations:</h3>
-                    <input type="checkbox"/> Enabled<br/>
-                </div>
-                <hr/>
                 <input id="save" type="button" class="btn btn-primary disabled" value="Save"/>
             </form>
         </html>
