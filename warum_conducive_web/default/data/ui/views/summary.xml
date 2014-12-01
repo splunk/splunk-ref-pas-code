@@ -1,5 +1,5 @@
 <form script="summary.js,policy_violations.js"
-      stylesheet="summary.css,policy_violations.css,bootstrap-tagsinput.css">
+      stylesheet="summary.css,policy_violations.css,bootstrap-tagsinput.css,help_hover.css">
     <label>Summary</label>
     <search id="base_search">
         <query>
@@ -64,18 +64,30 @@
         </input>
     </fieldset>
     <row>
-        <html>
-            <div class="filter_tags">
-                <h3>Filter Criteria:</h3>
-                <input id="filter_tags_input" type="text"/>
-            </div>
-        </html>
+        <panel>
+            <html>
+                <div class="filter_tags">
+                    <h3>Filter Criteria:</h3>
+                    <input id="filter_tags_input" type="text"/>
+                </div>
+            </html>
+            <html>
+                <span class="help-hover" title="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer in hendrerit quam. Aenean consequat porttitor suscipit. Nullam vestibulum pharetra erat, eget fringilla nulla bibendum id. Aenean condimentum mattis sagittis. Donec egestas luctus felis, in placerat neque condimentum eu. Vestibulum consequat mauris arcu. Proin sodales pellentesque neque, vitae consequat leo dignissim sit amet. Phasellus interdum mi leo, et vulputate quam aliquet quis. Nulla quis arcu at leo sodales feugiat. Sed pellentesque turpis accumsan lorem semper, vitae aliquet dolor ultricies.">
+                    ?&#x20dd;
+                </span>
+            </html>
+        </panel>
     </row>
     <row>
         <panel id="policy_violations_panel">
             <html>
                 <h3>Policy Violations</h3>
                 <div class="donut_series"></div>
+            </html>
+            <html>
+                <span class="help-hover" title="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer in hendrerit quam. Aenean consequat porttitor suscipit. Nullam vestibulum pharetra erat, eget fringilla nulla bibendum id. Aenean condimentum mattis sagittis. Donec egestas luctus felis, in placerat neque condimentum eu. Vestibulum consequat mauris arcu. Proin sodales pellentesque neque, vitae consequat leo dignissim sit amet. Phasellus interdum mi leo, et vulputate quam aliquet quis. Nulla quis arcu at leo sodales feugiat. Sed pellentesque turpis accumsan lorem semper, vitae aliquet dolor ultricies.">
+                    ?&#x20dd;
+                </span>
             </html>
         </panel>
         <panel id="policy_single_panel">
@@ -95,29 +107,55 @@
                     <latest>now</latest>
                 </search>
             </table>
+            <html>
+                <span class="help-hover" title="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer in hendrerit quam. Aenean consequat porttitor suscipit. Nullam vestibulum pharetra erat, eget fringilla nulla bibendum id. Aenean condimentum mattis sagittis. Donec egestas luctus felis, in placerat neque condimentum eu. Vestibulum consequat mauris arcu. Proin sodales pellentesque neque, vitae consequat leo dignissim sit amet. Phasellus interdum mi leo, et vulputate quam aliquet quis. Nulla quis arcu at leo sodales feugiat. Sed pellentesque turpis accumsan lorem semper, vitae aliquet dolor ultricies.">
+                    ?&#x20dd;
+                </span>
+            </html>
         </panel>
     </row>
     <row>
-        <chart id="trend_chart">
-            <title>Trend</title>
-            <searchString>| pivot ri_pas_datamodel Root_Event count(Root_Event) AS count SPLITROW _time AS _time PERIOD auto SPLITCOL command FILTER command isNotNull $filter$ $exclude$ SORT 0 _time ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 10 SHOWOTHER 0</searchString>
-            <option name="charting.chart">column</option>
-            <option name="charting.chart.stackMode">stacked</option>
-            <option name="drilldown">none</option>
-        </chart>
+        <panel>
+            <chart id="trend_chart">
+                <title>Trend</title>
+                <searchString>| pivot ri_pas_datamodel Root_Event count(Root_Event) AS count SPLITROW _time AS _time PERIOD auto SPLITCOL command FILTER command isNotNull $filter$ $exclude$ SORT 0 _time ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 10 SHOWOTHER 0</searchString>
+                <option name="charting.chart">column</option>
+                <option name="charting.chart.stackMode">stacked</option>
+                <option name="drilldown">none</option>
+            </chart>
+            <html>
+                <span class="help-hover" title="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer in hendrerit quam. Aenean consequat porttitor suscipit. Nullam vestibulum pharetra erat, eget fringilla nulla bibendum id. Aenean condimentum mattis sagittis. Donec egestas luctus felis, in placerat neque condimentum eu. Vestibulum consequat mauris arcu. Proin sodales pellentesque neque, vitae consequat leo dignissim sit amet. Phasellus interdum mi leo, et vulputate quam aliquet quis. Nulla quis arcu at leo sodales feugiat. Sed pellentesque turpis accumsan lorem semper, vitae aliquet dolor ultricies.">
+                    ?&#x20dd;
+                </span>
+            </html>
+        </panel>
     </row>
     <row>
-        <table id="user_table">
-            <title>Top Users</title>
-            <search id="top_users_search" base="base_search">
-                <query>stats count by user | sort - count</query>
-            </search>
-        </table>
-        <table id="document_table">
-            <title>Top Documents</title>
-            <search id="top_documents_search" base="base_search">
-                <query>stats count by object | sort - count</query>
-            </search>
-        </table>
+        <panel>
+            <table id="user_table">
+                <title>Top Users</title>
+                <search id="top_users_search" base="base_search">
+                    <query>stats count by user | sort - count</query>
+                </search>
+            </table>
+            <html>
+                <span class="help-hover" title="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer in hendrerit quam. Aenean consequat porttitor suscipit. Nullam vestibulum pharetra erat, eget fringilla nulla bibendum id. Aenean condimentum mattis sagittis. Donec egestas luctus felis, in placerat neque condimentum eu. Vestibulum consequat mauris arcu. Proin sodales pellentesque neque, vitae consequat leo dignissim sit amet. Phasellus interdum mi leo, et vulputate quam aliquet quis. Nulla quis arcu at leo sodales feugiat. Sed pellentesque turpis accumsan lorem semper, vitae aliquet dolor ultricies.">
+                    ?&#x20dd;
+                </span>
+            </html>
+        </panel>
+        <panel>
+            <table id="document_table">
+                <title>Top Documents</title>
+                <search id="top_documents_search" base="base_search">
+                    <query>stats count by object | sort - count</query>
+                </search>
+            </table>
+            <html>
+                <span class="help-hover" title="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer in hendrerit quam. Aenean consequat porttitor suscipit. Nullam vestibulum pharetra erat, eget fringilla nulla bibendum id. Aenean condimentum mattis sagittis. Donec egestas luctus felis, in placerat neque condimentum eu. Vestibulum consequat mauris arcu. Proin sodales pellentesque neque, vitae consequat leo dignissim sit amet. Phasellus interdum mi leo, et vulputate quam aliquet quis. Nulla quis arcu at leo sodales feugiat. Sed pellentesque turpis accumsan lorem semper, vitae aliquet dolor ultricies.">
+                    ?&#x20dd;
+                </span>
+            </html>
+        </panel>
     </row>
 </form>
