@@ -1,4 +1,4 @@
-<form script="summary.js,policy_violations.js"
+<form script="summary.js,policy_violations.js,suspicious_activity.js"
       stylesheet="summary.css,policy_violations.css,bootstrap-tagsinput.css">
     <label>Summary</label>
     <search id="base_search">
@@ -78,8 +78,8 @@
                 <div class="donut_series"></div>
             </html>
         </panel>
-        <panel id="policy_single_panel">
-            <table>
+        <panel id="suspicious_activity_panel">
+            <table id="suspicious_activity_table">
                 <title>Suspicious Activity</title>
                 <search id="policy_violations_type_summary" base="policy_violations_search">
                     <query>
