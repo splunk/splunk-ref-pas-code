@@ -1,13 +1,7 @@
-require.config({
-    paths: {
-        'kvstore': '../app/kvstore_backbone/lib/kvstore'
-    }
-});
-
 // If the app hasn't been setup, redirect to the setup page
 require([
     'splunkjs/mvc/simplexml/ready!',
-    'kvstore'
+    '../app/warum_conducive_web/components/kvstore_backbone/kvstore'
 ], function(
     ignored,
     KVStore

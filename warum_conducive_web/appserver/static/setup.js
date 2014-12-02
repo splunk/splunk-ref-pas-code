@@ -1,14 +1,8 @@
-require.config({
-    paths: {
-        'kvstore': '../app/kvstore_backbone/lib/kvstore'
-    }
-});
-
 require([
     'splunkjs/ready!',
     'splunkjs/mvc/simplexml/ready!',
     'underscore',
-    'kvstore',
+    '../app/warum_conducive_web/components/kvstore_backbone/kvstore',
     'splunkjs/mvc/multidropdownview'
 ], function(mvc, ignored, _, KVStore, MultiDropdownView) {
     // TODO: Add error handling for I/O errors.
