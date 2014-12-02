@@ -75,7 +75,7 @@ require([
                 departmentsDropdown.val(setupData.departments || []);
 
                 // Populate violation types in the UI
-                if (violationTypes.length == 0) {
+                if (violationTypes.length != DEFAULT_VIOLATION_TYPES.length) {
                     violationTypes = DEFAULT_VIOLATION_TYPES
                 }
                 _.each(violationTypes, function(violationType) {
