@@ -2,7 +2,7 @@
 // non-require-compatible 3rd-party bootstrap-tagsinput.js JQuery plugin.
 require.config({
     paths: {
-        "bootstrap-tagsinput": "../app/warum_conducive_web/bootstrap-tagsinput",
+        "bootstrap-tagsinput": "../app/warum_pas_ri/bootstrap-tagsinput",
     },
     shim: {
         "bootstrap-tagsinput": {
@@ -15,8 +15,8 @@ require([
     "splunkjs/ready!",
     "splunkjs/mvc/simplexml/ready!",
     "underscore",
-    "../app/warum_conducive_web/filter_component",  // depends on bootstrap-tagsinput
-    "../app/warum_conducive_web/context",
+    "../app/warum_pas_ri/filter_component",  // depends on bootstrap-tagsinput
+    "../app/warum_pas_ri/context",
 ], function(
     mvc,
     ignored,

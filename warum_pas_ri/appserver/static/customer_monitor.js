@@ -3,7 +3,7 @@
 // so that css! doesn't see it.
 require.config({
     paths: {
-        "warum_conducive_web": "../app/warum_conducive_web"
+        "warum_pas_ri": "../app/warum_pas_ri"
     }
 });
 
@@ -11,7 +11,7 @@ require([
     "splunkjs/ready!",
     "splunkjs/mvc/simplexml/ready!",
     "jquery",
-    "warum_conducive_web/components/dendrogram/dendrogram"
+    "warum_pas_ri/components/dendrogram/dendrogram"
 ], function(
     mvc,
     ignored,

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="warum_conducive_web" default="package">
+<project name="warum_pas_ri" default="package">
   <property name="build.dir" value="build"/>
   <property name="build.version" value="0.1"/>
   

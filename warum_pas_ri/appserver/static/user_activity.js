@@ -3,14 +3,14 @@
 // so that css! doesn't see it.
 require.config({
     paths: {
-        "warum_conducive_web": "../app/warum_conducive_web"
+        "warum_pas_ri": "../app/warum_pas_ri"
     }
 });
 
 require([
     "splunkjs/ready!",
     "splunkjs/mvc/simplexml/ready!",
-    "warum_conducive_web/components/calendarheatmap/calendarheatmap",
+    "warum_pas_ri/components/calendarheatmap/calendarheatmap",
     "jquery",
     "splunkjs/mvc/searchmanager"
 ], function(

@@ -1,7 +1,7 @@
 // If the app hasn't been setup, redirect to the setup page
 require([
     'splunkjs/mvc/simplexml/ready!',
-    '../app/warum_conducive_web/components/kvstore_backbone/kvstore'
+    '../app/warum_pas_ri/components/kvstore_backbone/kvstore'
 ], function(
     ignored,
     KVStore

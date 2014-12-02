@@ -2,7 +2,7 @@ require([
     "splunkjs/ready!",
     "splunkjs/mvc/simplexml/ready!",
     "underscore",
-    "../app/warum_conducive_web/components/d3/d3",
+    "../app/warum_pas_ri/components/d3/d3",
     "splunkjs/mvc/searchmanager",
 ], function(
     mvc,
