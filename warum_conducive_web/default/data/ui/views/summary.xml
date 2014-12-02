@@ -90,6 +90,7 @@
                         | eval Type = ViolationTypeTitle . " (" . ViolationCount . ")"
                         | rename ViolationColor as C
                         | table C, Type
+                        | eval C=if(C=="Yellow","Orange",C)
                     </query>
                     <earliest>@d</earliest>
                     <latest>now</latest>
