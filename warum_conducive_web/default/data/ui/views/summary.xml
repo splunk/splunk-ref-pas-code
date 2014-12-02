@@ -74,13 +74,13 @@
     <row>
         <panel id="policy_violations_panel">
             <html>
-                <h3>Policy Violations</h3>
+                <h3>Policy Violations (Since Midnight)</h3>
                 <div class="donut_series"></div>
             </html>
         </panel>
         <panel id="suspicious_activity_panel">
             <table id="suspicious_activity_table">
-                <title>Suspicious Activity</title>
+                <title>Suspicious Activity (Since Midnight)</title>
                 <search id="policy_violations_type_summary" base="policy_violations_search">
                     <query>
                         | stats values(ViolationColor)     as ViolationColor,
