@@ -79,7 +79,7 @@
             </html>
             <html> 
                 <span class="help-hover" title="LEARN MORE: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer in hendrerit quam. Aenean consequat porttitor suscipit. Nullam vestibulum pharetra erat, eget fringilla nulla bibendum id. Aenean condimentum mattis sagittis. Donec egestas luctus felis, in placerat neque condimentum eu. Vestibulum consequat mauris arcu. Proin sodales pellentesque neque, vitae consequat leo dignissim sit amet. Phasellus interdum mi leo, et vulputate quam aliquet quis. CLICK TO LEARN MORE."> 
-                    <a href="http://bit.ly/warum-wiki">&#xfffd;</a>
+                    <a target="_blank" href="http://bit.ly/warum-wiki">&#x2370;</a>
                 </span> 
             </html> 
 

@@ -1,8 +1,9 @@
 .help-hover {
     cursor: help;
     
-    font-weight: bold;
+    /* font-weight: bold; */
     font-size: 2em;
+    text-decoration: none;
 }
 
 a:hover {
