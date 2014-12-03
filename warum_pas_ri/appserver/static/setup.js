@@ -62,31 +62,37 @@ require([
     // Fetch setup data and populate form
     new SetupModel().fetch().then(function(setupDatas, textStatus, jqXHR) {
         new ViolationTypeCollection().fetch().then(function(violationTypes, textStatus, jqXHR) {
+            var setupData;
             if (setupDatas.length == 0) {
+                setupData = {
+                    departments: [],
+                    violationTypes: []
+                };
+
                 // Create new model upon save
                 oldSetupModelId = "_new";
             } else {
-                var setupData = setupDatas[0];
+                setupData = setupDatas[0];
                 
                 // Update existing model upon save
                 oldSetupModelId = setupData._key
-                
-                // Populate departments in the UI
-                departmentsDropdown.val(setupData.departments || []);
-
-                // Populate violation types in the UI
-                if (violationTypes.length != DEFAULT_VIOLATION_TYPES.length) {
-                    violationTypes = DEFAULT_VIOLATION_TYPES
-                }
-                _.each(violationTypes, function(violationType) {
-                    var rowElement = $(VIOLATION_TYPE_ROW_TEMPLATE())
-                        .appendTo($("#violation_types"));
-                    
-                    $('.name input', rowElement).val(violationType.title);
-                    $('.color input', rowElement).val(violationType.color);
-                    $('.weight input', rowElement).val(violationType.weight);
-                });
             }
+
+            // Populate departments in the UI
+            departmentsDropdown.val(setupData.departments || []);
+
+            // Populate violation types in the UI
+            if (violationTypes.length != DEFAULT_VIOLATION_TYPES.length) {
+                violationTypes = DEFAULT_VIOLATION_TYPES
+            }
+            _.each(violationTypes, function(violationType) {
+                var rowElement = $(VIOLATION_TYPE_ROW_TEMPLATE())
+                    .appendTo($("#violation_types"));
+                
+                $('.name input', rowElement).val(violationType.title);
+                $('.color input', rowElement).val(violationType.color);
+                $('.weight input', rowElement).val(violationType.weight);
+            });
             
             // Now that form is loaded, allow it to be saved
             $('#save').removeClass('disabled');
