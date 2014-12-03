@@ -118,7 +118,7 @@
         <table id="activity_log">
             <title>Activity Log</title>
             <searchString>
-                  `warum_index` user=$user$ DOCUMENT=*
+                  `warum_index` user=$user$ event_target=*
                 | eval range_color=case(command == "Connect", 1,
                                         command == "Select", 1,
                                         command == "Update", 2,
@@ -128,8 +128,8 @@
                                         command == "getattr", 1,
                                         command == "edit", 2)
                 | rangemap field=range_color low=0-1 elevated=2-3 default=severe
-                | table range, DOCUMENT, _time, command
-                | rename DOCUMENT as "Source File or URL",
+                | table range, event_target, _time, command
+                | rename event_target as "Source File or URL",
                          _time    as Time,
                          command  as Type
                 | convert ctime(Time)
