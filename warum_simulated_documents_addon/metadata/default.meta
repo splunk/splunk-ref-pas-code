@@ -1,0 +1,5 @@
+[props]
+access = read : [ * ], write : [ admin ]
+export = system
+owner = nobody
+version = 6.1.2
