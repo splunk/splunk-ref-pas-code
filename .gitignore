@@ -24,4 +24,4 @@ build
 .build
 *.orig.pre41
 
-TA-googledrive/bin/google_drive_creds
+googledrive_addon/bin/google_drive_creds
