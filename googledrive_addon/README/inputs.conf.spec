@@ -1,3 +1,3 @@
-[googledrive_addon://<name>]
+[googledrive://<name>]
 client_id = <value>
 client_secret = <value>
