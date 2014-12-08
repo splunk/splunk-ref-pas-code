@@ -3,7 +3,10 @@
     <label>User Activity</label>
     <search id="base_search">
         <query>
-            `warum_index` user=$user|s$ | bucket span=5m _time | stats count by _time event_name event_target
+              `warum_index` user=$user|s$
+            | bucket span=5m _time
+            | eval event_target=if(isnotnull(event_target),event_target,"unknown")
+            | stats count by _time, command, event_target
         </query>
         <earliest>$time.earliest$</earliest>
         <latest>$time.latest$</latest>
@@ -60,10 +63,11 @@
             <chart id="trend_chart">
                 <title>Trend</title>
                 <search>
-                    <query>`warum_index` user=$user$ | bucket span=5m _time | stats count by _time event_name event_target | timechart sum(count) by event_name</query>
+                    <query>`warum_index` user=$user$ | bucket span=5m _time | stats count by _time command | timechart sum(count) by command</query>
                     <earliest>$trendTime.earliest$</earliest>
                     <latest>$trendTime.latest$</latest>
                 </search>
+
                 <option name="charting.chart">column</option>
                 <option name="charting.axisTitleX.visibility">collapsed</option>
                 <option name="charting.chart.stackMode">stacked</option>
@@ -75,7 +79,7 @@
             </chart>
             <chart id="zoom_chart">
                 <search id="zoom_search">
-                    <query>`warum_index` user=$user$ | bucket span=5m _time | stats count by _time event_name user | timechart sum(count)</query>
+                    <query>`warum_index` user=$user$ | bucket span=5m _time | stats count by _time command user | timechart sum(count)</query>
                     <earliest>$time.earliest$</earliest>
                     <latest>$time.latest$</latest>
                 </search>
@@ -94,7 +98,7 @@
             <table>
                 <title>Top Events</title>
                 <search id="top_events_search" base="base_search">
-                    <query>top event_name | eval percent=round(percent,2)</query>
+                    <query>top command | eval percent=round(percent,2)</query>
                     <earliest>$time.earliest$</earliest>
                     <latest>$time.latest$</latest>
                 </search>
