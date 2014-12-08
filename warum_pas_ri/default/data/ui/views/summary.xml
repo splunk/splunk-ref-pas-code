@@ -111,6 +111,11 @@
             <option name="charting.chart">column</option>
             <option name="charting.chart.stackMode">stacked</option>
             <option name="drilldown">none</option>
+            <option name="charting.seriesColors">
+                [0x336E7B,0x22313F,0x67809F,0x2574A9,0x89C4F4,0x34495E,0x336E7B,0x2C3E50]
+            </option>
+
+
         </chart>
     </row>
     <row>

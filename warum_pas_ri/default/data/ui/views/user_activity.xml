@@ -68,6 +68,10 @@
                 <option name="charting.axisTitleX.visibility">collapsed</option>
                 <option name="charting.chart.stackMode">stacked</option>
                 <option name="charting.drilldown">none</option>
+                <option name="charting.seriesColors">
+                    [0x89C4F4,0x336E7B,0x22313F,0x67809F,0x2574A9,0x34495E,0x336E7B,0x2C3E50]
+                </option>
+
             </chart>
             <chart id="zoom_chart">
                 <search id="zoom_search">
@@ -81,6 +85,7 @@
                 <option name="charting.axisTitleY.visibility">collapsed</option>
                 <option name="charting.drilldown">none</option>
                 <option name="height">100px</option>
+                <option name="charting.seriesColors">[0x858585, 0xFF5A09]</option>
             </chart>
         </panel>
     </row>
