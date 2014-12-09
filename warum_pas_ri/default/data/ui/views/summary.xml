@@ -64,14 +64,6 @@
         </input>
     </fieldset>
     <row>
-        <html>
-            <div class="filter_tags">
-                <h3>Filter Criteria:</h3>
-                <input id="filter_tags_input" type="text"/>
-            </div>
-        </html>
-    </row>
-    <row>
         <panel id="policy_violations_panel">
             <html>
                 <h3>Policy Violations (Since Midnight)</h3>
@@ -112,11 +104,18 @@
             <option name="charting.chart.stackMode">stacked</option>
             <option name="drilldown">none</option>
             <option name="charting.seriesColors">
-                [0x336E7B,0x22313F,0x67809F,0x2574A9,0x89C4F4,0x34495E,0x336E7B,0x2C3E50]
+                [0x895791, 0xB17FB9, 0x7A6957, 0xBFAEA1, 0xD49E8C, 0x6072A8, 0xCCCCCC, 0xF8C2B0]
             </option>
-
-
+            <option name="charting.axisTitleX.visibility">collapsed</option>
         </chart>
+    </row>
+    <row>
+        <html>
+            <div class="filter_tags">
+                <h3>Filter Criteria:</h3>
+                <input id="filter_tags_input" type="text"/>
+            </div>
+        </html>
     </row>
     <row>
         <table id="user_table">

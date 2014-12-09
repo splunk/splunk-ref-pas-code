@@ -73,7 +73,7 @@
                 <option name="charting.chart.stackMode">stacked</option>
                 <option name="charting.drilldown">none</option>
                 <option name="charting.seriesColors">
-                    [0x89C4F4,0x336E7B,0x22313F,0x67809F,0x2574A9,0x34495E,0x336E7B,0x2C3E50]
+                    [0x89C4F4,0xB5F0FF,0x2574A9,0x7F94A9,0x73AEBB,0x2C3E50,0xCCCCCC]
                 </option>
 
             </chart>
@@ -89,7 +89,7 @@
                 <option name="charting.axisTitleY.visibility">collapsed</option>
                 <option name="charting.drilldown">none</option>
                 <option name="height">100px</option>
-                <option name="charting.seriesColors">[0x858585, 0xFF5A09]</option>
+                <option name="charting.seriesColors">[0x6072A8, 0xFF5A09]</option>
             </chart>
         </panel>
     </row>
