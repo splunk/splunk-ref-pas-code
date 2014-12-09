@@ -7,3 +7,8 @@
     width: 250px;
     margin-left: auto; margin-right: auto;
 }
+
+ .html h3 { 
+	font-size: 16px; !important;
+	font-weight: normal; !important;
+ }

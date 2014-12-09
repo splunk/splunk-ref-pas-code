@@ -13,3 +13,27 @@
     margin-left: 0px;
     width: 10em;
 }
+
+.splunk-timerange {
+    float: right;
+     /* padding-top: 2px;
+     margin-right: 5px;*/
+     position: relative;
+     left: 25px;
+     top:-39px;"
+ }
+
+ .input-timerangepicker {
+ 	height:0;
+ }
+
+ .dashboard-row {
+    position: relative;
+ 	top:-39px;
+ }
+
+ .html h3 { 
+	font-size: 16px; !important;
+	font-weight: normal; !important;
+    margin: 2px 0;
+ }
