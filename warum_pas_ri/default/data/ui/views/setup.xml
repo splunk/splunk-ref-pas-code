@@ -2,7 +2,7 @@
     <label>Setup</label>
     <search id="departments_search">
         <query>
-            `warum_index` | stats count by department
+            tag=warum tag=change tag=audit | stats count by department
         </query>
         <earliest>@d</earliest>
         <latest>now</latest>
