@@ -95,7 +95,7 @@ define(function(require, exports, module) {
             var filter_search = "";
             var terms = "FILTER " + field_name + " is \"" + field_value + "\""
             filter_search = tokens.get("filter");
-            filter_search += terms;
+            filter_search = filter_search + " " + terms;
             tokens.set("filter", filter_search);
             $("#filter_tags_input").tagsinput('add', {
                 "action": "filter",
@@ -107,10 +107,10 @@ define(function(require, exports, module) {
         
         _exclude: function(tokens, field_name, field_value) {
             var exclude_search = "";
-            var terms = "FILTER " + field_name + " isNot \"" + field_value + "\" ";
+            var terms = "FILTER " + field_name + " isNot \"" + field_value + "\"";
             exclude_search = tokens.get("exclude");
             if (exclude_search == "*") exclude_search = "";
-            exclude_search += terms;
+            exclude_search = exclude_search + " " + terms;
             tokens.set("exclude", exclude_search)
             $("#filter_tags_input").tagsinput('add', {
                 "action": "exclude",
@@ -128,13 +128,6 @@ define(function(require, exports, module) {
             if (field_name == "object") {
                 page = "document_details";
             }
-            
-            var exclude = tokens.get("exclude");
-            var include = tokens.get("filter");
-            exclude = exclude.replace("Channel=\"", "eventtype=\"egress:");
-            include = include.replace("Channel=\"", "eventtype=\"egress:");
-            var terms = field_name + "=\"" + field_value + "\""
-            var search = base_search.replace("$criteria$", terms + " " + include + " " + exclude);
             
             var queryParams = {
                 "form.time.earliest": earliest,
