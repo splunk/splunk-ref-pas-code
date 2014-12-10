@@ -2,3 +2,9 @@
 access = read : [ * ], write : [ admin ]
 export = system
 owner = nobody
+
+[eventtypes]
+export = system
+
+[tags]
+export = system

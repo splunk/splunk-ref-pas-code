@@ -461,7 +461,7 @@
             ],
             "constraints": [
                 {
-                    "search": "`warum_index`",
+                    "search": "tag=warum tag=change tag=audit",
                     "owner": "Root_Event"
                 }
             ],
