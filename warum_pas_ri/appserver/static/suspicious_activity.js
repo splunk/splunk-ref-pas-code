@@ -9,7 +9,7 @@ require([
 ) {
     var CustomIconCellRenderer = TableView.BaseCellRenderer.extend({
         canRender: function(cell) {
-            return cell.field === 'C';  // the color column
+            return cell.field === 'Code';  // the color column
         },
         
         render: function($td, cell) {

@@ -66,7 +66,7 @@
     <row>
         <panel id="policy_violations_panel">
             <html>
-                <h3>Policy Violations (Since Midnight)</h3>
+                <h3 class="chart_title">Policy Violations (Since Midnight)</h3>
                 <div class="donut_series"></div>
             </html>
             <html> 
@@ -86,9 +86,9 @@
                                 sum(ViolationCount)        as ViolationCount
                           by ViolationType
                         | eval Type = ViolationTypeTitle . " (" . ViolationCount . ")"
-                        | rename ViolationColor as C
-                        | table C, Type
-                        | eval C=if(C=="Yellow","Orange",C)
+                        | rename ViolationColor as Code
+                        | table Code, Type
+                        | eval Code=if(Code=="Yellow","Orange",Code)
                     </query>
                     <earliest>@d</earliest>
                     <latest>now</latest>
@@ -104,7 +104,10 @@
             <option name="charting.chart.stackMode">stacked</option>
             <option name="drilldown">none</option>
             <option name="charting.seriesColors">
+                [0x89C4F4,0xB5F0FF,0x2574A9,0x7F94A9,0x73AEBB,0x2C3E50,0xCCCCCC]
+                <!-- alternate color scheme 
                 [0x895791, 0xB17FB9, 0x7A6957, 0xBFAEA1, 0xD49E8C, 0x6072A8, 0xCCCCCC, 0xF8C2B0]
+                -->
             </option>
             <option name="charting.axisTitleX.visibility">collapsed</option>
         </chart>
@@ -123,12 +126,14 @@
             <search id="top_users_search" base="base_search">
                 <query>stats count by user | sort - count</query>
             </search>
+            <option name="rowNumbers">true</option>
         </table>
         <table id="document_table">
             <title>Top Documents</title>
             <search id="top_documents_search" base="base_search">
                 <query>stats count by object | sort - count</query>
             </search>
+            <option name="rowNumbers">true</option>
         </table>
     </row>
 </form>

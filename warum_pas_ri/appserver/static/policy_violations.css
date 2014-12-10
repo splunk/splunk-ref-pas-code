@@ -1,6 +1,6 @@
 /* Policy Violations */
 #policy_violations_panel { width: 66% !important; }
-#suspicious_activity_panel { width: 33% !important; }
+#suspicious_activity_panel { width: 34% !important; }
 
 /* Grigori prefers the default Splunk styles here */
 /*
