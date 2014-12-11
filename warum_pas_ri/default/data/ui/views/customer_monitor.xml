@@ -2,7 +2,7 @@
     <label>Customer Monitor</label>
     <search id="dendrogram_search">
         <query>
-              `warum_index` customer_name=$customer$
+              tag=warum tag=change tag=audit customer_name=$customer$
             | stats count by department department_group user
         </query>
     </search>
@@ -23,19 +23,19 @@
         <single>
             <title>Total events by all users</title>
             <searchString>
-                index=warum customer_name=$customer$ | stats count
+                tag=warum tag=change tag=audit customer_name=$customer$ | stats count
             </searchString>   
         </single>
         <single>
             <title>Total number of departments involved</title>
             <searchString>
-                index=warum customer_name=$customer$ | stats dc(department)
+                tag=warum tag=change tag=audit customer_name=$customer$ | stats dc(department)
             </searchString>   
         </single>    
         <single>
             <title>Total number of users involved</title>
             <searchString>
-                index=warum customer_name=$customer$ | stats dc(user)
+                tag=warum tag=change tag=audit customer_name=$customer$ | stats dc(user)
             </searchString>   
         </single>
     </row>

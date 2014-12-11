@@ -3,7 +3,7 @@
     <label>User Activity</label>
     <search id="base_search">
         <query>
-              `warum_index` user=$user|s$
+              tag=warum tag=change tag=audit user=$user|s$
             | bucket span=5m _time
             | eval event_target=if(isnotnull(event_target),event_target,"unknown")
             | stats count by _time, command, event_target
@@ -13,14 +13,19 @@
     </search>
     <search id="provider_stats_search">
         <query>
-            `warum_index` user=$user|s$ | stats count by sourcetype | table sourcetype, count
+            tag=warum tag=change tag=audit user=$user|s$ | stats count by sourcetype 
+            | replace "ri:pas:file" with "File" in sourcetype 
+            | replace "ri:pas:database" with "Database" in sourcetype
+            | replace "ri:pas:application" with "Application" in sourcetype
+            | replace "google:drive:activity" with "Google Drive" in sourcetype
+            | table sourcetype, count
         </query>
         <earliest>$time.earliest$</earliest>
         <latest>$time.latest$</latest>
     </search>
     <search id="activity_levels_search">
         <query>
-            `warum_index` user=$user$ | timechart span=1d count
+            tag=warum tag=change tag=audit user=$user$ | timechart span=1d count
         </query>
         <earliest>$time.earliest$</earliest>
         <latest>$time.latest$</latest>
@@ -63,7 +68,7 @@
             <chart id="trend_chart">
                 <title>Trend</title>
                 <search>
-                    <query>`warum_index` user=$user$ | bucket span=5m _time | stats count by _time command | timechart sum(count) by command</query>
+                    <query>tag=warum tag=change tag=audit user=$user$ | bucket span=5m _time | stats count by _time command | timechart sum(count) by command</query>
                     <earliest>$trendTime.earliest$</earliest>
                     <latest>$trendTime.latest$</latest>
                 </search>
@@ -79,7 +84,7 @@
             </chart>
             <chart id="zoom_chart">
                 <search id="zoom_search">
-                    <query>`warum_index` user=$user$ | bucket span=5m _time | stats count by _time command user | timechart sum(count)</query>
+                    <query>tag=warum tag=change tag=audit user=$user$ | bucket span=5m _time | stats count by _time command user | timechart sum(count)</query>
                     <earliest>$time.earliest$</earliest>
                     <latest>$time.latest$</latest>
                 </search>
@@ -127,7 +132,7 @@
         <table id="activity_log">
             <title>Activity Log</title>
             <searchString>
-                  `warum_index` user=$user$ event_target=*
+                  tag=warum tag=change tag=audit user=$user$ event_target=*
                 | eval range_color=case(command == "Connect", 1,
                                         command == "Select", 1,
                                         command == "Update", 2,

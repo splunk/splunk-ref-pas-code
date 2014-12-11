@@ -12,7 +12,7 @@
         <table>
             <searchString>
                 <![CDATA[
-                      `warum_index`
+                      tag=warum tag=change tag=audit
                     | bucket _time span=1d
                     | stats count as ops by _time user
                     | where ops!=0

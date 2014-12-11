@@ -2,13 +2,17 @@
     <label>Setup</label>
     <search id="departments_search">
         <query>
-            `warum_index` | stats count by department
+            tag=warum tag=change tag=audit | stats count by department
         </query>
         <earliest>@d</earliest>
         <latest>now</latest>
     </search>
     <row>
         <html>
+            <div id="error-message" class="alert" style="display: none;">
+                Could not save your changes.<br/>
+                It is likely that your Splunk user account does not belong to the "warum_admin" role.
+            </div>
             <form>
                 <input id="_key" type="hidden"></input>
                 <div id="departments">
