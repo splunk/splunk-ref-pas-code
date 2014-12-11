@@ -140,6 +140,7 @@ require([
                 ? new SetupModel()
                 : new SetupModel({ _key: oldSetupModelId });
             
+            $('#error-message').hide();
             newSetupModel.save(newSetupData).then(function() {
                 setCollectionData(
                     ViolationTypeCollection,
@@ -149,6 +150,8 @@ require([
                         console.log('Model saved with id ' + newSetupModel.id);
                         window.location.href = "./summary";
                     });
+            }, function() {
+                $('#error-message').show();
             });
         }
     });

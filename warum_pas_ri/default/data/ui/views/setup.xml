@@ -9,6 +9,10 @@
     </search>
     <row>
         <html>
+            <div id="error-message" class="alert" style="display: none;">
+                Could not save your changes.<br/>
+                It is likely that your Splunk user account does not belong to the "warum_admin" role.
+            </div>
             <form>
                 <input id="_key" type="hidden"></input>
                 <div id="departments">
