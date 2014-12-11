@@ -1,3 +1,17 @@
 # Required for eventgen to work
 [eventgen]
 export = system
+
+
+# Modify access permissions for specific kvstore collections if that level of granularity is needed
+[collections/ri_setup_coll]
+version = 6.2.0
+
+[collections/violation_types]
+version = 6.2.0
+
+# Specified write permissions to admin and warumadmin roles only
+[]
+access = read : [warumuser,admin,warumadmin], write : [ admin, warumadmin ]
+export = none
+version = 6.2.0
