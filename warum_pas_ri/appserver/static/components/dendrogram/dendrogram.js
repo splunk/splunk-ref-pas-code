@@ -203,8 +203,8 @@ define(function(require, exports, module) {
                             var sum  = Number(d.sum) .toLocaleString('en');
                             var size = Number(d.size).toLocaleString('en');
 
-                            var long_label  = d.name + ' - <tspan fill="' + label_size_color + '">' + sum + '</tspan> - <tspan fill="' + label_count_color+ '">' + d.count + '<tspan>';
-                            var short_label = d.name + ' - <tspan fill="' + label_size_color + '">' + size + '<tspan>';
+                            var long_label  = d.name + ' (<tspan fill="' + label_size_color + '">' + sum + '</tspan>, <tspan fill="' + label_count_color+ '">' + d.count + '</tspan>)';
+                            var short_label = d.name + ' (<tspan fill="' + label_size_color + '">' + size + '</tspan>)';
 
                             return d.children || d._children ? long_label : short_label;
                         }
