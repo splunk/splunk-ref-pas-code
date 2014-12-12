@@ -16,6 +16,9 @@ define(function(require, exports, module) {
             "node_outline_color": "#d62728",
             "node_close_color": "#e7969c",
             "node_open_color": "#ffffff",
+            "label_size_color": "#d62728",
+            "label_count_color": "#1f77b4",
+            "has_size": true,
             "initial_open_level": 1,
             "margin_left": 100,
             "margin_right": 400
@@ -42,10 +45,23 @@ define(function(require, exports, module) {
         },
         // Making the data look how we want it to for updateView to do its job
         formatData: function(data) {
-            var height    = this.settings.get("height");
-            var height_px = this.settings.get("height_px");
+            var height     = this.settings.get("height");
+            var height_px  = this.settings.get("height_px");
+            var root_label = this.settings.get("root_label");
+            var has_size   = this.settings.get("has_size");
 
-            this.settings.set("height_px", height === "auto" ? Math.max(data.length*30, height_px) : height);
+            this.settings.set("height_px", height === "auto" ? Math.max(data.length * 30, height_px) : height);
+
+            data = _(data).map(function(row) {
+                return _(row).map(function(item, i) {
+                    // Convert the string value to number
+                    return has_size && i + 1 === row.length ? parseFloat(item) : item;
+                });
+            });
+
+            var get_sum = function(list) {
+                return _(list).pluck(list[0].length - 1).reduce(function(memo, num) { return memo + num; }, 0);
+            };
 
             var nest = function(list) {
                 var groups = _(list).groupBy(0);
@@ -59,14 +75,31 @@ define(function(require, exports, module) {
                         .compact()
                         .value();
 
-                    return children.length == 1 && children[0].length === 0 ? {"name": key} : {"name": key, "children": nest(children)};
+                    if(has_size) {
+                        var sum   = get_sum(children);
+                        var count = children.length;
+
+                        return children.length == 1 && children[0].length === 1 ? { "name": key, "size": children[0][0] } : { "name": key, "sum": sum, "count": count, "children": nest(children) };
+                    }
+                    else {
+                        return children.length == 1 && children[0].length === 0 ? { "name": key } : { "name": key, "children": nest(children) };
+                    }
                 });
             };
 
-            return {
-                "name": this.settings.get("root_label"),
+            var formatted_data = {
+                "name": root_label,
                 "children": nest(data)
             };
+
+            if(has_size) {
+                _(formatted_data).extend({
+                    "sum": get_sum(data),
+                    "count": data.length,
+                });
+            }
+
+            return formatted_data;
         },
         updateView: function(viz, data) {
             this.$el.html("");
@@ -82,9 +115,13 @@ define(function(require, exports, module) {
             //    $("g.node_open").click();
             //});
 
+            var has_size = this.settings.get("has_size");
+
             var node_outline_color = this.settings.get("node_outline_color");
             var node_close_color   = this.settings.get("node_close_color");
             var node_open_color    = this.settings.get("node_open_color");
+            var label_size_color   = this.settings.get("label_size_color");
+            var label_count_color  = this.settings.get("label_count_color");
 
             var width  = this.$el.width();
             var height = this.settings.get("height_px");
@@ -160,12 +197,24 @@ define(function(require, exports, module) {
                     .attr("dy", ".35em")
                     .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
                     .style("cursor", function(d) { return d.children || d._children ? "pointer" : "default"; })
-                    .text(function(d) { return d.name; })
-                    .style("fill-opacity", 1e-6);
+                    .style("fill-opacity", 1e-6)
+                    .html(function(d) {
+                        if(has_size) {
+                            var sum  = Number(d.sum) .toLocaleString('en');
+                            var size = Number(d.size).toLocaleString('en');
+
+                            var long_label  = d.name + ' - <tspan fill="' + label_size_color + '">' + sum + '</tspan> - <tspan fill="' + label_count_color+ '">' + d.count + '<tspan>';
+                            var short_label = d.name + ' - <tspan fill="' + label_size_color + '">' + size + '<tspan>';
+
+                            return d.children || d._children ? long_label : short_label;
+                        }
+                        else {
+                            return d.name;
+                        }
+                    });
 
                 // Transition nodes to their new position.
-                var nodeUpdate = node.transition()
-                    .duration(duration)
+                var nodeUpdate = node.transition()                    .duration(duration)
                     .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
 
                 nodeUpdate.select("circle")
