@@ -9,12 +9,11 @@ require.config({
 
 require([
     "splunkjs/ready!",
-    "splunkjs/mvc/simplexml/ready!",
     "jquery",
-    "warum_pas_ri/components/dendrogram/dendrogram"
+    "warum_pas_ri/components/dendrogram/dendrogram",
+    "splunkjs/mvc/simplexml/ready!"
 ], function(
     mvc,
-    ignored,
     $,
     DendrogramView
 ) {
