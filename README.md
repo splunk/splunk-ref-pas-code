@@ -1,6 +1,6 @@
-warum-code-conducive
+splunk-ref-pas-code
 ====================
 
-Project Warum Code Repo for Reference Implementation
+Splunk Reference App - Code Repo
 
 

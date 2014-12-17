@@ -1,0 +1,21 @@
+Introduction
+------------
+This app is a Splunk Reference Implementation (RI) meant to showcase Splunk underlying development technologies and good practices.
+
+
+*** This is a Release Candidate. ***
+
+
+Installation
+------------
+
+Prerequisites:
+1) Make sure Eventgen app is installed if you want a simulated data flow. Get it from http://bit.ly/splunkeventgen
+2) The RI relies on data provider add-on. We have used 3 simulated data providers (file add-on, documents app add-on, database add-on) and one real data provider (Google Drive Data Provider add-on) for testing. Install at least one data provider.
+3) The RI uses a lookup table which could have been produced by an HR system process. For the demo purposes, we have encapsulated it in the "Splunk Reference Implementation - HR info" add-on. 
+4) (Optional) Certain functionality of the RI requires an identity provider. We have used a simulated identity provider which you can download from https://github.com/splunk/pas-pas-ri-test/tree/master/pas_simulated_users_addon
+
+Usage
+-----
+For usage see About page.
+

@@ -1,0 +1,17 @@
+# Required for eventgen to work
+[eventgen]
+export = system
+
+
+# Modify access permissions for specific kvstore collections if that level of granularity is needed
+[collections/ri_setup_coll]
+version = 6.2.0
+
+[collections/violation_types]
+version = 6.2.0
+
+# Specified write permissions to admin and pasadmin roles only
+[]
+access = read : [pasuser,admin,pasadmin], write : [ admin, pasadmin ]
+export = none
+version = 6.2.0

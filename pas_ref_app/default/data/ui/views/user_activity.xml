@@ -1,0 +1,156 @@
+<form script="user_activity.js,provider_stats.js,user_info.js,activity_log.js"
+      stylesheet="user_activity.css,provider_stats.css,user_info.css,activity_log.css">
+    <label>User Activity</label>
+    <search id="base_search">
+        <query>
+              tag=pas tag=change tag=audit user=$user|s$
+            | bucket span=5m _time
+            | eval event_target=if(isnotnull(event_target),event_target,"unknown")
+            | stats count by _time, command, event_target
+        </query>
+        <earliest>$time.earliest$</earliest>
+        <latest>$time.latest$</latest>
+    </search>
+    <search id="provider_stats_search">
+        <query>
+            tag=pas tag=change tag=audit user=$user|s$ | stats count by sourcetype 
+            | replace "ri:pas:file" with "File" in sourcetype 
+            | replace "ri:pas:database" with "Database" in sourcetype
+            | replace "ri:pas:application" with "Application" in sourcetype
+            | replace "google:drive:activity" with "Google Drive" in sourcetype
+            | table sourcetype, count
+        </query>
+        <earliest>$time.earliest$</earliest>
+        <latest>$time.latest$</latest>
+    </search>
+    <search id="activity_levels_search">
+        <query>
+            tag=pas tag=change tag=audit user=$user$ | timechart span=1d count
+        </query>
+        <earliest>$time.earliest$</earliest>
+        <latest>$time.latest$</latest>
+    </search>
+    <search id="user_info_search">
+        <query>
+            | pasgetuserinfo user=$user|s$
+        </query>
+    </search>
+    <fieldset submitButton="false">
+        <input type="text" token="user">
+            <label>Username</label>
+            <default>*</default>
+        </input>
+        <input type="time" token="time" searchWhenChanged="true">
+            <label></label>
+            <default>
+                <earliest>-24h@h</earliest>
+                <latest>now</latest>
+            </default>
+        </input>
+    </fieldset>
+    <row>
+        <panel>
+            <html>
+                <div id="user_info"></div>
+                <div id="provider_stats"></div>
+            </html>
+        </panel>
+    </row>
+    <row>
+        <panel id="activity_levels_panel">
+            <html>
+                <h3>Activity Level Heatmap</h3>
+                
+                <div id="activity_levels"></div>
+            </html>
+        </panel>
+        <panel id="trend_panel">
+            <chart id="trend_chart">
+                <title>Trend</title>
+                <search>
+                    <query>tag=pas tag=change tag=audit user=$user$ | bucket span=5m _time | stats count by _time command | timechart sum(count) by command</query>
+                    <earliest>$trendTime.earliest$</earliest>
+                    <latest>$trendTime.latest$</latest>
+                </search>
+
+                <option name="charting.chart">column</option>
+                <option name="charting.axisTitleX.visibility">collapsed</option>
+                <option name="charting.chart.stackMode">stacked</option>
+                <option name="charting.drilldown">none</option>
+                <option name="charting.seriesColors">
+                    [0x89C4F4,0xB5F0FF,0x2574A9,0x7F94A9,0x73AEBB,0x2C3E50,0xCCCCCC]
+                </option>
+
+            </chart>
+            <chart id="zoom_chart">
+                <search id="zoom_search">
+                    <query>tag=pas tag=change tag=audit user=$user$ | bucket span=5m _time | stats count by _time command user | timechart sum(count)</query>
+                    <earliest>$time.earliest$</earliest>
+                    <latest>$time.latest$</latest>
+                </search>
+                <option name="charting.chart">line</option>
+                <option name="charting.chart.nullValueMode">connect</option>
+                <option name="charting.axisTitleX.visibility">collapsed</option>
+                <option name="charting.axisTitleY.visibility">collapsed</option>
+                <option name="charting.drilldown">none</option>
+                <option name="height">100px</option>
+                <option name="charting.seriesColors">[0x6072A8, 0xFF5A09]</option>
+            </chart>
+        </panel>
+    </row>
+    <row>
+        <panel>
+            <table>
+                <title>Top Events</title>
+                <search id="top_events_search" base="base_search">
+                    <query>top command | eval percent=round(percent,2)</query>
+                    <earliest>$time.earliest$</earliest>
+                    <latest>$time.latest$</latest>
+                </search>
+                <option name="wrap">undefined</option>
+                <option name="rowNumbers">undefined</option>
+                <option name="drilldown">row</option>
+            </table>
+        </panel>
+        <panel>
+            <table>
+                <title>Top Documents</title>
+                <search id="top_documents_search" base="base_search">
+                    <query>top event_target | eval percent=round(percent,2)</query>
+                    <earliest>$time.earliest$</earliest>
+                    <latest>$time.latest$</latest>
+                </search>
+                <option name="wrap">true</option>
+                <option name="rowNumbers">false</option>
+                <option name="drilldown">cell</option>
+                <option name="dataOverlayMode">none</option>
+                <option name="count">10</option>
+            </table>
+        </panel>
+    </row>
+    <row>
+        <table id="activity_log">
+            <title>Activity Log</title>
+            <searchString>
+                  tag=pas tag=change tag=audit user=$user$ event_target=*
+                | eval range_color=case(command == "Connect", 1,
+                                        command == "Select", 1,
+                                        command == "Update", 2,
+                                        command == "Insert", 2,
+                                        command == "read", 1,
+                                        command == "download", 1,
+                                        command == "getattr", 1,
+                                        command == "edit", 2)
+                | rangemap field=range_color low=0-1 elevated=2-3 default=severe
+                | table range, event_target, _time, command
+                | rename event_target as "Source File or URL",
+                         _time    as Time,
+                         command  as Type
+                | convert ctime(Time)
+            </searchString>
+            <earliest>$time.earliest$</earliest>
+            <latest>$time.latest$</latest>
+            <option name="drilldown">none</option>
+        </table>
+    </row>
+</form>
