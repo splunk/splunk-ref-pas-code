@@ -15,7 +15,6 @@ The PAS app is intended to enable an organization to monitor various document re
 
 
 ### Requirements
-
 Here's what you need to get going with the Splunk Reference App - PAS.
 
 #### Splunk Enterprise
@@ -54,15 +53,14 @@ For usage see the _About_ page of the app.
 ## Community and Feedback
 Questions, comments, suggestions? To provide feedback about this release, to get help with any problems, or to stay connected with other developers building on Splunk please visit the <http://answers.splunk.com>community site. 
 
-4. File any issues on [GitHub](https://github.com/splunk/splunk-ref-pas-code/issues).
+File any issues on [GitHub](https://github.com/splunk/splunk-ref-pas-code/issues).
 
 Community contributions via pull requests are welcomed! Go to the 
-[Open Source](http://dev.splunk.com/view/opensource/SP-CAAAEDM)
-page for more information. 
+[Open Source](http://dev.splunk.com/view/opensource/SP-CAAAEDM) page for more information. 
 
-# Email: devinfo@splunk.com
-# Blog: <http://blogs.splunk.com/dev>
-# Twitter: @splunkdev
+* Email: devinfo@splunk.com
+* Blog: <http://blogs.splunk.com/dev>
+* Twitter: @splunkdev
 
 ## License
 
