@@ -1,0 +1,34 @@
+<dashboard script="setup.js" stylesheet="setup.css">
+    <label>Setup</label>
+    <search id="departments_search">
+        <query>
+            tag=pas tag=change tag=audit | stats count by department
+        </query>
+        <earliest>@d</earliest>
+        <latest>now</latest>
+    </search>
+    <row>
+        <html>
+            <div id="error-message" class="alert" style="display: none;">
+                Could not save your changes.<br/>
+                It is likely that your Splunk user account does not belong to the "pas_admin" role.
+            </div>
+            <form>
+                <input id="_key" type="hidden"></input>
+                <div id="departments">
+                    <h3>Departments to show on Summary dashboard: </h3>
+                    <div id="departments_dropdown"></div>
+                    <p>
+                        <em>If the dropdown above has no choices then no events have been generated yet.</em>
+                    </p>
+                </div>
+                <hr/>
+                <div id="violation_types">
+                    <h3>Violation Types:</h3>
+                </div>
+                <hr/>
+                <input id="save" type="button" class="btn btn-primary disabled" value="Save"/>
+            </form>
+        </html>
+    </row>
+</dashboard>

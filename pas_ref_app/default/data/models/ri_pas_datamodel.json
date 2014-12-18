@@ -1,0 +1,722 @@
+{
+    "modelName": "ri_pas_datamodel",
+    "displayName": "PAS Data Model",
+    "description": "",
+    "objectSummary": {
+        "Event-Based": 3,
+        "Transaction-Based": 0,
+        "Search-Based": 0
+    },
+    "objects": [
+        {
+            "objectName": "Root_Event",
+            "displayName": "Root Event",
+            "parentName": "BaseEvent",
+            "fields": [
+                {
+                    "fieldName": "action",
+                    "owner": "Root_Event",
+                    "type": "string",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "action",
+                    "comment": "",
+                    "fieldSearch": ""
+                },
+                {
+                    "fieldName": "command",
+                    "owner": "Root_Event",
+                    "type": "string",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "command",
+                    "comment": "",
+                    "fieldSearch": ""
+                },
+                {
+                    "fieldName": "object",
+                    "owner": "Root_Event",
+                    "type": "string",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "object",
+                    "comment": "",
+                    "fieldSearch": ""
+                },
+                {
+                    "fieldName": "src",
+                    "owner": "Root_Event",
+                    "type": "string",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "src",
+                    "comment": "",
+                    "fieldSearch": ""
+                },
+                {
+                    "fieldName": "user",
+                    "owner": "Root_Event",
+                    "type": "string",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "user",
+                    "comment": "",
+                    "fieldSearch": ""
+                },
+                {
+                    "fieldName": "department",
+                    "owner": "Root_Event",
+                    "type": "string",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "department",
+                    "comment": "",
+                    "fieldSearch": ""
+                },
+                {
+                    "fieldName": "_time",
+                    "owner": "BaseEvent",
+                    "type": "timestamp",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "_time",
+                    "comment": "",
+                    "fieldSearch": ""
+                },
+                {
+                    "fieldName": "host",
+                    "owner": "BaseEvent",
+                    "type": "string",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "host",
+                    "comment": "",
+                    "fieldSearch": ""
+                },
+                {
+                    "fieldName": "source",
+                    "owner": "BaseEvent",
+                    "type": "string",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "source",
+                    "comment": "",
+                    "fieldSearch": ""
+                },
+                {
+                    "fieldName": "sourcetype",
+                    "owner": "BaseEvent",
+                    "type": "string",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "sourcetype",
+                    "comment": "",
+                    "fieldSearch": ""
+                }
+            ],
+            "calculations": [
+                {
+                    "outputFields": [
+                        {
+                            "fieldName": "shift_start",
+                            "owner": "Root_Event",
+                            "type": "string",
+                            "required": false,
+                            "multivalue": false,
+                            "hidden": false,
+                            "editable": true,
+                            "displayName": "shift_start",
+                            "comment": "",
+                            "fieldSearch": "",
+                            "lookupOutputFieldName": "shift_start"
+                        },
+                        {
+                            "fieldName": "shift_end",
+                            "owner": "Root_Event",
+                            "type": "string",
+                            "required": false,
+                            "multivalue": false,
+                            "hidden": false,
+                            "editable": true,
+                            "displayName": "shift_end",
+                            "comment": "",
+                            "fieldSearch": "",
+                            "lookupOutputFieldName": "shift_end"
+                        },
+                        {
+                            "fieldName": "workdays",
+                            "owner": "Root_Event",
+                            "type": "string",
+                            "required": false,
+                            "multivalue": false,
+                            "hidden": false,
+                            "editable": true,
+                            "displayName": "workdays",
+                            "comment": "",
+                            "fieldSearch": "",
+                            "lookupOutputFieldName": "workdays"
+                        },
+                        {
+                            "fieldName": "status",
+                            "owner": "Root_Event",
+                            "type": "string",
+                            "required": false,
+                            "multivalue": false,
+                            "hidden": false,
+                            "editable": true,
+                            "displayName": "status",
+                            "comment": "",
+                            "fieldSearch": "",
+                            "lookupOutputFieldName": "status"
+                        },
+                        {
+                            "fieldName": "date",
+                            "owner": "Root_Event",
+                            "type": "string",
+                            "required": false,
+                            "multivalue": false,
+                            "hidden": false,
+                            "editable": true,
+                            "displayName": "date",
+                            "comment": "",
+                            "fieldSearch": "",
+                            "lookupOutputFieldName": "date"
+                        }
+                    ],
+                    "calculationType": "Lookup",
+                    "lookupName": "employee_details",
+                    "comment": "",
+                    "lookupInputs": [
+                        {
+                            "inputField": "user",
+                            "lookupField": "user"
+                        }
+                    ],
+                    "owner": "Root_Event",
+                    "calculationID": "wmd10jca66c1sjor",
+                    "editable": true
+                },
+                {
+                    "outputFields": [
+                        {
+                            "fieldName": "overnight",
+                            "owner": "Root_Event",
+                            "type": "string",
+                            "required": false,
+                            "multivalue": false,
+                            "hidden": false,
+                            "editable": true,
+                            "displayName": "overnight",
+                            "comment": "",
+                            "fieldSearch": ""
+                        }
+                    ],
+                    "calculationID": "y8418or4cz69a4i",
+                    "owner": "Root_Event",
+                    "editable": true,
+                    "comment": "",
+                    "calculationType": "Eval",
+                    "expression": "if(shift_start>shift_end,1,0)"
+                },
+                {
+                    "outputFields": [
+                        {
+                            "fieldName": "hour",
+                            "owner": "Root_Event",
+                            "type": "string",
+                            "required": false,
+                            "multivalue": false,
+                            "hidden": false,
+                            "editable": true,
+                            "displayName": "hour",
+                            "comment": "",
+                            "fieldSearch": ""
+                        }
+                    ],
+                    "calculationID": "gn89wp0e2iysyvi",
+                    "owner": "Root_Event",
+                    "editable": true,
+                    "comment": "",
+                    "calculationType": "Eval",
+                    "expression": "tonumber(strftime(_time,\"%H\"))"
+                },
+                {
+                    "outputFields": [
+                        {
+                            "fieldName": "valid_time",
+                            "owner": "Root_Event",
+                            "type": "string",
+                            "required": false,
+                            "multivalue": false,
+                            "hidden": false,
+                            "editable": true,
+                            "displayName": "valid_time",
+                            "comment": "",
+                            "fieldSearch": ""
+                        }
+                    ],
+                    "calculationID": "9kv7u32vrohcl3di",
+                    "owner": "Root_Event",
+                    "editable": true,
+                    "comment": "",
+                    "calculationType": "Eval",
+                    "expression": "if((overnight==1 AND (hour >= shift_start OR hour <= shift_end)) OR (overnight==0 AND hour>=shift_start AND hour<shift_end),1,0)"
+                },
+                {
+                    "outputFields": [
+                        {
+                            "fieldName": "shift_day",
+                            "owner": "Root_Event",
+                            "type": "string",
+                            "required": false,
+                            "multivalue": false,
+                            "hidden": false,
+                            "editable": true,
+                            "displayName": "shift_day",
+                            "comment": "",
+                            "fieldSearch": ""
+                        }
+                    ],
+                    "calculationID": "gvewkh8ampbep14i",
+                    "owner": "Root_Event",
+                    "editable": true,
+                    "comment": "",
+                    "calculationType": "Eval",
+                    "expression": "strftime(if(overnight==1 AND hour < shift_end,relative_time(_time,\"-1d\"),_time),\"%a\")"
+                },
+                {
+                    "outputFields": [
+                        {
+                            "fieldName": "weekday",
+                            "owner": "Root_Event",
+                            "type": "string",
+                            "required": false,
+                            "multivalue": false,
+                            "hidden": false,
+                            "editable": true,
+                            "displayName": "weekday",
+                            "comment": "",
+                            "fieldSearch": ""
+                        }
+                    ],
+                    "calculationID": "s41333svq2ztcsor",
+                    "owner": "Root_Event",
+                    "editable": true,
+                    "comment": "",
+                    "calculationType": "Eval",
+                    "expression": "strftime(_time,\"%a\")"
+                },
+                {
+                    "outputFields": [
+                        {
+                            "fieldName": "workdays_mv",
+                            "owner": "Root_Event",
+                            "type": "number",
+                            "required": false,
+                            "multivalue": false,
+                            "hidden": false,
+                            "editable": true,
+                            "displayName": "workdays_mv",
+                            "comment": "",
+                            "fieldSearch": ""
+                        }
+                    ],
+                    "calculationID": "hbbke755coj8xgvi",
+                    "owner": "Root_Event",
+                    "editable": true,
+                    "comment": "",
+                    "calculationType": "Eval",
+                    "expression": "split(workdays,\",\")"
+                },
+                {
+                    "outputFields": [
+                        {
+                            "fieldName": "valid_day",
+                            "owner": "Root_Event",
+                            "type": "string",
+                            "required": false,
+                            "multivalue": false,
+                            "hidden": false,
+                            "editable": true,
+                            "displayName": "valid_day",
+                            "comment": "",
+                            "fieldSearch": ""
+                        }
+                    ],
+                    "calculationID": "4hcjh5ec9o8t1emi",
+                    "owner": "Root_Event",
+                    "editable": true,
+                    "comment": "",
+                    "calculationType": "Eval",
+                    "expression": "mvfind(workdays_mv,shift_day)"
+                },
+                {
+                    "outputFields": [
+                        {
+                            "fieldName": "valid_time_access",
+                            "owner": "Root_Event",
+                            "type": "number",
+                            "required": false,
+                            "multivalue": false,
+                            "hidden": false,
+                            "editable": true,
+                            "displayName": "valid_time_access",
+                            "comment": "",
+                            "fieldSearch": ""
+                        }
+                    ],
+                    "calculationID": "mqxjsskplanhfr",
+                    "owner": "Root_Event",
+                    "editable": true,
+                    "comment": "",
+                    "calculationType": "Eval",
+                    "expression": "if(valid_time==1 AND valid_day>=0,1,0)"
+                },
+                {
+                    "outputFields": [
+                        {
+                            "fieldName": "terminated_date",
+                            "owner": "Root_Event",
+                            "type": "number",
+                            "required": false,
+                            "multivalue": false,
+                            "hidden": false,
+                            "editable": true,
+                            "displayName": "terminated_date",
+                            "comment": "",
+                            "fieldSearch": ""
+                        }
+                    ],
+                    "calculationID": "5h2wy01t88y3nmi",
+                    "owner": "Root_Event",
+                    "editable": true,
+                    "comment": "",
+                    "calculationType": "Eval",
+                    "expression": "strptime(date,\"%m/%d/%Y\")"
+                },
+                {
+                    "outputFields": [
+                        {
+                            "fieldName": "epoch_time",
+                            "owner": "Root_Event",
+                            "type": "number",
+                            "required": false,
+                            "multivalue": false,
+                            "hidden": false,
+                            "editable": true,
+                            "displayName": "epoch_time",
+                            "comment": "",
+                            "fieldSearch": ""
+                        }
+                    ],
+                    "calculationID": "zosley56x586ko6r",
+                    "owner": "Root_Event",
+                    "editable": true,
+                    "comment": "",
+                    "calculationType": "Eval",
+                    "expression": "_time"
+                },
+                {
+                    "outputFields": [
+                        {
+                            "fieldName": "terminated_access",
+                            "owner": "Root_Event",
+                            "type": "string",
+                            "required": false,
+                            "multivalue": false,
+                            "hidden": false,
+                            "editable": true,
+                            "displayName": "terminated_access",
+                            "comment": "",
+                            "fieldSearch": ""
+                        }
+                    ],
+                    "calculationID": "h0mp2lt1f44bcsor",
+                    "owner": "Root_Event",
+                    "editable": true,
+                    "comment": "",
+                    "calculationType": "Eval",
+                    "expression": "if(epoch_time>terminated_date AND status=\"terminated\",1,0)"
+                }
+            ],
+            "constraints": [
+                {
+                    "search": "tag=pas tag=change tag=audit",
+                    "owner": "Root_Event"
+                }
+            ],
+            "lineage": "Root_Event"
+        },
+        {
+            "objectName": "Invalid_Time_Access",
+            "displayName": "Off-Hours Document Access",
+            "parentName": "Root_Event",
+            "fields": [
+                {
+                    "fieldName": "action",
+                    "owner": "Root_Event",
+                    "type": "string",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "action",
+                    "comment": "",
+                    "fieldSearch": ""
+                },
+                {
+                    "fieldName": "command",
+                    "owner": "Root_Event",
+                    "type": "string",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "command",
+                    "comment": "",
+                    "fieldSearch": ""
+                },
+                {
+                    "fieldName": "object",
+                    "owner": "Root_Event",
+                    "type": "string",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "object",
+                    "comment": "",
+                    "fieldSearch": ""
+                },
+                {
+                    "fieldName": "src",
+                    "owner": "Root_Event",
+                    "type": "string",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "src",
+                    "comment": "",
+                    "fieldSearch": ""
+                },
+                {
+                    "fieldName": "user",
+                    "owner": "Root_Event",
+                    "type": "string",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "user",
+                    "comment": "",
+                    "fieldSearch": ""
+                },
+                {
+                    "fieldName": "_time",
+                    "owner": "BaseEvent",
+                    "type": "timestamp",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "_time",
+                    "comment": "",
+                    "fieldSearch": ""
+                },
+                {
+                    "fieldName": "host",
+                    "owner": "BaseEvent",
+                    "type": "string",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "host",
+                    "comment": "",
+                    "fieldSearch": ""
+                },
+                {
+                    "fieldName": "source",
+                    "owner": "BaseEvent",
+                    "type": "string",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "source",
+                    "comment": "",
+                    "fieldSearch": ""
+                },
+                {
+                    "fieldName": "sourcetype",
+                    "owner": "BaseEvent",
+                    "type": "string",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "sourcetype",
+                    "comment": "",
+                    "fieldSearch": ""
+                }
+            ],
+            "calculations": [],
+            "constraints": [
+                {
+                    "search": "valid_time_access=0",
+                    "owner": "Root_Event.Invalid_Time_Access"
+                }
+            ],
+            "lineage": "Root_Event.Invalid_Time_Access"
+        },
+        {
+            "objectName": "Terminated_Access",
+            "displayName": "Terminated Employee Document Access",
+            "parentName": "Root_Event",
+            "fields": [
+                {
+                    "fieldName": "action",
+                    "owner": "Root_Event",
+                    "type": "string",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "action",
+                    "comment": "",
+                    "fieldSearch": ""
+                },
+                {
+                    "fieldName": "command",
+                    "owner": "Root_Event",
+                    "type": "string",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "command",
+                    "comment": "",
+                    "fieldSearch": ""
+                },
+                {
+                    "fieldName": "object",
+                    "owner": "Root_Event",
+                    "type": "string",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "object",
+                    "comment": "",
+                    "fieldSearch": ""
+                },
+                {
+                    "fieldName": "src",
+                    "owner": "Root_Event",
+                    "type": "string",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "src",
+                    "comment": "",
+                    "fieldSearch": ""
+                },
+                {
+                    "fieldName": "user",
+                    "owner": "Root_Event",
+                    "type": "string",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "user",
+                    "comment": "",
+                    "fieldSearch": ""
+                },
+                {
+                    "fieldName": "_time",
+                    "owner": "BaseEvent",
+                    "type": "timestamp",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "_time",
+                    "comment": "",
+                    "fieldSearch": ""
+                },
+                {
+                    "fieldName": "host",
+                    "owner": "BaseEvent",
+                    "type": "string",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "host",
+                    "comment": "",
+                    "fieldSearch": ""
+                },
+                {
+                    "fieldName": "source",
+                    "owner": "BaseEvent",
+                    "type": "string",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "source",
+                    "comment": "",
+                    "fieldSearch": ""
+                },
+                {
+                    "fieldName": "sourcetype",
+                    "owner": "BaseEvent",
+                    "type": "string",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "sourcetype",
+                    "comment": "",
+                    "fieldSearch": ""
+                }
+            ],
+            "calculations": [],
+            "constraints": [
+                {
+                    "search": "terminated_access = 1",
+                    "owner": "Root_Event.Terminated_Access"
+                }
+            ],
+            "lineage": "Root_Event.Terminated_Access"
+        }
+    ],
+    "objectNameList": [
+        "Root_Event",
+        "Invalid_Time_Access",
+        "Terminated_Access"
+    ]
+}
