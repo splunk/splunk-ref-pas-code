@@ -84,14 +84,19 @@
           <div>
             <h3>Feedback</h3>
             <p class="aboutBox">  
-              Questions, comments, suggestions? To provide feedback about this release, or to get help with any problems, please visit <a href="http://answers.splunk.com">answers.splunk.com</a> community site. 
+              Questions, comments, suggestions? To provide feedback about this release, to get help with any problems, or to stay connected with other developers building on Splunk please visit <a href="http://answers.splunk.com">answers.splunk.com</a> community site. 
             </p>
+            <ul> 
+              <li>Email: <a href="mailto:devinfo@splunk.com">devinfo@splunk.com</a></li>
+              <li>Blog: <a href="http://blogs.splunk.com/dev">http://blogs.splunk.com/dev</a></li>
+              <li>Twitter: <a href="http://twitter.com/splunkdev">@splunkdev</a></li>
+            </ul>
             <h3>Support and Community Contributions</h3>
             <p class="aboutBox"> 
               We strongly value user feedback and appreciate your bug reports/feature requests for future releases. Please use <a href="https://github.com/splunk/splunk-ref-pas-code/issues">Issues</a> on GitHub for these.
             </p>
             <p class="aboutBox"> 
-              You can also contribute to our code base and revise/propose new content for the Splunk Developer Guide. We accept pull requests after your submit your signed <a href="http://dev.splunk.com/view/SP-CAAAEDR">contribution agreement</a>.
+              You can also contribute to our code base and revise/propose new content for the Splunk Developer Guide. We accept pull requests after you submit your signed <a href="http://dev.splunk.com/view/SP-CAAAEDR">contribution agreement</a>.
             </p>
           </div>
         </html>
@@ -101,11 +106,11 @@
 
           <table width="100%">
             <tr>
-              <td width="51%"> 
+              <td width="50%" style="padding-right: 25px;"> 
                 <div>
                   <h3>Authors and Contributors</h3>
                   <p class="aboutBox">
-                    These are the members of the development team who produced this guide:
+                    These are the members of the development team who produced this reference app and the accompanying guide:
                   </p>
                   <ul>
                     <li>Vision and Product Management: <strong>Grigori Melnik</strong> (Splunk)</li>
@@ -115,7 +120,7 @@
                     <strong>Grigori Melnik</strong> (Splunk), <strong>Randy Hammelman</strong> and <strong>Praveen Pohar</strong> (Conducive Consulting), <strong>Ashish Bhutiani</strong> (Function1)</li>
                     <li>Ux: <strong>Peter Stern</strong> (Blink Interactive)</li>
                     <li>Testing: <strong>Liying Jiang</strong> (Splunk)</li>
-                    <li>Documentation: <strong>Dominic Betts</strong> (Content Master Ltd.), <strong>Gene Hartsell, Grigori Melnik, David Foster, and Liying Jiang </strong> (Splunk)</li>
+                    <li>Documentation: <strong>Dominic Betts</strong> (Content Master Ltd.), <strong>Gene Hartsell, Grigori Melnik, David Foster</strong>, and <strong>Liying Jiang </strong> (Splunk)</li>
                   </ul>
                   <p class="aboutBox">
                             Many thanks to the following people who provided meaningful feedback and support:
@@ -124,20 +129,20 @@
                             <li>
                               <strong>Jack Coates</strong> and <strong>Adrian Hall</strong> for insights on various aspects of compliance to the Common Information Model
                             </li>
-                            <li><strong>Matt Elting, Siegfried, Siegfried Puchbauer</strong> and <strong>Carl Yestrau</strong> for consulting us on the particulars of the UX framework</li>                            
-                            <li><strong>David Carasso</strong> and <strong>Alex Raitz</strong> for validating our approach, asking good questions and providing pointers to the capabilities of Splunk we've never known existed</li>
+                            <li><strong>Glenn Block</strong> for dilligent review of the questions backlog, continuing advocacy of the project among customers and thoughtful doc reviews</li>
+                            <li><strong>David Carasso</strong> and <strong>Alex Raitz</strong> for validating our approach, asking questions and providing pointers to the capabilities of Splunk we've never known existed</li>
                           </ul>
                 </div>
               </td>
-              <td width="49%">
+              <td width="50%" style="padding-left: 5px;">
                 <div>
                           <ul>
-                            <li><strong>Sanford Owings</strong> for the valuable insights and tales from the real world on the distributed deployment considerations</li>
+                            <li><strong>Matt Elting, Siegfried Puchbauer</strong> and <strong>Carl Yestrau</strong> for consulting us on the particulars of the UX framework</li>                            
+                            <li><strong>Sanford Owings</strong> for the valuable real-world insights on the distributed deployment considerations</li>
                             <li><strong>Denis Gladkikh</strong> for conducting code review and providing ideas for improvements</li>
-                            <li><strong>Glenn Block</strong> for dilligent review of the questions backlog, continuing advocacy of the project among customers and thoughtful reviews</li>
                             <li><strong>Mark Groves</strong> for letting us loose, yet providing important suggestions and steering the project</li>
                             <li><strong>Jon Rooney</strong> for marcom support</li>
-                            <li><strong>Christopher Gales</strong> for guiding in our documentation adventures</li>
+                            <li><strong>Christopher Gales</strong> for guiding our documentation adventures</li>
                             <li><strong>Chris Bauer</strong>, <strong>Michael Szebenyi</strong>, <strong>Dritan Bitincka</strong>, <strong>Divanny Lamas</strong>, <strong>Dmitrii Zakharov</strong>, <strong>Simeon Yep</strong> for providing feedback on the project</li>
                             <li><strong>Damien Dallimore</strong> and <strong>Hal Rottenberg</strong> for reviewing and evangilising the project</li>
                             <li><strong>Alex Prokhorenko</strong> and <strong>Terry Martin</strong> for support in publishing and certifiing the app</li>
@@ -148,8 +153,7 @@
                           </ul>
                           <p class="aboutBox">
                           We also thank our executive team for their leadership and ongoing support of our effort: 
-                            <strong>Stephen Sorkin, Guido Schroeder, Markus Zirn, Krishna Tammana, Carola Thompson, 
-                            </strong> and <strong>Doug Merritt</strong>.
+                            <strong>Stephen Sorkin, Guido Schroeder, Markus Zirn, Krishna Tammana, Carola Thompson, </strong> and <strong>Doug Merritt</strong>.
                           </p>
                   </div>
               </td>
