@@ -60,7 +60,7 @@ Community contributions via pull requests are welcomed! Go to the
 
 * Email: devinfo@splunk.com
 * Blog: <http://blogs.splunk.com/dev>
-* Twitter: @splunkdev
+* Twitter: [@splunkdev](http://twitter.com/splunkdev)
 
 ## License
 
