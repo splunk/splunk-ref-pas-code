@@ -8,4 +8,5 @@
     </collection>
     <view name="customer_monitor"/>
     <view name="setup"/>
+    <view name="about" />
 </nav>
