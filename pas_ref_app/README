@@ -34,7 +34,7 @@ If you haven't already installed Splunk Enterprise, download it at http://www.sp
 2. Install the main PAS app
 ---------------------------
 
-Install or symlink the main app (pas_ref_app) to the $SPLUNK_HOME/etc/apps folder. For linking Use the ln command on Unix/MacOS or the mklink command on Windows.
+Install or symlink the main app (pas_ref_app) to the $SPLUNK_HOME/etc/apps folder. For linking use the ln command on Unix/MacOS or the mklink command on Windows.
 
 3. Get your data in
 -------------------

@@ -20,7 +20,7 @@
                             avg(ops) as MEAN,
                             sparkline,
                             latest(ops) as LAST_OPS by user
-                    | eval sig_mult=SD*1
+                    | eval sig_mult=SD*1.2
                     | eval threshold = sig_mult+MEAN
                     | table user MEAN SD threshold LAST_OPS sparkline
                     | eval DELTA=LAST_OPS-threshold
