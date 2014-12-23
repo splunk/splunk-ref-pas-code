@@ -1,11 +1,44 @@
 .help-hover {
     cursor: help;
-    
+ 
     /* font-weight: bold; */
     font-size: 2em;
     text-decoration: none;
+    padding-bottom: 2px;
+    
+ 	/* position: absolute;
+	top:-15px;
+	z-index:1001; */
 }
 
-a:hover {
-	text-decoration: none;	
+.help-hover a:hover {
+	text-decoration: none;
+}
+
+.help-hover a:visited {
+	text-decoration: none;
+}
+
+.help-hover a:active {
+	text-decoration: none;
+}
+
+.text-right {
+	text-align: right;
+}
+
+.learn-container {
+	overflow:hidden;
+    width:100%;
+}
+
+#learn-left {
+	width:50%;
+	float:left;
+}
+
+#learn-right {
+	width:50%;
+	float:right;
+	text-align: right;
 }

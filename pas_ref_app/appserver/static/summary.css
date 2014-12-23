@@ -37,3 +37,9 @@
 	font-weight: normal; !important;
     margin: 2px 0;
  }
+
+
+/* overriding resize-handle */
+div .ui-resizable-handle {
+    display:none !important;
+}
