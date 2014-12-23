@@ -43,3 +43,15 @@
 div .ui-resizable-handle {
     display:none !important;
 }
+
+/* shifting Filter input field next to the label to maximize the screen real estate */
+div.bootstrap-tagsinput {
+    position: relative;
+    left:100px; !important;
+    top:-25px;
+    padding: 2px;
+}
+
+div.filter_tags {
+    height:25px !important; 
+}
