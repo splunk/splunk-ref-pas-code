@@ -5,6 +5,7 @@
     font-size: 2em;
     text-decoration: none;
     padding-bottom: 2px;
+    padding-top:0px;
     
  	/* position: absolute;
 	top:-15px;
@@ -32,12 +33,12 @@
     width:100%;
 }
 
-#learn-left {
+.learn-left {
 	width:50%;
 	float:left;
 }
 
-#learn-right {
+.learn-right {
 	width:50%;
 	float:right;
 	text-align: right;
