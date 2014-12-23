@@ -56,3 +56,6 @@
     clear: both;
 }
 
+#user-info-learn-left {
+    float: left;
+}
