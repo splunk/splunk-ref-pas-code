@@ -71,10 +71,10 @@
             </html>
             <html> 
                 <div class="learn-container">
-                    <div class="help-hover learn-left" title="LEARN MORE: This panel demonstrates how a custom visualization can be wrapped into a SimpleXML view. CLICK TO LEARN MORE."> 
+                    <div class="help-hover" id="learn-left" title="LEARN MORE: This panel demonstrates how a custom visualization can be wrapped into a SimpleXML view. CLICK TO LEARN MORE."> 
                         <a target="_blank" href="http://dev.splunk.com/goto/customviz">&#x2370;</a>
                     </div> 
-                    <div class="help-hover learn-right" title="LEARN MORE: This panel is also dynamically configured using data entered on the Setup dashboard and persisted using the KV store. CLICK TO LEARN MORE."> 
+                    <div class="help-hover" id="learn-right" title="LEARN MORE: This panel is also dynamically configured using data entered on the Setup dashboard and persisted using the KV store. CLICK TO LEARN MORE."> 
                         <a target="_blank" href="http://dev.splunk.com/goto/statefulconfig">&#x2370;</a>
                     </div>
                 </div> 
@@ -102,10 +102,10 @@
                 
             <html> 
                 <div class="learn-container">
-                    <div class="help-hover learn-left" title="LEARN MORE: This table lists the number of suspicious activities that have taken place today. It uses some custom code to display the colored dots in the first column. CLICK TO LEARN MORE."> 
+                    <div class="help-hover" id="learn-left" title="LEARN MORE: This table lists the number of suspicious activities that have taken place today. It uses some custom code to display the colored dots in the first column. CLICK TO LEARN MORE."> 
                         <a target="_blank" href="http://dev.splunk.com/goto/statefulconfig">&#x2370;</a>
                     </div> 
-                    <div class="help-hover learn-right" title="LEARN MORE: The top panels also refresh automatically every five minutes. CLICK TO LEARN MORE."> 
+                    <div class="help-hover" id="learn-right" title="LEARN MORE: The top panels also refresh automatically every five minutes. CLICK TO LEARN MORE."> 
                         <a target="_blank" href="http://dev.splunk.com/goto/panelrefresh">&#x2370;</a>
                     </div>
                 </div> 
@@ -131,10 +131,10 @@
             </chart>
             <html> 
                 <div class="learn-container">
-                    <div class="help-hover learn-left" title="LEARN MORE: The chart uses a pivot-based search to retrieve data using a data model built as an extension of the Common Information Model. CLICK TO LEARN MORE."> 
+                    <div class="help-hover" id="learn-left" title="LEARN MORE: The chart uses a pivot-based search to retrieve data using a data model built as an extension of the Common Information Model. CLICK TO LEARN MORE."> 
                         <a target="_blank" href="http://dev.splunk.com/goto/dmcim ">&#x2370;</a>
                     </div> 
-                    <div class="help-hover learn-right" title="LEARN MORE: A user can customize this chart (include and exclude a specific action) using a custom filter when they click on it. CLICK TO LEARN MORE."> 
+                    <div class="help-hover" id="learn-right" title="LEARN MORE: A user can customize this chart (include and exclude a specific action) using a custom filter when they click on it. CLICK TO LEARN MORE."> 
                         <a target="_blank" href="http://dev.splunk.com/goto/customjsload">&#x2370;</a>
                     </div>
                 </div> 
@@ -149,7 +149,7 @@
                     <h3>Filter Criteria:</h3>
                     <input id="filter_tags_input" type="text"/>
                 </div>
-                 <div class="help-hover learn-right" title="LEARN MORE: The flexibility of the Trend Chart and Top Users/Document tables is enhanced by enabling a user to filter the data on the dashboard without any knowledge of the Splunk search syntax. CLICK TO LEARN MORE."> 
+                 <div class="help-hover" id="learn-right" title="LEARN MORE: The flexibility of the Trend Chart and Top Users/Document tables is enhanced by enabling a user to filter the data on the dashboard without any knowledge of the Splunk search syntax. CLICK TO LEARN MORE."> 
                         <a target="_blank" href="http://dev.splunk.com/goto/integratingvizcomponent">&#x2370;</a>
                 </div>
         </html>

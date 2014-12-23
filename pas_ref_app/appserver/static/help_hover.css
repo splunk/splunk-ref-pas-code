@@ -33,12 +33,12 @@
     width:100%;
 }
 
-.learn-left {
+#learn-left {
 	width:50%;
 	float:left;
 }
 
-.learn-right {
+#learn-right {
 	width:50%;
 	float:right;
 	text-align: right;
