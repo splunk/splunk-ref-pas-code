@@ -71,6 +71,9 @@
                 <h3>Activity Level Heatmap</h3>
                 
                 <div id="activity_levels"></div>
+                <div class="help-hover" id="user-info-learn-left" title="We customize this heat-map control using CSS. CLICK TO LEARN MORE.">
+                    <a target="_blank" href="http://dev.splunk.com/goto/customcss">&#x2370;</a>
+                </div> 
             </html>
         </panel>
         <panel id="trend_panel">

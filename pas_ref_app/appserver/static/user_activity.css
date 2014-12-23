@@ -12,3 +12,8 @@
 	font-size: 16px; !important;
 	font-weight: normal; !important;
  }
+
+ text.graph_label {
+ 	position:relative;
+ 	top:-100px  !important;
+ }
