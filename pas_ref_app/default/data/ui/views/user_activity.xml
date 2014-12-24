@@ -71,7 +71,7 @@
                 <h3>Activity Level Heatmap</h3>
                 
                 <div id="activity_levels"></div>
-                <div class="help-hover" id="user-info-learn-left" title="We customize this heat-map control using CSS. CLICK TO LEARN MORE.">
+                <div class="help-hover" id="user-info-learn-left" title="LEARN MORE: We customize this heat-map control using CSS. CLICK TO LEARN MORE.">
                     <a target="_blank" href="http://dev.splunk.com/goto/customcss">&#x2370;</a>
                 </div> 
             </html>
@@ -92,7 +92,6 @@
                 <option name="charting.seriesColors">
                     [0x89C4F4,0xB5F0FF,0x2574A9,0x7F94A9,0x73AEBB,0x2C3E50,0xCCCCCC]
                 </option>
-
             </chart>
             <chart id="zoom_chart">
                 <search id="zoom_search">
@@ -108,6 +107,11 @@
                 <option name="height">100px</option>
                 <option name="charting.seriesColors">[0x6072A8, 0xFF5A09]</option>
             </chart>
+            <html>
+                <div class="help-hover" id="learn-on-trend" title="LEARN MORE: A user can zoom in and out on the data in this visualization using the lower chart. Here we demonstrate how one chart selection can modify other content on the page. CLICK TO LEARN MORE.">
+                    <a target="_blank" href="http://dev.splunk.com/goto/vizoptions">&#x2370;</a>
+                </div> 
+            </html>
         </panel>
     </row>
     <row>

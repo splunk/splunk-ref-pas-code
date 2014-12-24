@@ -26,3 +26,10 @@ div .panel-footer {
 div[id*='zoom_chart-refreshtime']{
 	display:none !important;
 }
+
+#learn-on-trend {
+	position: relative;
+	top: -10px !important;
+	padding-top:0px;
+}
+
