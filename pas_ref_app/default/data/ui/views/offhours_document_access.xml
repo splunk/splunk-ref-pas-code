@@ -1,4 +1,4 @@
-<form>
+<form stylesheet="help_hover.css,summary.css">
     <label>Off-Hours Accesses</label>
     <fieldset autoRun="true" submitButton="false">
         <input type="time" searchWhenChanged="true">
@@ -9,11 +9,25 @@
         </input>
     </fieldset>
     <row>
-        <chart>
-            <title>Accesses Outside Working Hours</title>
-            <searchString>| pivot ri_pas_datamodel Invalid_Time_Access count(Invalid_Time_Access) AS count SPLITROW _time AS _time PERIOD auto SORT 0 _time ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 0 SHOWOTHER 1</searchString>
-            <option name="charting.chart">line</option>
-        </chart>
+        <panel>
+            <chart>
+                <title>Accesses Outside Working Hours</title>
+                <searchString>| pivot ri_pas_datamodel Invalid_Time_Access count(Invalid_Time_Access) AS count SPLITROW _time AS _time PERIOD auto SORT 0 _time ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 0 SHOWOTHER 1</searchString>
+                <option name="charting.chart">line</option>
+                <option name="link.visible">false</option>
+            </chart>
+            <html>
+                <div class="learn-container">
+                    <div class="help-hover" id="learn-left" title="LEARN MORE: The information on this dashboard is extracted using a custom data model. It requires a complex query linking to external data. CLICK TO LEARN MORE."> 
+                        <a target="_blank" href="http://dev.splunk.com/goto/dmcim">&#x2370;</a>
+                    </div> 
+                    <div class="help-hover" id="learn-right" title="LEARN MORE: How to construct a complex query that uses a lookup and overlays additional time data. CLICK TO LEARN MORE."> 
+                        <a target="_blank" href="http://dev.splunk.com/goto/complexquery">&#x2370;</a>
+                    </div>
+                </div> 
+
+            </html>
+        </panel>
     </row>
     <row>
         <table>
