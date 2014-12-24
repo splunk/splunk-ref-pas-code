@@ -1,4 +1,5 @@
-<dashboard script="setup.js" stylesheet="setup.css">
+<dashboard script="setup.js" 
+           stylesheet="setup.css, help_hover.css">
     <label>Setup</label>
     <search id="departments_search">
         <query>
@@ -18,14 +19,20 @@
                 <div id="departments">
                     <h3>Departments to show on Summary dashboard: </h3>
                     <div id="departments_dropdown"></div>
+                    <div class="help-hover" title="LEARN MORE: The setup dashboard persists user configuration data in the KV store. CLICK TO LEARN MORE."> 
+                        <a target="_blank" href="http://dev.splunk.com/goto/statefulconfig">&#x2370;</a>
+                    </div> 
                     <p>
-                        <em>If the dropdown above has no choices then no events have been generated yet.</em>
+                       <br/> <em>If the dropdown above has no choices then no events have been generated yet.</em>
                     </p>
                 </div>
                 <hr/>
                 <div id="violation_types">
-                    <h3>Violation Types:</h3>
+                    <h3>Violation types:</h3>
                 </div>
+                <div class="help-hover" title="LEARN MORE: The configuration data drives some of the visualizations on the Summary dashboard. CLICK TO LEARN MORE. "> 
+                        <a target="_blank" href="http://dev.splunk.com/goto/pivotssearches">&#x2370;</a>
+                </div> 
                 <hr/>
                 <input id="save" type="button" class="btn btn-primary disabled" value="Save"/>
             </form>

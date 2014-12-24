@@ -1,4 +1,4 @@
-<form stylesheet="help_hover.css,summary.css">
+<form stylesheet="help_hover.css,offhours_document_access.css">
     <label>Off-Hours Accesses</label>
     <fieldset autoRun="true" submitButton="false">
         <input type="time" searchWhenChanged="true">
@@ -25,7 +25,6 @@
                         <a target="_blank" href="http://dev.splunk.com/goto/complexquery">&#x2370;</a>
                     </div>
                 </div> 
-
             </html>
         </panel>
     </row>

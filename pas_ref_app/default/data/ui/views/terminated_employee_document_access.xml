@@ -1,4 +1,4 @@
-<form>
+<form stylesheet="terminated_employee_document_access.css">
     <label>Terminated Employee Accesses</label>
     <fieldset autoRun="true" submitButton="false">
         <input type="time" searchWhenChanged="true">

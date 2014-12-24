@@ -1,4 +1,4 @@
-<form>
+<form stylesheet="help_hover.css,anomalous_activity.css">
     <label>Users with Excessive Accesses</label>
     <fieldset autoRun="true" submitButton="false">
         <input type="time" searchWhenChanged="true">
@@ -9,26 +9,34 @@
         </input>
     </fieldset>
     <row>
-        <table>
-            <searchString>
-                <![CDATA[
-                      tag=pas tag=change tag=audit
-                    | bucket _time span=1d
-                    | stats count as ops by _time user
-                    | where ops!=0
-                    | stats stdev(ops) as SD,
-                            avg(ops) as MEAN,
-                            sparkline,
-                            latest(ops) as LAST_OPS by user
-                    | eval sig_mult=SD*1.2
-                    | eval threshold = sig_mult+MEAN
-                    | table user MEAN SD threshold LAST_OPS sparkline
-                    | eval DELTA=LAST_OPS-threshold
-                    | eval TIMES_OVER_NORM = round(DELTA/MEAN,0)
-                    | eval ANOMALY= if(LAST_OPS>threshold,"true","false")
-                    | sort -ANOMALY
-                ]]>
-            </searchString>
-        </table>
+        <panel>
+            <table>
+                <searchString>
+                    <![CDATA[
+                          tag=pas tag=change tag=audit
+                        | bucket _time span=1d
+                        | stats count as ops by _time user
+                        | where ops!=0
+                        | stats stdev(ops) as SD,
+                                avg(ops) as MEAN,
+                                sparkline,
+                                latest(ops) as LAST_OPS by user
+                        | eval sig_mult=SD*1.2
+                        | eval threshold = sig_mult+MEAN
+                        | table user MEAN SD threshold LAST_OPS sparkline
+                        | eval DELTA=LAST_OPS-threshold
+                        | eval TIMES_OVER_NORM = round(DELTA/MEAN,0)
+                        | eval ANOMALY= if(LAST_OPS>threshold,"true","false")
+                        | sort -ANOMALY
+                    ]]>
+                </searchString>
+                <option name="link.visible">false</option>
+            </table>
+            <html>
+                <div class="help-hover" id="learn-left" title=" LEARN MORE: The threshold-based anomaly detection on this dashboard is performed piping rudimentary statistical functions. CLICK TO LEARN MORE."> 
+                    <a target="_blank" href="http://dev.splunk.com/goto/howwework2 ">&#x2370;</a>
+                </div> 
+            </html>
+        </panel>
     </row>
 </form>

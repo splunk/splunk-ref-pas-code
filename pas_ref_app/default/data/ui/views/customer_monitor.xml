@@ -1,4 +1,5 @@
-<form script="customer_monitor.js">
+<form script="customer_monitor.js"
+      stylesheet="help_hover.css">
     <label>Customer Monitor</label>
     <search id="dendrogram_search">
         <query>
@@ -43,8 +44,10 @@
         <panel>
             <html>
                 <h2>Breakdown by departments and users interacting with PII documents pertaining to the customer(s):</h2>
-                
                 <div id="dendrogram"></div>
+                <div class="help-hover" title="LEARN MORE: The dendrogram is a custom visualization from the D3 library wrapped into a Splunk view. CLICK TO LEARN MORE. "> 
+                    <a target="_blank" href="http://dev.splunk.com/goto/d3sample1">&#x2370;</a>
+                </div> 
             </html>
         </panel>
     </row>

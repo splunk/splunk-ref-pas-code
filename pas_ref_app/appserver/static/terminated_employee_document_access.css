@@ -1,0 +1,14 @@
+/* Move the time range picker next to the dashboard label */
+.splunk-timerange {
+    float: right;
+     /* padding-top: 2px;
+     margin-right: 5px;*/
+     position: relative;
+     left: 250px;
+     top:-37px;"
+ }
+
+  .dashboard-row {
+    position: relative;
+ 	top:-39px;
+ }
