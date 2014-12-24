@@ -13,7 +13,16 @@
 	font-weight: normal; !important;
  }
 
- text.graph_label {
- 	position:relative;
- 	top:-100px  !important;
- }
+/* Disable resizable handle to improve UX of the trend chart with the zoom&pan control below */
+div .ui-resizable-handle {
+   display:none !important;
+}
+
+div .panel-footer {
+	display:none !important;
+}
+
+/* Remove refresh time indicator on the zoom&pan control - it's redundant on the composite chart */
+div[id*='zoom_chart-refreshtime']{
+	display:none !important;
+}
