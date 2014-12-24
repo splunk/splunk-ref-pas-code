@@ -32,3 +32,28 @@ div[id*='zoom_chart-refreshtime']{
 	top: -10px !important;
 	padding-top:0px;
 }
+
+/* Move the user name filter and time range picker next to the dashboard label */
+.splunk-timerange {
+    float: right;
+    position: relative;
+    left: 150px;
+    top:-55px;"
+ }
+
+#input1 {
+    position: relative;
+    left: 250px;
+    top:-55px;"
+}
+
+#input1 label {
+    position:relative; 
+    left: -50pt; 
+    top: 19pt;
+}
+
+ .dashboard-row {
+    position: relative;
+ 	top:-56px;
+ }

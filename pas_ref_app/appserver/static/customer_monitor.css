@@ -1,0 +1,26 @@
+/* Move the user name filter and time range picker next to the dashboard label */
+.splunk-timerange {
+    float: right;
+    position: relative;
+    left: 250px;
+    top:-55px;"
+ }
+
+#input1 {
+    position: relative;
+    left: 350px;
+    top:-55px;"
+}
+
+#input1 label {
+    position:relative; 
+    left: -94pt; 
+    top: 19pt;
+}
+
+ .dashboard-row {
+    position: relative;
+ 	top:-56px;
+ }
+
+

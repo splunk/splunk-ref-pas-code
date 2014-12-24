@@ -1,5 +1,5 @@
 <form script="customer_monitor.js"
-      stylesheet="help_hover.css">
+      stylesheet="help_hover.css, customer_monitor.css">
     <label>Customer Monitor</label>
     <search id="dendrogram_search">
         <query>
