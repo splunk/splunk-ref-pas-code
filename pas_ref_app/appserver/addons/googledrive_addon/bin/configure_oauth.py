@@ -31,4 +31,4 @@ print  authorize_url
 code = raw_input('Enter verification code: ').strip()
 credentials = flow.step2_exchange(code)
 storage.put(credentials)
-print "OAuth succeed"
+print "OAuth sign-in succeeded"
