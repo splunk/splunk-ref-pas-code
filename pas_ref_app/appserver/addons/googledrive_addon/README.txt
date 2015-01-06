@@ -1,5 +1,5 @@
 To use this addon, you need to:
-1. Apply a google app account and get the CLIENT_ID and the CLIENT_SECRET
+1. Go to Google developers console and create a new project, under APIs&auth->Credentials, create a new credential for installed application, you will get the CLIENT_ID and the CLIENT_SECRET
 2. Create a new modular input of "Google Drive Activity Stream": 
 1) go to your splunk instance, open "Settings->Data inputs->Google Drive Activity Stream", click "New", input the following information
 NAME: warum
