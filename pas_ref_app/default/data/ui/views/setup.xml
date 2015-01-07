@@ -34,6 +34,14 @@
                         <a target="_blank" href="http://dev.splunk.com/goto/pivotssearches">&#x2370;</a>
                 </div> 
                 <hr/>
+                <div>
+                    <h3>Event Generator check:</h3>
+                    <p class="muted" id="eventgen-loading">Loading status of the Splunk Eventgen app...</p>
+                    <p class="text-success hide" id="eventgen-success">The Eventgen app is installed and enabled.</p>
+                    <p class="text-warning hide" id="eventgen-disabled">The Eventgen app is installed but disabled. Enable it via <a href="../../manager/pas_ref_app/apps/local">Manage Apps</a> or feed your own data set</p>
+                    <p class="text-error hide" id="eventgen-notinstalled" >The Splunk Eventgen app is not installed. Get it from <a href="http://dev.splunk.com/goto/deveventgen">here</a> or feed your own data set</p>
+                </div>
+                <hr/>
                 <input id="save" type="button" class="btn btn-primary disabled" value="Save"/>
             </form>
         </html>

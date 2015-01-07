@@ -98,10 +98,44 @@ require([
             $('#save').removeClass('disabled');
         });
     });
+
+    // Using Splunk JS SDK, perform a runtime check of the eventgen utility installation and
+    // provide a corresponding to the user.
+    // Implementation alternative: add a button/checkbox to the Setup UI to enable/disable
+    // the eventgen app or the eventgen modular input. This approach is more involved and requires issuing a REST API call.
+    var service = mvc.createService();
+    service.apps()
+        .fetch(function(err, apps) {
+            if (err) {
+                console.error(err);
+                return;
+            }
+
+            var eventgenApp = apps.item('eventgen')
+            if (eventgenApp) {
+                eventgenApp.fetch(function(err, eventgenApp) {
+                    if (err) {
+                        console.error(err);
+                        return;
+                    }
+
+                    $('#eventgen-loading').addClass('hide');
+
+                    if (eventgenApp.state().content.disabled) {
+                        $('#eventgen-disabled').removeClass('hide');
+                    } else if (!eventgenApp.state().content.disabled) {
+                        $('#eventgen-success').removeClass('hide');
+                    } 
+                });
+            } else {
+                $('#eventgen-loading').addClass('hide');
+                $('#eventgen-notinstalled').removeClass('hide');
+            }
+        });
     
     // When save button clicked, update setup configuration
     $("#save").click(function() {
-        if ($('#save').hasClass('disabled')) {
+        if ($(this).hasClass('disabled')) {
             return;
         }
         
