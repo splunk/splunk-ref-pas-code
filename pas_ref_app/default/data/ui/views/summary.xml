@@ -67,6 +67,14 @@
         <panel id="policy_violations_panel">
             <html>
                 <h3 class="chart_title">Policy Violations (Since Midnight)</h3>
+                
+                <!-- Adding a message to the donut panel, in case no violations are found since midnight: Showing it by default and hiding it in policy_violations.js when data search resultset is not empty -->
+                <div class="msg" id="no-violations-message"><div class="splunk-message-container ">
+                    <div class="alert alert-info">
+                             <i class="icon-alert"></i>         No policy violations since midnight detected.    
+                    </div> 
+                </div></div>
+
                 <div class="donut_series"></div>
             </html>
             <html> 

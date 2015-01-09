@@ -37,7 +37,11 @@ require([
         
         dataSearch.data("results").on("data", function(resultsModel) {
             var rows = resultsModel.data().rows;
-            
+
+            // if rows is not empty, hide the "No violations detected" message container
+            if(rows) 
+                $('#no-violations-message').addClass('hide');
+
             // From the search results, compute what data the donut series
             // chart should display.
             var donutSeriesData = [];
