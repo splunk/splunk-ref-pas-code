@@ -35,6 +35,11 @@ require([
     // usually adding items to the custom Filter Criteria panel.
     FilterComponent.initialize(mvc);
     
+    // Refetch page every 5 minutes automatically
+    window.setInterval(function() {
+        window.location.reload();
+    }, 5*60*1000);
+    
     function setupPopupMenus() {
         var trendChart = mvc.Components.getInstance("trend_chart");
         var userTable = mvc.Components.getInstance("user_table");

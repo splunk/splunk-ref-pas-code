@@ -25,11 +25,6 @@ require([
         
         // Fetch and display initial policy violation data
         updatePolicyViolations(donutSeriesView);
-        
-        // Refetch and display every 5 minutes thereafter
-        window.setInterval(function() {
-            updatePolicyViolations(donutSeriesView);
-        }, 5*60*1000);
     }, 0);
     
     // Fetches the latest policy violation information and
