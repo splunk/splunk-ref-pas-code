@@ -42,7 +42,7 @@ The reference app relies on data provider add-ons. Three simulated data provider
 
 The reference app uses a lookup table which could have been produced by an HR system process. For demonstration purposes, we have encapsulated it in the _pas_hr_info_ add-on. 
 
-(Optional) Certain reference app functionality requires an identity provider. We have used a [simulated identity provider](https://github.com/splunk/pas-pas-ri-test/tree/master/pas_simulated_users_addon). 
+(Optional) Certain reference app functionality requires an identity provider. We have used a [simulated identity provider](https://github.com/splunk/splunk-ref-pas-test/tree/master/pas_simulated_users_addon). 
 
 #### Configure the app using the Setup page
 Specify at least one department that you want to surface on the Summary dashboard.
