@@ -71,21 +71,22 @@
                 <!-- Adding a message to the donut panel, in case no violations are found since midnight: Showing it by default and hiding it in policy_violations.js when data search resultset is not empty -->
                 <div class="msg" id="no-violations-message"><div class="splunk-message-container ">
                     <div class="alert alert-info">
-                             <i class="icon-alert"></i>         No policy violations since midnight detected.    
+                             <i class="icon-alert"></i>         No policy violations since midnight detected or no department selected on the Setup page.
                     </div> 
                 </div></div>
 
                 <div class="donut_series"></div>
             </html>
-            <html> 
-                <div class="learn-container">
-                    <div class="help-hover" id="learn-left" title="LEARN MORE: This panel demonstrates how a custom visualization can be wrapped into a SimpleXML view. CLICK TO LEARN MORE."> 
-                        <a target="_blank" href="http://dev.splunk.com/goto/customviz">&#x2370;</a>
-                    </div> 
-                    <div class="help-hover" id="learn-right" title="LEARN MORE: This panel is also dynamically configured using data entered on the Setup dashboard and persisted using the KV store. CLICK TO LEARN MORE."> 
-                        <a target="_blank" href="http://dev.splunk.com/goto/statefulconfig">&#x2370;</a>
-                    </div>
-                </div> 
+            <html>
+                <div class="help-hover" title="This panel demonstrates how a custom visualization can be wrapped into a SimpleXML view. CLICK TO LEARN MORE."> 
+                    <a class="external" target="_blank" href="http://dev.splunk.com/goto/customviz"><i class="icon-bulb"></i>
+                    Learn more about custom viz</a>
+                </div>
+                <div class="help-hover" target="_blank" title="This panel is also dynamically configured using data entered on the Setup dashboard and persisted using the KV store. CLICK TO LEARN MORE."> 
+                    <a class="external" href="http://dev.splunk.com/goto/statefulconfig">
+                        <i class="icon-bulb"></i>
+                        Learn more about app setup &amp; KV store</a>
+                </div>
             </html> 
         </panel>
         <panel id="suspicious_activity_panel">
