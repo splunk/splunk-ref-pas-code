@@ -57,7 +57,7 @@
                                 
                     <div class="help-hover" id="user-info-learn-left" title="The information in this panel is extracted from a third-party system. CLICK TO LEARN MORE."> 
                         <a class="external" target="_blank" href="http://dev.splunk.com/goto/sysintegration"><i class="icon-bulb"></i>
-                        Learn more about system integration viz</a>
+                        Learn more about system integration</a>
                     </div>
                     <div id="provider_stats"></div>
                     <div class="help-hover" id="provider-learn-right"  title="We collect the information in this panel by dynamically querying for data provider add-ons. CLICK TO LEARN MORE."> 
