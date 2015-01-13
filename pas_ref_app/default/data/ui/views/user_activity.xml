@@ -52,16 +52,19 @@
         <panel>
             <html>
                     <div id="user_info"></div>
-                    
-                    <div class="help-hover" id="user-info-learn-left" title="LEARN MORE: The information in this panel is extracted from a third-party system. CLICK TO LEARN MORE."> 
-                        &#x00a0; <a target="_blank" href="http://dev.splunk.com/goto/sysintegration">&#x2370;</a>
-                    </div> 
-                    
-                    <div id="provider_stats"></div>
-                    <div class="help-hover" id="provider-learn-right" title="LEARN MORE: We collect the information in this panel by dynamically querying for data provider add-ons. CLICK TO LEARN MORE. "> 
-                        <a target="_blank" href="http://dev.splunk.com/goto/usingjssdk">&#x2370;</a> &#x00a0;
-                    </div>
 
+                    
+                                
+                    <div class="help-hover" id="user-info-learn-left" title="The information in this panel is extracted from a third-party system. CLICK TO LEARN MORE."> 
+                        <a class="external" target="_blank" href="http://dev.splunk.com/goto/sysintegration"><i class="icon-bulb"></i>
+                        Learn more about system integration viz</a>
+                    </div>
+                    <div id="provider_stats"></div>
+                    <div class="help-hover" id="provider-learn-right"  title="We collect the information in this panel by dynamically querying for data provider add-ons. CLICK TO LEARN MORE."> 
+                        <a class="external" target="_blank" href="http://dev.splunk.com/goto/usingjssdk">
+                            <i class="icon-bulb"></i>
+                            Learn more about data providers</a>
+                    </div>
             </html>
         </panel>
     </row>
@@ -71,9 +74,10 @@
                 <h3>Activity Level Heatmap</h3>
                 
                 <div id="activity_levels"></div>
-                <div class="help-hover" id="user-info-learn-left" title="LEARN MORE: We customize this heat-map control using CSS. CLICK TO LEARN MORE.">
-                    <a target="_blank" href="http://dev.splunk.com/goto/customcss">&#x2370;</a>
-                </div> 
+                <div class="help-hover" id="user-info-learn-left" title="We customize this heat-map control using CSS. CLICK TO LEARN MORE."> 
+                        <a class="external" target="_blank" href="http://dev.splunk.com/goto/customcss"><i class="icon-bulb"></i>
+                        Learn more about custom styling</a>
+                </div>
             </html>
         </panel>
         <panel id="trend_panel">
@@ -108,9 +112,10 @@
                 <option name="charting.seriesColors">[0x6072A8, 0xFF5A09]</option>
             </chart>
             <html>
-                <div class="help-hover" id="learn-on-trend" title="LEARN MORE: A user can zoom in and out on the data in this visualization using the lower chart. Here we demonstrate how one chart selection can modify other content on the page. CLICK TO LEARN MORE.">
-                    <a target="_blank" href="http://dev.splunk.com/goto/vizoptions">&#x2370;</a>
-                </div> 
+                <div class="help-hover" id="learn-on-trend" title="A user can zoom in and out on the data in this visualization using the lower chart. Here we demonstrate how one chart selection can modify other content on the page. CLICK TO LEARN MORE."> 
+                    <a class="external" target="_blank" href="http://dev.splunk.com/goto/vizoptions"><i class="icon-bulb"></i>
+                        Learn more about interchart interactions</a>
+                </div>
             </html>
         </panel>
     </row>

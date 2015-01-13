@@ -82,8 +82,8 @@
                     <a class="external" target="_blank" href="http://dev.splunk.com/goto/customviz"><i class="icon-bulb"></i>
                     Learn more about custom viz</a>
                 </div>
-                <div class="help-hover" target="_blank" title="This panel is also dynamically configured using data entered on the Setup dashboard and persisted using the KV store. CLICK TO LEARN MORE."> 
-                    <a class="external" href="http://dev.splunk.com/goto/statefulconfig">
+                <div class="help-hover" title="This panel is also dynamically configured using data entered on the Setup dashboard and persisted using the KV store. CLICK TO LEARN MORE."> 
+                    <a class="external" target="_blank" href="http://dev.splunk.com/goto/statefulconfig">
                         <i class="icon-bulb"></i>
                         Learn more about app setup &amp; KV store</a>
                 </div>
@@ -114,8 +114,8 @@
                     <a class="external" target="_blank" href="http://dev.splunk.com/goto/statefulconfig"><i class="icon-bulb"></i>
                     Learn more about stateful config</a>
                 </div>
-                <div class="help-hover" target="_blank" title="The top panels also refresh automatically every five minutes. CLICK TO LEARN MORE."> 
-                    <a class="external" href="http://dev.splunk.com/goto/panelrefresh">
+                <div class="help-hover"  title="The top panels also refresh automatically every five minutes. CLICK TO LEARN MORE."> 
+                    <a class="external" target="_blank" href="http://dev.splunk.com/goto/panelrefresh">
                         <i class="icon-bulb"></i>
                         Learn more about panel auto-refresh</a>
                 </div>
@@ -144,8 +144,8 @@
                     <a class="external" target="_blank" href="http://dev.splunk.com/goto/dmcim"><i class="icon-bulb"></i>
                     Learn more about data modeling &amp; the Common Information Model</a>
                 </div>
-                <div class="help-hover" target="_blank" title="A user can customize this chart (include and exclude a specific action) using a custom filter when they click on it. CLICK TO LEARN MORE."> 
-                    <a class="external" href="http://dev.splunk.com/goto/customjsload">
+                <div class="help-hover" title="A user can customize this chart (include and exclude a specific action) using a custom filter when they click on it. CLICK TO LEARN MORE."> 
+                    <a class="external" target="_blank" href="http://dev.splunk.com/goto/customjsload">
                         <i class="icon-bulb"></i>
                     Learn more about adding custom behavior to Splunk controls</a>
                 </div>
