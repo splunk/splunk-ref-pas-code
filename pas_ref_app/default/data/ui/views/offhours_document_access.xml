@@ -17,14 +17,15 @@
                 <option name="link.visible">false</option>
             </chart>
             <html>
-                <div class="learn-container">
-                    <div class="help-hover" id="learn-left" title="LEARN MORE: The information on this dashboard is extracted using a custom data model. It requires a complex query linking to external data. CLICK TO LEARN MORE."> 
-                        <a target="_blank" href="http://dev.splunk.com/goto/dmcim">&#x2370;</a>
-                    </div> 
-                    <div class="help-hover" id="learn-right" title="LEARN MORE: How to construct a complex query that uses a lookup and overlays additional time data. CLICK TO LEARN MORE."> 
-                        <a target="_blank" href="http://dev.splunk.com/goto/complexquery">&#x2370;</a>
-                    </div>
-                </div> 
+                <div class="help-hover" title="The information on this dashboard is extracted using a custom data model. It requires a complex query linking to external data. CLICK TO LEARN MORE."> 
+                    <a class="external" target="_blank" href="http://dev.splunk.com/goto/dmcim"><i class="icon-bulb"></i>
+                    Learn more about data models</a>
+                </div>
+                <div class="help-hover" title="How to construct a complex query that uses a lookup and overlays additional time data. CLICK TO LEARN MORE."> 
+                    <a class="external" target="_blank" href="http://dev.splunk.com/goto/complexquery">
+                        <i class="icon-bulb"></i>
+                    Learn more lookups</a>
+                </div>
             </html>
         </panel>
     </row>

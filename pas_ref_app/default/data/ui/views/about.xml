@@ -22,7 +22,7 @@
           <div>
             <h3>The Dashboards</h3>
             <p class="aboutBox">
-              On the dashboards, you will see small question mark symbols (&#x2370;). If you hover the mouse over any of these you will see some additional information about the panel, and clicking will take you to the relevant location in the guidance.
+              On the dashboards, you will see small lightbulb symbols (<i class="icon-bulb"></i>). If you hover the mouse over any of these you will see some additional information about the panel, and clicking will take you to the relevant location in the guidance.
             </p>
             <p class="aboutBox"> 
               The <strong>Summary</strong> dashboard provides an overview of activity in the document repositories highlighting policy violations, suspicious activity, and historical trends. Imagine it to be used in the Command&amp;Control Center. The top two panels only show the data since midnight and refresh automatically every 5 mins. 

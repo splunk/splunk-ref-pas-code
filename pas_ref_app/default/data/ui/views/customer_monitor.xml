@@ -45,9 +45,10 @@
             <html>
                 <h2>Breakdown by departments and users interacting with PII documents pertaining to the customer(s):</h2>
                 <div id="dendrogram"></div>
-                <div class="help-hover" title="LEARN MORE: The dendrogram is a custom visualization from the D3 library wrapped into a Splunk view. CLICK TO LEARN MORE. "> 
-                    <a target="_blank" href="http://dev.splunk.com/goto/d3sample1">&#x2370;</a>
-                </div> 
+                <div class="help-hover" title="The dendrogram is a custom visualization from the D3 library wrapped into a Splunk view. CLICK TO LEARN MORE."> 
+                    <a class="external" target="_blank" href="http://dev.splunk.com/goto/d3sample1"><i class="icon-bulb"></i>
+                        Learn more about wraping a d3 control in a SimleXML view</a>
+                </div>
             </html>
         </panel>
     </row>
