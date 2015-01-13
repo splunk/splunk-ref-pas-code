@@ -28,6 +28,8 @@
 	text-align: right;
 }
 
+/* Not used, after refactoring to use Learn more links as opposed to question marks */
+/*
 .learn-container {
 	overflow:hidden;
     width:100%;
@@ -37,6 +39,7 @@
 	width:50%;
 	float:left;
 }
+*/
 
 #learn-right {
 	width:50%;
