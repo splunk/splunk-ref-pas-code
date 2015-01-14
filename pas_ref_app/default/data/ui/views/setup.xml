@@ -16,6 +16,20 @@
             </div>
             <form>
                 <input id="_key" type="hidden"></input>
+
+                <div>
+                    <h3>Event Generator check:</h3>
+                    <p class="muted" id="eventgen-loading">Loading status of the Splunk Eventgen app...</p>
+                    <p class="text-success hide" id="eventgen-success">The Eventgen app is installed and enabled. If you don't see any charts on the Summary dashboard, please wait a few mins for the data to start streaming in.</p>
+                    <p class="text-warning hide" id="eventgen-disabled">The Eventgen app is installed but disabled. Enable it via <a href="../../manager/pas_ref_app/apps/local">Manage Apps</a> or feed your own data set.</p>
+                    <p class="text-error hide" id="eventgen-notinstalled" >The Splunk Eventgen app is not installed. Get it from <a href="http://dev.splunk.com/goto/deveventgen">here</a> or feed your own data set.</p>
+                </div>
+                <div class="help-hover" title="The application uses event generation for explortatory testing. CLICK TO LEARN MORE."> 
+                    <a class="external" target="_blank" href="http://dev.splunk.com/goto/testdata">
+                    <i class="icon-bulb"></i>
+                    Learn more about test data &amp; Eventgen</a>
+                </div>  
+                <hr/>
                 <div id="departments">
                     <h3>Departments to show on Summary dashboard: </h3>
                     <div id="departments_dropdown"></div>
@@ -38,19 +52,6 @@
                     <i class="icon-bulb"></i>
                     Learn more about pivots</a>
                 </div>                
-                <hr/>
-                <div>
-                    <h3>Event Generator check:</h3>
-                    <p class="muted" id="eventgen-loading">Loading status of the Splunk Eventgen app...</p>
-                    <p class="text-success hide" id="eventgen-success">The Eventgen app is installed and enabled. If you don't see any charts on the Summary dashboard, please wait a few mins for the data to start streaming in.</p>
-                    <p class="text-warning hide" id="eventgen-disabled">The Eventgen app is installed but disabled. Enable it via <a href="../../manager/pas_ref_app/apps/local">Manage Apps</a> or feed your own data set.</p>
-                    <p class="text-error hide" id="eventgen-notinstalled" >The Splunk Eventgen app is not installed. Get it from <a href="http://dev.splunk.com/goto/deveventgen">here</a> or feed your own data set.</p>
-                </div>
-                <div class="help-hover" title="The application uses event generation for explortatory testing. CLICK TO LEARN MORE."> 
-                    <a class="external" target="_blank" href="http://dev.splunk.com/goto/testdata">
-                    <i class="icon-bulb"></i>
-                    Learn more about test data &amp; Eventgen</a>
-                </div>   
                 <hr/>
                 <input id="save" type="button" class="btn btn-primary disabled" value="Save"/>
             </form>
