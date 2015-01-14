@@ -1,3 +1,8 @@
 /* Hide dashboard editing buttons */
 .splunk-dashboard-controls .edit-btn { display: none; }
 .splunk-dashboard-controls .more-info-btn { display: none; }
+
+/* Hide learning tips unless enabled in Setup */
+.help-hover {
+	display: none;
+}

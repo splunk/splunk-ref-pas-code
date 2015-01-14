@@ -66,7 +66,8 @@ require([
             if (setupDatas.length == 0) {
                 setupData = {
                     departments: [],
-                    violationTypes: []
+                    violationTypes: [],
+                    learningTipsEnabled: 'True'
                 };
 
                 // Create new model upon save
@@ -93,6 +94,9 @@ require([
                 $('.color input', rowElement).val(violationType.color);
                 $('.weight input', rowElement).val(violationType.weight);
             });
+
+            var learningTipsEnabled = (setupData.learningTipsEnabled === 'True');
+            $('#learn_more_tips_toggle input').prop('checked', learningTipsEnabled)
             
             // Now that form is loaded, allow it to be saved
             $('#save').removeClass('disabled');
@@ -167,7 +171,8 @@ require([
             });
             
             var newSetupData = {
-                departments: departmentsDropdown.val()
+                departments: departmentsDropdown.val(),
+                learningTipsEnabled: $('#learn_more_tips_toggle input').prop('checked') ? 'True' : 'False'
             };
             
             var newSetupModel = (oldSetupModelId == "_new")
