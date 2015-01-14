@@ -57,3 +57,17 @@
 	margin-left: 5px;
 	font-style: normal;
 } */
+
+div .icon-bulb {
+	margin-right: 3px;
+	color: #fac51d;
+	font-size: 14px;
+	opacity: .5;
+  	transition: opacity 350ms;
+}
+
+div .icon-bulb:hover {
+ 	opacity: 1.0;
+  	transition: opacity 350ms;
+}
+
