@@ -1,5 +1,5 @@
 index,host,source,sourcetype,_raw
-pas,appserver,/var/log/application.log,ri:pas:application,timestamp=07/01/2014 12:07:10.000 CDT user_id=$username$ event_name=edit event_target=$document$ src_ip=5.5.5.5 department=ReplaceMe department_group=ReplaceMe customer_name=ReplaceMe
-pas,fileserver,/var/log/fileserver.log,ri:pas:file,07/01/2014 12:07:10.679 CDT (src/loggedfs.cpp:138) getattr $document$ department=ReplaceMe department_group=ReplaceMe customer_name=ReplaceMe SUCCESS [$pid$ sshd: $username$]
-pas,fileserver,/var/log/fileserver.log,ri:pas:file,07/01/2014 12:07:10.759 CDT (src/loggedfs.cpp:138) open $document$ department=ReplaceMe department_group=ReplaceMe customer_name=ReplaceMe SUCCESS [$pid$ sshd: $username$]
-pas,fileserver,/var/log/fileserver.log,ri:pas:file,07/01/2014 12:07:10.966 CDT (src/loggedfs.cpp:138) write $bytes$ bytes from $document$ at offset $offset$ department=ReplaceMe department_group=ReplaceMe customer_name=ReplaceMe SUCCESS [$pid$ sshd: $username$]
+pas,appserver,/var/log/application.log,ri:pas:application,timestamp=07/01/2014 12:07:10.000 user_id=$username$ event_name=edit event_target=$document$ src_ip=5.5.5.5 department=ReplaceMe department_group=ReplaceMe customer_name=ReplaceMe
+pas,fileserver,/var/log/fileserver.log,ri:pas:file,07/01/2014 12:07:10.679 (src/loggedfs.cpp:138) getattr $document$ department=ReplaceMe department_group=ReplaceMe customer_name=ReplaceMe SUCCESS [$pid$ sshd: $username$]
+pas,fileserver,/var/log/fileserver.log,ri:pas:file,07/01/2014 12:07:10.759 (src/loggedfs.cpp:138) open $document$ department=ReplaceMe department_group=ReplaceMe customer_name=ReplaceMe SUCCESS [$pid$ sshd: $username$]
+pas,fileserver,/var/log/fileserver.log,ri:pas:file,07/01/2014 12:07:10.966 (src/loggedfs.cpp:138) write $bytes$ bytes from $document$ at offset $offset$ department=ReplaceMe department_group=ReplaceMe customer_name=ReplaceMe SUCCESS [$pid$ sshd: $username$]
