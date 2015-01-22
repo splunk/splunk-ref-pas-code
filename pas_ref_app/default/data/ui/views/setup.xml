@@ -54,8 +54,7 @@
                 </div>
                 <hr/>
                 <div id="learn_more_tips_toggle">
-                    <h3>Learn More in-app tips:</h3>
-                    <input type="checkbox"/>
+                    <h3>Enable Learn More in-app tips: <input type="checkbox"/></h3>
                 </div>
                 <hr/>
                 <input id="save" type="button" class="btn btn-primary disabled" value="Save"/>
