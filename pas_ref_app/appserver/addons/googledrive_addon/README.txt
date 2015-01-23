@@ -1,19 +1,19 @@
-To use this addon, you need to:
-1. Go to Google developers console and create a new project, under APIs&auth->Credentials, create a new credential for installed application, you will get the CLIENT_ID and the CLIENT_SECRET
-2. Create a new modular input of "Google Drive Activity Stream": 
-1) go to your splunk instance, open "Settings->Data inputs->Google Drive Activity Stream", click "New", input the following information
-NAME: warum
-CLIENTID: <your CLIENT_ID>
-CLIENTSECRET:  <your CLIENT_SECRET>
+To use this add-on, you need to:
+1. Go to the Google developers console and create a new project, under APIs&auth->Credentials, create a new credential for the installed application, you will get the CLIENT_ID and the CLIENT_SECRET.
+2. Create a new modular input named "Google Drive Activity Stream": 
+	2.1) Go to your Splunk instance, open "Settings->Data inputs->Google Drive Activity Stream", click "New", input the following information:
+		NAME: pas
+		CLIENTID: <your CLIENT_ID>
+		CLIENTSECRET:  <your CLIENT_SECRET>
  
- Click more settings and set interval to 86400 (24 hours), set sourcetype to "google:drive:activity" and index to "pas", then save the configuration.
+ 	Click "More Settings" and set the interval to 86400 (24 hours), set the sourcetype to "google:drive:activity" and the index to "pas", then save the configuration.
  
-2) Now need to authenticate with Google drive so that Splunk can retrieve data: Open a terminal window, go to the splunk bin directory and run the following command:
-	./splunk cmd python ../etc/apps/googledrive_addon/bin/configure_oauth.py 
-'<your CLIENT_ID>' '<your CLIENT_SECRET>'
+	2.2) Now need to authenticate with Google Drive so that Splunk Enterprise can retrieve data: Open a terminal window, go to the Splunk bin directory and run the following command:
+		./splunk cmd python ../etc/apps/googledrive_addon/bin/configure_oauth.py 
+		'<your CLIENT_ID>' '<your CLIENT_SECRET>'
  
-This will give you a URL that you can copy and paste into a browser, and you will get a key that you can copy and paste back in the command window to finish the authentication process.
+	This will give you a URL that you can copy and paste into a browser, and you will get a key that you can copy and paste back into the command window to finish the authentication process.
 
-3) Go back to splunk data input you created in step 1) and disable and reenable it
+	2.3) Go back to the Google Drive Activity Stream data input you created in step 1) and disable and reenable it.
  
 

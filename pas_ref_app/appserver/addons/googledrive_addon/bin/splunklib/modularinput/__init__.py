@@ -1,5 +1,5 @@
 """The following imports allow these classes to be imported via
-the splunklib.modularinput package like so:
+the splunklib.modularinput package as follows:
 
 from splunklib.modularinput import *
 """

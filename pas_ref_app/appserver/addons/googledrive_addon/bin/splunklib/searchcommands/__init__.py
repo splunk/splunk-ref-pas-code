@@ -16,7 +16,7 @@
 
 .. topic:: Design Notes
 
-  1. Commands are constrained to this ABNF grammar::
+  1. Commands are constrained to this ABNF grammar:
 
         command       = command-name *[wsp option] *[wsp [dquote] field-name [dquote]]
         command-name  = alpha *( alpha / digit )
@@ -27,11 +27,11 @@
         quoted-string = dquote *( word / wsp / "\" dquote / dquote dquote ) dquote
         field-name    = ( "_" / alpha ) *( alpha / digit / "_" / "." / "-" )
 
-     It is Constrained to an 8-bit character set. It does not show that
+     It is constrained to an 8-bit character set. It does not show that
      :code:`field-name` values may be comma-separated. This is because Splunk strips
      commas from the command line. A search command will never see them.
 
-  3. Commands must be statically configured as follows:
+  2. Commands must be statically configured as follows:
 
      .. code-block:: text
         :linenos:
@@ -44,7 +44,7 @@
      No other static configuration is required or expected and may interfere with
      command execution.
 
-  2. Commands support dynamic probing for settings.
+  3. Commands support dynamic probing for settings.
 
      Splunk probes for settings dynamically when :code:`supports_getinfo=true`.
      You must add this line to the commands.conf stanza for each of your search
@@ -134,9 +134,9 @@
 
 .. topic:: References
 
-  1. `Search command style guide <http://docs.splunk.com/Documentation/Splunk/6.0/Search/Searchcommandstyleguide>`_
+  1. `Search command style guide <http://docs.splunk.com/Documentation/Splunk/latest/Search/Searchcommandstyleguide>`_
 
-  2. `Commands.conf.spec <http://docs.splunk.com/Documentation/Splunk/5.0.5/Admin/Commandsconf>`_
+  2. `Commands.conf.spec <http://docs.splunk.com/Documentation/Splunk/latest/Admin/Commandsconf>`_
 
 """
 
@@ -152,7 +152,7 @@ from .streaming_command import StreamingCommand
 if sys.platform == 'win32':
     # Work around the fact that on Windows '\n' is mapped to '\r\n'
     # The typical solution is to simply open files in binary mode, but stdout
-    # is already open, thus this hack
+    # is already open, thus this workaround
     import msvcrt
     import os
     msvcrt.setmode(sys.stdout.fileno(), os.O_BINARY)
@@ -161,7 +161,7 @@ def dispatch(command_class, argv=sys.argv, input_file=sys.stdin, output_file=
              sys.stdout, module_name=None):
     """ Instantiates and executes a search command class
 
-    This function implements a `conditional script stanza <http://goo.gl/OFaox6>`_
+    This function implements a `conditional script stanza`_
     based on the value of :code:`module_name`::
 
         if module_name is None or module_name == '__main__':

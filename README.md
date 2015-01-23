@@ -1,12 +1,12 @@
 # Splunk Reference App - PAS - Code Repo 
-### Version 0.90 RC
+### Version 1.00
 
 Splunk Enterprise is an analytic environment that uses a distributed
 map-reduce architecture to efficiently index, search, and process very large time-varying data sets.
 
 The Splunk Developer Platform enables developers to take advantage of the same underlying technologies that power the core product to build exciting new apps and solutions that are enabled by capabilities unique to Splunk Enterprise.
 
-This The Splunk Reference App - PAS teaches you how to develop apps for Splunk. Here, you can explore the evolution of the reference app along with some additional engineering artifacts, like tests, deployment considerations, and tradeoff discussions.
+The Splunk Reference App - PAS teaches you how to develop apps for Splunk. Here, you can explore the evolution of the reference app along with some additional engineering artifacts, like tests, deployment considerations, and tradeoff discussions.
 
 The accompanying Splunk Developer Guide for Building Apps presents a documentary of how the team went about building this reference app. The guide is currently available as an early preview at <http://splunk.github.io/splunk-dev-guide>. We welcome your feedback on both the app and the guide.
 

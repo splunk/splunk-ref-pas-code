@@ -58,7 +58,7 @@ class MyScript(Script):
             # Create an httplib2.Http object and authorize it with our credentials
             http = httplib2.Http()
 
-            #TODO: Fix cert validation - THIS IS BAD
+            #TODO: Fix cert validation
             http.disable_ssl_certificate_validation = True
             http = credentials.authorize(http)
             reports_service = build('admin', 'reports_v1', http=http)
