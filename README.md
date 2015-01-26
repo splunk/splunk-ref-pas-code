@@ -25,15 +25,16 @@ running Splunk Enterprise and system requirements, see the
 [Installation Manual](http://docs.splunk.com/Documentation/Splunk/latest/Installation). 
 
 #### The main PAS app
-Clone this repo. You can put the pas_ref_app folder with its content directly in the $SPLUNK_HOME/etc/apps folder. We recommend you clone it to some other working folder and create a symlink to the *pas_ref_app* in the $SPLUNK_HOME/etc/apps folder. Use the _ln_ command on Unix/MacOS or the _mklink_ command on Windows.
+Clone this repo. You can put the pas_ref_app folder with its content directly in the $SPLUNK_HOME/etc/apps folder. We recommend you clone it to some other working folder and create a symlink to the *pas_ref_app* in the $SPLUNK_HOME/etc/apps folder. 
+
+* Unix/MacOS: `ln -s {PATH_TO_REPOSITORY}/pas_ref_app/ $SPLUNK_HOME/etc/apps/pas_ref_app`
+* Windows: `mklink /D $SPLUNK_HOME\etc\apps\pas_ref_app {PATH_TO_REPOSITORY}\pas_ref_app\`
 
 #### Getting data in
 There are several ways for you to feed data into the PAS app.
 
 * Ingest your own data. Just make sure those sources are tagged with "change" and "audit", 
-
 * Use the eventgen app, if you want a simulated data flow. Get it from <http://bit.ly/splunkeventgen>, or 
-
 * Consume the test data set provided in the [test repo](http://github.com/splunk/splunk-ref-pas-test/tree/master/tests/pas_sample_data). 
 
 #### Install dependencies
