@@ -27,7 +27,7 @@
         <query>
             tag=pas tag=change tag=audit user=$user$ | timechart span=1d count
         </query>
-        <earliest>$time.earliest$</earliest>
+        <earliest>@month</earliest>
         <latest>$time.latest$</latest>
     </search>
     <search id="user_info_search">
