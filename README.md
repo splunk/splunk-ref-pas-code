@@ -25,24 +25,27 @@ running Splunk Enterprise and system requirements, see the
 [Installation Manual](http://docs.splunk.com/Documentation/Splunk/latest/Installation). 
 
 #### The main PAS app
-Clone this repo. You can put the pas_ref_app folder with its content directly in the $SPLUNK_HOME/etc/apps folder. We recommend you clone it to some other working folder and create a symlink to the *pas_ref_app* in the $SPLUNK_HOME/etc/apps folder. Use the _ln_ command on Unix/MacOS or the _mklink_ command on Windows.
+Clone this repo. You can put the pas_ref_app folder with its content directly in the $SPLUNK_HOME/etc/apps folder. We recommend you clone it to some other working folder and create a symlink to the *pas_ref_app* in the $SPLUNK_HOME/etc/apps folder. 
+
+* Unix/MacOS: `ln -s {PATH_TO_REPOSITORY}/pas_ref_app/ $SPLUNK_HOME/etc/apps/pas_ref_app`
+* Windows: `mklink /D $SPLUNK_HOME\etc\apps\pas_ref_app {PATH_TO_REPOSITORY}\pas_ref_app\`
 
 #### Getting data in
 There are several ways for you to feed data into the PAS app.
 
 * Ingest your own data. Just make sure those sources are tagged with "change" and "audit", 
-
 * Use the eventgen app, if you want a simulated data flow. Get it from <http://bit.ly/splunkeventgen>, or 
-
 * Consume the test data set provided in the [test repo](http://github.com/splunk/splunk-ref-pas-test/tree/master/tests/pas_sample_data). 
 
 #### Install dependencies
 
-The reference app relies on data provider add-ons. Three simulated data providers (file add-on, documents app add-on, database add-on) and one real data provider (Google Drive Data Provider add-on) are made available. Install at least one data provider. You'll find the install scripts for Unix/MacOS and Windows in the  _/bin_ folder. For the Google Drive data provider installation and configuration, see specific instructions in the _googledrive_addon/README_ folder.
+The reference app relies on data provider add-ons. Three simulated data providers (file add-on, documents app add-on, database add-on) and one real data provider (Google Drive Data Provider add-on) are made available. Install at least one data provider. You'll find the install scripts for Unix/MacOS and Windows in the [/bin](tree/master/pas_ref_app/bin) folder. 
 
-The reference app uses a lookup table which could have been produced by an HR system process. For demonstration purposes, we have encapsulated it in the _pas_hr_info_ add-on. 
+For the Google Drive data provider installation and configuration, see specific instructions in the [Google Drive addon folder](tree/master/pas_ref_app/appserver/addons/googledrive_addon).
 
-(Optional) Certain reference app functionality requires an identity provider. We have used a [simulated identity provider](https://github.com/splunk/splunk-ref-pas-test/tree/master/pas_simulated_users_addon). 
+The reference app uses a lookup table which could have been produced by an HR system process. For demonstration purposes, we have encapsulated it in the [HR info addon folder](tree/master/pas_ref_app/appserver/addons/pas_hr_info). 
+
+(Optional) Certain reference app functionality requires an identity provider. We have used a [simulated identity provider](tree/master/pas_simulated_users_addon). 
 
 #### Configure the app using the Setup page
 Specify at least one department that you want to surface on the Summary dashboard.
