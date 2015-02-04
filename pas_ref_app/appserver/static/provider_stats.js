@@ -28,7 +28,7 @@ require([
     }).on("data", function(resultsModel) {
         var rows = resultsModel.data().rows;
         if (rows.length === 0) {
-            view.html("No data providers found.");
+            view.html("No data providers found or there's been no activity.");
         } else {
             view.html("");
             _.each(rows, function(row) {
