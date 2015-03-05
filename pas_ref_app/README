@@ -56,7 +56,17 @@ The reference app uses a lookup table which could have been produced by an HR sy
 
 (Optional) Certain reference app functionality requires an identity provider. We have used a simulated identity provider (https://github.com/splunk/pas-pas-ri-test/tree/master/pas_simulated_users_addon).
 
-5. Configure the app using the Setup page
+5. Configure user access
+------------------------
+
+Create a new user that belongs to pasadmin or pasuser role, and login with this new user. 
+
+Alternatively, add index 'pas' to the default searchable indexes by going to Splunk Settings -> Access controls -> Role -> admin -> Indexes searched by default and adding 'pas' into the default search indexes.
+
+Note: if you are using a Splunk Free license, integrated role-based access control is not available. Thus, you will not be able to add new users or roles and should use the alternative method of adding the pas to the list of indexes searched by default.
+
+
+6. Configure the app using the Setup page
 -----------------------------------------
 
 Specify at least one department that you want to surface on the Summary dashboard.
