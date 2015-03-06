@@ -19,6 +19,9 @@ local
 #  However we must preserve metadata/default.meta so that eventgen works.)
 local.meta
 
+# Built files
+*.spl
+
 # Unknown
 build
 .build
