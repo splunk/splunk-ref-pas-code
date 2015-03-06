@@ -59,9 +59,9 @@ The reference app uses a lookup table which could have been produced by an HR sy
 5. Configure user access
 ------------------------
 
-Create a new user that belongs to pasadmin or pasuser role, and login with this new user. 
+Create a new user that belongs to the pasadmin or pasuser role, and log in as this new user. 
 
-Alternatively, add index 'pas' to the default searchable indexes by going to Splunk Settings -> Access controls -> Role -> admin -> Indexes searched by default and adding 'pas' into the default search indexes.
+Alternatively, add index 'pas' to the default searchable indexes by going to Splunk Settings -> Access controls -> Role -> admin -> Indexes searched by default and adding 'pas' into the list of default search indexes.
 
 Note: if you are using a Splunk Free license, integrated role-based access control is not available. Thus, you will not be able to add new users or roles and should use the alternative method of adding the pas to the list of indexes searched by default.
 
