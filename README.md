@@ -8,7 +8,7 @@ The Splunk Developer Platform enables developers to take advantage of the same u
 
 The Splunk Reference App - PAS teaches you how to develop apps for Splunk. Here, you can explore the evolution of the reference app along with some additional engineering artifacts, like tests, deployment considerations, and tradeoff discussions.
 
-The accompanying Splunk Developer Guide for Building Apps presents a documentary of how the team went about building this reference app. The guide is currently available as an early preview at <http://splunk.github.io/splunk-dev-guide>. We welcome your feedback on both the app and the guide.
+The accompanying Splunk Developer Guide for Building Apps presents a documentary of how the team went about building this reference app. The guide is currently available as an early preview at <http://dev.splunk.com/goto/devguide>. We welcome your feedback on both the app and the guide.
 
 ### What Does This App Do?
 The PAS app is intended to enable an organization to monitor various document repositories (current and future). Managers and auditors can use the app to see who has viewed, modified, deleted, or downloaded documents or other artifacts from various sources. 
