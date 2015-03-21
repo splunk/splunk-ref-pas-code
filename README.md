@@ -63,7 +63,7 @@ Specify at least one department that you want to surface on the Summary dashboar
 For usage see the _About_ page of the app.
 
 ## Community and Feedback
-Questions, comments, suggestions? To provide feedback about this release, to get help with any problems, or to stay connected with other developers building on Splunk please visit the <http://answers.splunk.com>community site. 
+Questions, comments, suggestions? To provide feedback about this release, to get help with any problems, or to stay connected with other developers building on Splunk please visit the <http://answers.splunk.com> community site. 
 
 File any issues on [GitHub](https://github.com/splunk/splunk-ref-pas-code/issues).
 
