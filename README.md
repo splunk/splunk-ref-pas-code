@@ -1,5 +1,5 @@
-# Splunk Reference App - PAS - Code Repo 
-### Version 1.0.1
+# Splunk Reference App - PAS (Ember Update) - Code Repo 
+### Version 1.5.x
 
 Splunk Enterprise is an analytic environment that uses a distributed
 map-reduce architecture to efficiently index, search, and process very large time-varying data sets.
