@@ -1,0 +1,8 @@
+[]
+access = read : [ * ], write : [ admin ]
+
+[alert_actions/modalert_app_template]
+export = system
+
+[alerts]
+export = system
