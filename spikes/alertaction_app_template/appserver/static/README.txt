@@ -1,0 +1,1 @@
+Place PNG icons that represent the Alert Action endpoint target here.
