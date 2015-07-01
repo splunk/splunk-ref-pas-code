@@ -1,1 +1,0 @@
-Place PNG icons that represent the Modular Alert endpoint target here.
