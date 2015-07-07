@@ -1,4 +1,3 @@
-import csv
 import sys
 import json
 import urllib2
@@ -37,10 +36,6 @@ def send_message(config):
         print >> sys.stderr, "ERROR Error sending message: %s" % e
         return False
 
-
-def lock_account(username):
-    return
-
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "--execute":
         try:
@@ -52,8 +47,6 @@ if __name__ == "__main__":
         except Exception, e:
             print >> sys.stderr, "ERROR Unexpected error: %s" % e
             sys.exit(3)
-
-        lock_account(config.get('username'))
     else:
         print >> sys.stderr, "FATAL Unsupported execution mode (expected --execute flag)"
         sys.exit(1)
