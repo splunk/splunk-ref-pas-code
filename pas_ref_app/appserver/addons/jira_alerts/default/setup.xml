@@ -1,0 +1,20 @@
+<setup>
+    <block title="JIRA Alert Actions">
+        <text>Configure JIRA Alert Actions</text>
+    </block>
+
+    <block title="Server" endpoint="admin/alert_actions" entity="jira">
+        <input field="param.jira_url">
+            <label>Server Base URL</label>
+            <type>text</type>
+        </input>
+        <input field="param.jira_username">
+            <label>JIRA Username</label>
+            <type>text</type>
+        </input>
+        <input endpoint="storage/passwords" entity=":jira_password:" field="password">
+            <label>JIRA Password</label>
+            <type>text</type>
+        </input>
+    </block>
+</setup>

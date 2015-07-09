@@ -5,12 +5,14 @@ import requests
 
 # creates outbound message from alert payload contents
 # and attempts to send to the specified endpoint
-def send_message(config):
+def send_message(payload):
+    config = payload.get('configuration')
+
     ISSUE_REST_PATH = "/rest/api/latest/issue"
     url = config.get('jira_url')
     jira_url = url + ISSUE_REST_PATH
-    username = config.get('username')
-    password = config.get('password')
+    username = config.get('jira_username')
+    password = get_jira_password(payload)
 
     # create outbound JSON message body
     body = json.dumps({
@@ -30,8 +32,40 @@ def send_message(config):
     try:
         headers = {"Content-Type": "application/json"}
         result = requests.post(url=jira_url, data=body, headers=headers, auth=(username, password))
+        lock_account(payload)
+    except Exception, e:
+        print >> sys.stderr, "ERROR Error sending message: %s" % e
+        return False
+
+def get_jira_password(payload):
+    SPLUNK_SERVER = payload.get('server_uri')
+    password_url = SPLUNK_SERVER + '/servicesNS/nobody/jira_alerts/storage/passwords/%3Ajira_password%3A?output_mode=json'
+
+    headers = {'Authorization': 'Splunk ' + payload.get('session_key')}
+    try:
+        # attempting to retrieve cleartext password, disabling SSL verification for practical reasons
+        result = requests.get(url=password_url, headers=headers, verify=False)
         if result.status_code != 200:
-            print >> sys.stderr, "ERROR: %s" % str(result.json())
+            print >> sys.stderr, "ERROR Error: %s" % str(result.json())
+    except Exception, e:
+        print >> sys.stderr, "ERROR Error sending message: %s" % e
+        return False
+
+    splunk_response = json.loads(result.text)
+    jira_password = splunk_response.get("entry")[0].get("content").get("clear_password")
+
+    return jira_password
+
+def lock_account(payload):
+    result = payload.get('result')
+    username = result.get("user_id")
+    USER_CONTROL_URI = "http://localhost:5000/user_list/api/v1.0/users/lock/" + username
+
+    # create outbound request object
+    try:
+        result = requests.post(url=USER_CONTROL_URI)
+        if result.status_code != 200:
+            print >> sys.stderr, "ERROR Error encountered while trying to lock account: %s" % str(result.json())
     except Exception, e:
         print >> sys.stderr, "ERROR Error sending message: %s" % e
         return False
@@ -40,10 +74,9 @@ if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "--execute":
         try:
             # retrieving message payload from splunk
-            payload = json.loads(sys.stdin.read())
-            config = payload.get('configuration')
-
-            send_message(config)
+            raw_payload = sys.stdin.read()
+            payload = json.loads(raw_payload)
+            send_message(payload)
         except Exception, e:
             print >> sys.stderr, "ERROR Unexpected error: %s" % e
             sys.exit(3)
