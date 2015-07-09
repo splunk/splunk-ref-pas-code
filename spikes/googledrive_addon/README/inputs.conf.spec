@@ -1,0 +1,2 @@
+[googledrive://<name>]
+description = <string>
