@@ -41,11 +41,11 @@ class MyScript(Script):
         scheme.use_external_validation = True
 
         #Add arguments
-        clientid_argument = Argument("client_id")
-        clientid_argument.data_type = Argument.data_type_string
-        clientid_argument.description = "OAuth Client ID from Google Developers Console"
-        clientid_argument.required_on_create = False
-        scheme.add_argument(clientid_argument)
+        description_argument = Argument("description")
+        description_argument.data_type = Argument.data_type_string
+        description_argument.description = "(Optional) A description of the Google Drive input."
+        description_argument.required_on_create = False
+        scheme.add_argument(description_argument)
 
         return scheme
 
