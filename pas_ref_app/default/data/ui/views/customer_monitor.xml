@@ -21,24 +21,72 @@
         </input>
     </fieldset>
     <row>
-        <single>
-            <title>Total events by all users</title>
-            <searchString>
-                tag=pas tag=change tag=audit customer_name=$customer$ | stats count
-            </searchString>   
-        </single>
-        <single>
+        <panel>
+          <single>
+            <title>Total events by User</title>
+            <search>
+              <query>tag=pas tag=change tag=audit customer_name=$customer$ | timechart count span=24h</query>
+            </search>
+            <option name="drilldown">none</option>
+            <option name="colorBy">value</option>
+            <option name="colorMode">none</option>
+            <option name="numberPrecision">0</option>
+            <option name="showSparkline">1</option>
+            <option name="showTrendIndicator">1</option>
+            <option name="trendColorInterpretation">standard</option>
+            <option name="trendDisplayMode">percent</option>
+            <option name="useColors">1</option>
+            <option name="useThousandSeparators">1</option>
+            <option name="linkView">search</option>
+            <option name="rangeColors">["0x65a637","0x6db7c6","0xf7bc38","0xf58f39","0xd93f3c"]</option>
+            <option name="rangeValues">[0,30,70,100]</option>
+            <option name="trendInterval">-24h</option>
+          </single>
+        </panel>
+        <panel>
+          <single>
             <title>Total number of departments involved</title>
-            <searchString>
-                tag=pas tag=change tag=audit customer_name=$customer$ | stats dc(department)
-            </searchString>   
-        </single>    
-        <single>
+            <search>
+              <query>tag=pas tag=change tag=audit customer_name=$customer$ | timechart dc(department) span=24h</query>
+            </search>
+            <option name="drilldown">none</option>
+            <option name="colorBy">value</option>
+            <option name="colorMode">none</option>
+            <option name="numberPrecision">0</option>
+            <option name="showSparkline">1</option>
+            <option name="showTrendIndicator">1</option>
+            <option name="trendColorInterpretation">standard</option>
+            <option name="trendDisplayMode">percent</option>
+            <option name="useColors">1</option>
+            <option name="useThousandSeparators">1</option>
+            <option name="linkView">search</option>
+            <option name="rangeColors">["0x65a637","0x6db7c6","0xf7bc38","0xf58f39","0xd93f3c"]</option>
+            <option name="rangeValues">[0,30,70,100]</option>
+            <option name="trendInterval">-24h</option>
+          </single>
+        </panel>
+        <panel>
+          <single>
             <title>Total number of users involved</title>
-            <searchString>
-                tag=pas tag=change tag=audit customer_name=$customer$ | stats dc(user)
-            </searchString>   
-        </single>
+            <search>
+              <query>tag=pas tag=change tag=audit customer_name=$customer$ | timechart dc(user) span=24h</query>
+            </search>
+            <option name="drilldown">none</option>
+            <option name="colorBy">value</option>
+            <option name="colorMode">none</option>
+            <option name="numberPrecision">0</option>
+            <option name="showSparkline">1</option>
+            <option name="showTrendIndicator">1</option>
+            <option name="trendColorInterpretation">standard</option>
+            <option name="trendDisplayMode">percent</option>
+            <option name="useColors">1</option>
+            <option name="useThousandSeparators">1</option>
+            <option name="linkView">search</option>
+            <option name="rangeColors">["0x65a637","0x6db7c6","0xf7bc38","0xf58f39","0xd93f3c"]</option>
+            <option name="rangeValues">[0,30,70,100]</option>
+            <option name="trendInterval">-24h</option>
+          </single>
+        </panel>
     </row>
     <row>
         <panel>
