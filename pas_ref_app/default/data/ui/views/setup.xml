@@ -52,7 +52,7 @@
                 </div>
                 <hr/>
                 <div id="googleDriveModule" class="hide">
-                    <h3>Google Drive Add-on</h3>
+                    <h3>Google Drive Add-on (Optional)</h3>
                     <div>
                         <h3>Enter Client ID:</h3>
                         <input id="clientId" type="text" />
