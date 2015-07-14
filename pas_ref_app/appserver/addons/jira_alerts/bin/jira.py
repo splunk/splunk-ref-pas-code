@@ -32,7 +32,6 @@ def send_message(payload):
     try:
         headers = {"Content-Type": "application/json"}
         result = requests.post(url=jira_url, data=body, headers=headers, auth=(username, password))
-        lock_account(payload)
     except Exception, e:
         print >> sys.stderr, "ERROR Error sending message: %s" % e
         return False
@@ -55,20 +54,6 @@ def get_jira_password(payload):
     jira_password = splunk_response.get("entry")[0].get("content").get("clear_password")
 
     return jira_password
-
-def lock_account(payload):
-    result = payload.get('result')
-    username = result.get("user_id")
-    USER_CONTROL_URI = "http://localhost:5000/user_list/api/v1.0/users/lock/" + username
-
-    # create outbound request object
-    try:
-        result = requests.post(url=USER_CONTROL_URI)
-        if result.status_code != 200:
-            print >> sys.stderr, "ERROR Error encountered while trying to lock account: %s" % str(result.json())
-    except Exception, e:
-        print >> sys.stderr, "ERROR Error sending message: %s" % e
-        return False
 
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "--execute":
