@@ -166,7 +166,6 @@ require([
         }
 
         if(clientId.length > 0 && clientSecret.length > 0) {
-            event.preventDefault();
             window.open(GOOGLE_SIGN_IN_BASE_URL + clientId, "popupWindow", "width=600,height=600,scrollbars=yes");
             $("#codeEntry").removeClass('hide');
             $("#clentIdError").addClass('hide');
