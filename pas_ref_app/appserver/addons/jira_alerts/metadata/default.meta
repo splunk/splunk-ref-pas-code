@@ -1,0 +1,11 @@
+[]
+access = read : [ * ], write : [ admin ]
+
+[alert_actions/jira]
+export = system
+
+[alerts]
+export = system
+
+[restmap]
+export = system

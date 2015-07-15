@@ -7,7 +7,9 @@ require([
 ], function(mvc, ignored, _, KVStore, MultiDropdownView) {
     // TODO: Add error handling for I/O errors.
     //       No time to fix now since feature freeze in a few hours...
-    
+
+    var GOOGLE_SIGN_IN_BASE_URL = "https://accounts.google.com/o/oauth2/auth?redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fadmin.reports.audit.readonly&client_id=";
+
     var VIOLATION_TYPE_ROW_TEMPLATE =
         _.template(
             "<div class='violation_type'>"+
@@ -115,6 +117,13 @@ require([
                 return;
             }
 
+            // Show the Google Drive app configuration section if the app is present and enabled
+            var googleDriveApp = apps.item('googledrive_addon');
+            if (googleDriveApp && !googleDriveApp.state().content.disabled) {
+                $('#googleDriveModule').removeClass('hide');
+            }
+
+
             var eventgenApp = apps.item('eventgen')
             if (eventgenApp) {
                 eventgenApp.fetch(function(err, eventgenApp) {
@@ -136,7 +145,63 @@ require([
                 $('#eventgen-notinstalled').removeClass('hide');
             }
         });
+
+    // Google Drive OAuth2 Checks
+    $("#getAuth").click(function() {
+        var clientId = $("#clientId").val();
+        var clientSecret = $("#clientSecret").val();
+
+        if(clientId.length == 0) {
+            $("#clentIdError").removeClass('hide');
+        } else {
+            // hiding error prompt since input value is present
+            $("#clentIdError").addClass('hide');
+        }
+
+        if(clientSecret.length == 0) {
+            $("#clentSecretError").removeClass('hide');
+        } else {
+            // hiding error prompt since input value is present
+            $("#clentSecretError").addClass('hide');
+        }
+
+        if(clientId.length > 0 && clientSecret.length > 0) {
+            window.open(GOOGLE_SIGN_IN_BASE_URL + clientId, "popupWindow", "width=600,height=600,scrollbars=yes");
+            $("#codeEntry").removeClass('hide');
+            $("#clentIdError").addClass('hide');
+            $("#clentSecretError").addClass('hide');
+        }
+    });
     
+    $("#saveAuth").click(function() {
+        var client_id = $("#clientId").val()
+        var client_secret = $("#clientSecret").val()
+        var auth_code = $("#authCode").val()
+        if(auth_code.length > 0) {
+            $("#codeEntry").addClass('hide');
+            $("#gAuthSuccess").removeClass('hide');
+
+            // Adding auth token to the KV store
+            var oauth2_record = {
+                "auth_code": auth_code,
+                "client_id" : client_id,
+                "client_secret" : client_secret
+            }
+
+            // Attempting to exchange auth token for refresh token via call to custom RESTful endpoint
+            // Details are located in restmap.conf
+            var service = mvc.createService();
+            service.post("/services/configure_oauth", oauth2_record,
+                function(err, response) {
+                    console.log("oauth response received")
+                });
+            $("#authEntryError").addClass('hide');
+        } else {
+            $("#authEntryError").removeClass('hide');
+            $("#gAuthSuccess").addClass('hide');
+        }
+    });
+
     // When save button clicked, update setup configuration
     $("#save").click(function() {
         if ($(this).hasClass('disabled')) {

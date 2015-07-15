@@ -1,0 +1,38 @@
+<form class="form-horizontal form-complex">
+    <div class="control-group">
+        <label class="control-label" for="project_key">Project Key</label>
+
+        <div class="controls">
+            <input type="text" name="action.jira.param.project_key" id="project_key" />
+            <span class="help-block">Enter the project key to create Issues under.</span>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="issue_type">Issue Type</label>
+
+        <div class="controls">
+            <input type="text" name="action.jira.param.issue_type" id="issue_type" />
+            <span class="help-block">Enter an Issue type.</span>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="summary">Issue Summary</label>
+
+        <div class="controls">
+            <input type="text" name="action.jira.param.summary" id="summary" />
+            <span class="help-block">Enter a summary of the Issue.</span>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="description">Description</label>
+
+        <div class="controls">
+            <textarea name="action.jira.param.description" id="description" style="height: 120px;"></textarea>
+            <span class="help-block">
+                Enter a description of the issue. This text can include tokens that will resolve to text based on search results.
+                <a href="{{SPLUNKWEB_URL_PREFIX}}/help?location=learnmore.alert.action.tokens" target="_blank"
+                   title="Splunk help">Learn More <i class="icon-external"></i></a>
+            </span>
+        </div>
+    </div>
+</form>

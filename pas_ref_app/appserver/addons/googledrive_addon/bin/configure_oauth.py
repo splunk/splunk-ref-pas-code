@@ -1,34 +1,60 @@
-#!/usr/bin/python
-
+import splunk.admin as admin
+import splunk.entity as entity
+import splunk.rest
+import splunk.util
+import httplib2, urllib, os, time
+import urllib, json
+import logging
+import logging.handlers
 import httplib2
 import fileinput
 import sys
-import logging
+from splunk.appserver.mrsparkle.lib.util import make_splunkhome_path
+
+# set our path to this particular application directory (which is suppose to be <appname>/bin)
+app_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(app_dir)
 from oauth2client.file import Storage
 from oauth2client.client import OAuth2WebServerFlow
 
-if len(sys.argv)!=3: 
-        print "Usage:./splunk cmd python ../etc/apps/googledrive_addon/bin/configure_oauth.py CLIENT_ID CLIENT_SECRET" 
-        sys.exit()
+def setup_logger():
+    logger = logging.getLogger('configure_oauth')
+    logger.propagate = False
+    logger.setLevel(logging.DEBUG)
 
-CLIENT_ID = sys.argv[1]
-CLIENT_SECRET = sys.argv[2]
+    file_handler = logging.handlers.RotatingFileHandler(
+                    make_splunkhome_path(['var', 'log', 'splunk', 
+                                          'configure_oauth.log']),
+                                        maxBytes=25000000, backupCount=5)
 
-# Check https://developers.google.com/admin-sdk/reports/v1/guides/authorizing for all available scopes
-OAUTH_SCOPE = 'https://www.googleapis.com/auth/admin.reports.audit.readonly'
+    formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+    file_handler.setFormatter(formatter)
 
-# Redirect URI for installed apps
-REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob'
+    logger.addHandler(file_handler)
+    
+    return logger
 
-storage = Storage('google_drive_creds')
+logger = setup_logger()
 
-# Run through the OAuth flow and retrieve credentials
-logging.basicConfig(filename='debug.log',level=logging.DEBUG)
-flow = OAuth2WebServerFlow(CLIENT_ID, CLIENT_SECRET, OAUTH_SCOPE, REDIRECT_URI)
-authorize_url = flow.step1_get_authorize_url()
-print 'Go to the following link in your browser: '
-print  authorize_url
-code = raw_input('Enter verification code: ').strip()
-credentials = flow.step2_exchange(code)
-storage.put(credentials)
-print "OAuth sign-in succeeded"
+class oauth_exchange(splunk.rest.BaseRestHandler):
+    def handle_POST(self):
+        redirect_uri = 'urn:ietf:wg:oauth:2.0:oob'
+        oauth_scope = 'https://www.googleapis.com/auth/admin.reports.audit.readonly'
+
+        try:
+            client_id = self.args.get('client_id')
+            client_secret = self.args.get('client_secret')
+            auth_code = self.args.get('auth_code')
+
+            storage = Storage(app_dir + os.path.sep + 'google_drive_creds')
+
+            flow = OAuth2WebServerFlow(client_id, client_secret, oauth_scope, redirect_uri)
+            credentials = flow.step2_exchange(auth_code)
+            logger.debug("Obtained OAuth2 credentials!")
+            storage.put(credentials)
+        except Exception, e:
+                logger.exception(e)
+                self.response.write(e)
+
+    # listen to all verbs
+    handle_GET = handle_DELETE = handle_PUT = handle_VIEW = handle_POST
