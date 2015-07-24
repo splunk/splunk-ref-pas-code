@@ -9,6 +9,8 @@ require([
     //       No time to fix now since feature freeze in a few hours...
 
     var GOOGLE_SIGN_IN_BASE_URL = "https://accounts.google.com/o/oauth2/auth?redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fadmin.reports.audit.readonly&client_id=";
+    var logService = mvc.createService();
+    var currentUser = Splunk.util.getConfigValue("USERNAME");
 
     var VIOLATION_TYPE_ROW_TEMPLATE =
         _.template(
@@ -113,6 +115,7 @@ require([
     service.apps()
         .fetch(function(err, apps) {
             if (err) {
+                sendLog("DEV",err);
                 console.error(err);
                 return;
             }
@@ -120,14 +123,15 @@ require([
             // Show the Google Drive app configuration section if the app is present and enabled
             var googleDriveApp = apps.item('googledrive_addon');
             if (googleDriveApp && !googleDriveApp.state().content.disabled) {
+                sendLog("DEV", "Enabling Google Drive Add-on in Setup interface.")
                 $('#googleDriveModule').removeClass('hide');
             }
-
 
             var eventgenApp = apps.item('eventgen')
             if (eventgenApp) {
                 eventgenApp.fetch(function(err, eventgenApp) {
                     if (err) {
+                        sendLog("DEV",err);
                         console.error(err);
                         return;
                     }
@@ -152,6 +156,7 @@ require([
         var clientSecret = $("#clientSecret").val();
 
         if(clientId.length == 0) {
+            sendLog("UX","User didn't enter a Client ID");
             $("#clentIdError").removeClass('hide');
         } else {
             // hiding error prompt since input value is present
@@ -159,6 +164,7 @@ require([
         }
 
         if(clientSecret.length == 0) {
+            sendLog("UX","User didn't enter a Client Secret");
             $("#clentSecretError").removeClass('hide');
         } else {
             // hiding error prompt since input value is present
@@ -166,6 +172,7 @@ require([
         }
 
         if(clientId.length > 0 && clientSecret.length > 0) {
+            sendLog("UX","User attempting to obtain Auth Code");
             window.open(GOOGLE_SIGN_IN_BASE_URL + clientId, "popupWindow", "width=600,height=600,scrollbars=yes");
             $("#codeEntry").removeClass('hide');
             $("#clentIdError").addClass('hide');
@@ -193,7 +200,7 @@ require([
             var service = mvc.createService();
             service.post("/services/configure_oauth", oauth2_record,
                 function(err, response) {
-                    console.log("oauth response received")
+                    sendLog("DEV","Token exchange result: " + err);
                 });
             $("#authEntryError").addClass('hide');
         } else {
@@ -207,7 +214,7 @@ require([
         if ($(this).hasClass('disabled')) {
             return;
         }
-        
+
         // Clear previous validation error markers
         $('.violation_type .weight input').parent('span').removeClass("error");
         
@@ -227,23 +234,39 @@ require([
         } else {
             var violationTypes = [];
             _.each($('.violation_type'), function(violationTypeEl, index) {
+                var viol_id = DEFAULT_VIOLATION_TYPES[index].id;
+                var viol_title = DEFAULT_VIOLATION_TYPES[index].title;
+                var viol_color = $('.color input', violationTypeEl).val();
+                var viol_weight = $('.weight input', violationTypeEl).val();
+
+                sendLog("UX","Saving " + viol_title + ": user selected weight: " + viol_weight);
                 violationTypes.push({
-                    id: DEFAULT_VIOLATION_TYPES[index].id,
-                    title: DEFAULT_VIOLATION_TYPES[index].title,
-                    color: $('.color input', violationTypeEl).val(),
-                    weight: $('.weight input', violationTypeEl).val()
+                    id: viol_id,
+                    title: viol_title,
+                    color: viol_color,
+                    weight: viol_weight
                 });
             });
-            
+
+            var tipsEnabled = $('#learn_more_tips_toggle input').prop('checked') ? 'True' : 'False';
+            sendLog("UX", "Learn more tips checked: " + tipsEnabled)
+            var departmentSelection = departmentsDropdown.val();
+
+            var selectedDepartments = "User selected departments: ";
+            for (var i=0; i<departmentSelection.length; i++) {
+                selectedDepartments += departmentSelection[i] + " ";
+            }
+            sendLog("UX", selectedDepartments);
+
             var newSetupData = {
-                departments: departmentsDropdown.val(),
-                learningTipsEnabled: $('#learn_more_tips_toggle input').prop('checked') ? 'True' : 'False'
+                departments: departmentSelection,
+                learningTipsEnabled: tipsEnabled
             };
-            
+
             var newSetupModel = (oldSetupModelId == "_new")
                 ? new SetupModel()
                 : new SetupModel({ _key: oldSetupModelId });
-            
+
             $('#error-message').hide();
             newSetupModel.save(newSetupData).then(function() {
                 setCollectionData(
@@ -251,6 +274,7 @@ require([
                     ViolationTypeModel,
                     violationTypes,
                     function() {
+                        sendLog("DEV","Model saved with id " + newSetupModel.id);
                         console.log('Model saved with id ' + newSetupModel.id);
                         window.location.href = "./summary";
                     });
@@ -260,6 +284,23 @@ require([
         }
     });
 
+    // Sends log messages to a Splunk instance via HTTP Input
+    function sendLog(logType, message) {
+        var splunk_url = logService.prefix + "/services/pas_dev_logs";
+
+        var log_message = {
+            "event":
+                {
+                    "message": logType + " - [User: " + currentUser + "] " + message
+                }
+            };
+
+        logService.post("/services/pas_dev_logs", log_message,
+            function(err, response) {
+                console.log("Logged interaction.");
+        });
+    }
+
     // Replaces the contents of the specified collection with
     // new models initialized with the specified data.
     function setCollectionData(Collection, Model, modelDatas, done) {
@@ -267,7 +308,7 @@ require([
             saveModels(Model, modelDatas, done);
         });
     }
-    
+
     // Destroys all models in the specified KV Store collection.
     function destroyModelsIn(Collection, done) {
         var collection = new Collection();
@@ -287,7 +328,7 @@ require([
             deleteLoop();
         });
     }
-    
+
     // Saves all specified models.
     function saveModels(Model, modelDatas, done) {
         var modelIndex = 0;
