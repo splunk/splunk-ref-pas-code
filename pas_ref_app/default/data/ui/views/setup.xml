@@ -73,6 +73,7 @@
                         </div>
                     </div>
                     <p class="text-success hide" id="gAuthSuccess">You have successfully set up Google Drive authentication!</p>
+                    <p class="text-error hide" id="gAuthError">An error was encountered during the OAuth2 authentication process.</p>
                     <hr/>
                 </div>
                 <div id="learn_more_tips_toggle">

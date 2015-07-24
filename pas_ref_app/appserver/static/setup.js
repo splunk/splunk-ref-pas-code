@@ -185,9 +185,6 @@ require([
         var client_secret = $("#clientSecret").val()
         var auth_code = $("#authCode").val()
         if(auth_code.length > 0) {
-            $("#codeEntry").addClass('hide');
-            $("#gAuthSuccess").removeClass('hide');
-
             // Adding auth token to the KV store
             var oauth2_record = {
                 "auth_code": auth_code,
@@ -200,7 +197,14 @@ require([
             var service = mvc.createService();
             service.post("/services/configure_oauth", oauth2_record,
                 function(err, response) {
-                    sendLog("DEV","Token exchange result: " + err);
+                    if(null!=response) {
+                        $("#codeEntry").addClass('hide');
+                        $("#gAuthSuccess").removeClass('hide');
+                        $("#gAuthError").addClass('hide');
+                    } else {
+                        $("#gAuthError").removeClass('hide');
+                        $("#gAuthSuccess").addClass('hide');
+                    }
                 });
             $("#authEntryError").addClass('hide');
         } else {
