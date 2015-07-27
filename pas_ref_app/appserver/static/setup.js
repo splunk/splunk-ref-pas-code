@@ -115,7 +115,7 @@ require([
     service.apps()
         .fetch(function(err, apps) {
             if (err) {
-                sendLog("DEV",err);
+                sendDevLog( err);
                 console.error(err);
                 return;
             }
@@ -123,7 +123,7 @@ require([
             // Show the Google Drive app configuration section if the app is present and enabled
             var googleDriveApp = apps.item('googledrive_addon');
             if (googleDriveApp && !googleDriveApp.state().content.disabled) {
-                sendLog("DEV", "Enabling Google Drive Add-on in Setup interface.")
+                sendDevLog( "Enabling Google Drive Add-on in Setup interface.")
                 $('#googleDriveModule').removeClass('hide');
             }
 
@@ -131,7 +131,7 @@ require([
             if (eventgenApp) {
                 eventgenApp.fetch(function(err, eventgenApp) {
                     if (err) {
-                        sendLog("DEV",err);
+                        sendDevLog(err);
                         console.error(err);
                         return;
                     }
@@ -156,7 +156,7 @@ require([
         var clientSecret = $("#clientSecret").val();
 
         if(clientId.length == 0) {
-            sendLog("UX","User didn't enter a Client ID");
+            sendUxLog("User didn't enter a Client ID");
             $("#clentIdError").removeClass('hide');
         } else {
             // hiding error prompt since input value is present
@@ -164,7 +164,7 @@ require([
         }
 
         if(clientSecret.length == 0) {
-            sendLog("UX","User didn't enter a Client Secret");
+            sendUxLog("User didn't enter a Client Secret");
             $("#clentSecretError").removeClass('hide');
         } else {
             // hiding error prompt since input value is present
@@ -172,7 +172,7 @@ require([
         }
 
         if(clientId.length > 0 && clientSecret.length > 0) {
-            sendLog("UX","User attempting to obtain Auth Code");
+            sendUxLog("Opening Google Authentication window for user to obtain Auth Code.");
             window.open(GOOGLE_SIGN_IN_BASE_URL + clientId, "popupWindow", "width=600,height=600,scrollbars=yes");
             $("#codeEntry").removeClass('hide');
             $("#clentIdError").addClass('hide');
@@ -202,6 +202,7 @@ require([
                         $("#gAuthSuccess").removeClass('hide');
                         $("#gAuthError").addClass('hide');
                     } else {
+                        sendDevLog("Token exchange error: " + err.status + ". Message: " + err.error);
                         $("#gAuthError").removeClass('hide');
                         $("#gAuthSuccess").addClass('hide');
                     }
@@ -232,8 +233,10 @@ require([
         }).parent('span').addClass("error").length > 0;
         
         if (someEmpty) {
+            sendUxLog("User left required fields blank.");
             window.alert("Some required fields have been left blank.");
         } else if (notNumbers) {
+            sendUxLog("User entered invalid violation type number.");
             window.alert("Some specified violation type weights are not numbers.");
         } else {
             var violationTypes = [];
@@ -243,7 +246,7 @@ require([
                 var viol_color = $('.color input', violationTypeEl).val();
                 var viol_weight = $('.weight input', violationTypeEl).val();
 
-                sendLog("UX","Saving " + viol_title + ": user selected weight: " + viol_weight);
+                sendUxLog("Saving " + viol_title + ": user selected weight: " + viol_weight);
                 violationTypes.push({
                     id: viol_id,
                     title: viol_title,
@@ -253,14 +256,14 @@ require([
             });
 
             var tipsEnabled = $('#learn_more_tips_toggle input').prop('checked') ? 'True' : 'False';
-            sendLog("UX", "Learn more tips checked: " + tipsEnabled)
+            sendUxLog( "Learn more tips checked: " + tipsEnabled)
             var departmentSelection = departmentsDropdown.val();
 
             var selectedDepartments = "User selected departments: ";
             for (var i=0; i<departmentSelection.length; i++) {
                 selectedDepartments += departmentSelection[i] + " ";
             }
-            sendLog("UX", selectedDepartments);
+            sendUxLog(selectedDepartments);
 
             var newSetupData = {
                 departments: departmentSelection,
@@ -278,30 +281,41 @@ require([
                     ViolationTypeModel,
                     violationTypes,
                     function() {
-                        sendLog("DEV","Model saved with id " + newSetupModel.id);
+                        sendDevLog("Model saved with id " + newSetupModel.id);
                         console.log('Model saved with id ' + newSetupModel.id);
                         window.location.href = "./summary";
                     });
             }, function() {
                 $('#error-message').show();
+                sendUxLog("Unable to save changes!");
             });
         }
     });
 
-    // Sends log messages to a Splunk instance via HTTP Input
-    function sendLog(logType, message) {
-        var splunk_url = logService.prefix + "/services/pas_dev_logs";
+    function sendUxLog(message) {
+        sendLog("/services/pas_ux_logs", message);
+    }
 
+    function sendDevLog(message) {
+        sendLog("/services/pas_dev_logs", message);
+    }
+
+    // Sends log messages to a Splunk instance via HTTP Input
+    function sendLog(endpoint, message) {
         var log_message = {
             "event":
                 {
-                    "message": logType + " - [User: " + currentUser + "] " + message
+                    "message": "[User: " + currentUser + "] " + message
                 }
             };
 
-        logService.post("/services/pas_dev_logs", log_message,
+        logService.post(endpoint, log_message,
             function(err, response) {
-                console.log("Logged interaction.");
+                if(null!=response) {
+                    console.log("Logged interaction event successfully.");
+                } else {
+                    console.log("Error logging interaction event.  Message: " + err.error);
+                }
         });
     }
 
