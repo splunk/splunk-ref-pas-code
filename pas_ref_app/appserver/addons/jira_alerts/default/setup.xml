@@ -3,17 +3,38 @@
         <text>Configure JIRA Alert Actions</text>
     </block>
 
-    <block title="Server" endpoint="admin/alert_actions" entity="jira">
-        <input field="param.jira_url">
+    <block title="Server" endpoint="admin/jira_alerts_install" entity="jira">
+        <input field="jira_url">
             <label>Server Base URL</label>
             <type>text</type>
         </input>
-        <input field="param.jira_username">
+        <input field="jira_username">
             <label>JIRA Username</label>
             <type>text</type>
         </input>
-        <input endpoint="storage/passwords" entity=":jira_password:" field="password">
+        <input field="jira_password">
             <label>JIRA Password</label>
+            <type>password</type>
+        </input>
+    </block>
+    <block title="Import Projects and Issue Types" endpoint="admin/jira_alerts_install" entity="jira">
+        <input field="import">
+            <label>Import information from JIRA server</label>
+            <type>bool</type>
+        </input>
+        <text>After submitting the setup with the checkbox enabled, Splunk will fetch all projects and issue types from your JIRA server, so it can be selected when creating an alert.</text>
+    </block>
+    <block title="Default Settings" endpoint="admin/jira_alerts_install" entity="jira">
+        <input field="default_project_key">
+            <label>Default Project</label>
+            <type>text</type>
+        </input>
+        <input field="default_issue_type">
+            <label>Default Issue Type</label>
+            <type>text</type>
+        </input>
+        <input field="default_priority">
+            <label>Default Priority</label>
             <type>text</type>
         </input>
     </block>

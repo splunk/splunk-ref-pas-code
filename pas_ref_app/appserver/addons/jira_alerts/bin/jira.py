@@ -1,7 +1,7 @@
 import sys
 import json
-import urllib2
 import requests
+from jira_helpers import get_jira_password
 
 # creates outbound message from alert payload contents
 # and attempts to send to the specified endpoint
@@ -12,7 +12,7 @@ def send_message(payload):
     url = config.get('jira_url')
     jira_url = url + ISSUE_REST_PATH
     username = config.get('jira_username')
-    password = get_jira_password(payload)
+    password = get_jira_password(payload.get('server_uri'), payload.get('session_key'))
 
     # create outbound JSON message body
     body = json.dumps({
@@ -23,7 +23,7 @@ def send_message(payload):
             "summary": config.get('summary'),
             "description": config.get('description'),
             "issuetype": {
-                "id": config.get('issue_type')
+                "name": config.get('issue_type')
             }
         }
     })
@@ -32,28 +32,11 @@ def send_message(payload):
     try:
         headers = {"Content-Type": "application/json"}
         result = requests.post(url=jira_url, data=body, headers=headers, auth=(username, password))
+        print >>sys.stderr, "INFO Jira server HTTP status= %s" % result.text
+        print >>sys.stderr, "INFO Jira server response: %s" % result.text
     except Exception, e:
         print >> sys.stderr, "ERROR Error sending message: %s" % e
         return False
-
-def get_jira_password(payload):
-    SPLUNK_SERVER = payload.get('server_uri')
-    password_url = SPLUNK_SERVER + '/servicesNS/nobody/jira_alerts/storage/passwords/%3Ajira_password%3A?output_mode=json'
-
-    headers = {'Authorization': 'Splunk ' + payload.get('session_key')}
-    try:
-        # attempting to retrieve cleartext password, disabling SSL verification for practical reasons
-        result = requests.get(url=password_url, headers=headers, verify=False)
-        if result.status_code != 200:
-            print >> sys.stderr, "ERROR Error: %s" % str(result.json())
-    except Exception, e:
-        print >> sys.stderr, "ERROR Error sending message: %s" % e
-        return False
-
-    splunk_response = json.loads(result.text)
-    jira_password = splunk_response.get("entry")[0].get("content").get("clear_password")
-
-    return jira_password
 
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "--execute":
