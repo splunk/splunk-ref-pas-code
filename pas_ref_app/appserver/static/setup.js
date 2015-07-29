@@ -123,7 +123,7 @@ require([
             // Show the Google Drive app configuration section if the app is present and enabled
             var googleDriveApp = apps.item('googledrive_addon');
             if (googleDriveApp && !googleDriveApp.state().content.disabled) {
-                sendDevLog( "Enabling Google Drive Add-on in Setup interface.")
+                sendDevLog("Enabling Google Drive Add-on in Setup interface.");
                 $('#googleDriveModule').removeClass('hide');
             }
 
@@ -185,7 +185,7 @@ require([
         var client_secret = $("#clientSecret").val()
         var auth_code = $("#authCode").val()
         if(auth_code.length > 0) {
-            // Adding auth token to the KV store
+            // Creating OAuth2 object for key exchange
             var oauth2_record = {
                 "auth_code": auth_code,
                 "client_id" : client_id,
@@ -293,31 +293,49 @@ require([
     });
 
     function sendUxLog(message) {
-        sendLog("/services/pas_ux_logs", message);
+        sendLog(message, "010A4B2D-ACBF-4624-A02A-FBB0167F71CE");
     }
 
     function sendDevLog(message) {
-        sendLog("/services/pas_dev_logs", message);
+        sendLog(message, "8ACC2979-38C8-4D95-948E-ECE47E7D5633");
     }
 
-    // Sends log messages to a Splunk instance via HTTP Input
-    function sendLog(endpoint, message) {
+    // Create the XHR object.
+    function createCORSRequest(method, url) {
+        var xhr = new XMLHttpRequest();
+        if ("withCredentials" in xhr) {
+            // XHR for Chrome/Firefox/Opera/Safari.
+            xhr.open(method, url, true);
+        } else if (typeof XDomainRequest != "undefined") {
+            // XDomainRequest for IE.
+            xhr = new XDomainRequest();
+            xhr.open(method, url);
+        } else {
+            // CORS not supported.
+            xhr = null;
+        }
+        return xhr;
+    }
+
+    function sendLog(message, authCode) {
+        var http_request = new XMLHttpRequest();
+        var http_input_url = "http://lappy386:8088/services/collector";
+        // Using lower-level call to XMLHttpRequest due to issues with how
+        // JQuery handles CORS requests
+        var xhr = createCORSRequest('POST', http_input_url);
+        xhr.setRequestHeader('Content-Type', 'text/plain');
+        xhr.setRequestHeader('Authorization', 'Splunk ' + authCode);
+
         var log_message = {
             "event":
                 {
-                    "message": "[User: " + currentUser + "] " + message
+                    "username": currentUser,
+                    "message": message
                 }
             };
 
-        logService.post(endpoint, log_message,
-            function(err, response) {
-                if(null!=response) {
-                    console.log("Logged interaction event successfully.");
-                } else {
-                    console.log("Error logging interaction event.  Message: " + err.error);
-                }
-        });
-    }
+            xhr.send(JSON.stringify(log_message));
+  }
 
     // Replaces the contents of the specified collection with
     // new models initialized with the specified data.
