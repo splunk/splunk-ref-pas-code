@@ -9,8 +9,11 @@ require([
     //       No time to fix now since feature freeze in a few hours...
 
     var GOOGLE_SIGN_IN_BASE_URL = "https://accounts.google.com/o/oauth2/auth?redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fadmin.reports.audit.readonly&client_id=";
+    
     var logService = mvc.createService();
     var currentUser = Splunk.util.getConfigValue("USERNAME");
+    var dev_debug_key = "";
+    var ux_logging_key = "";
 
     var VIOLATION_TYPE_ROW_TEMPLATE =
         _.template(
@@ -293,11 +296,11 @@ require([
     });
 
     function sendUxLog(message) {
-        sendLog(message, "010A4B2D-ACBF-4624-A02A-FBB0167F71CE");
+        sendLog(message, ux_logging_key);
     }
 
     function sendDevLog(message) {
-        sendLog(message, "8ACC2979-38C8-4D95-948E-ECE47E7D5633");
+        sendLog(message, dev_debug_key);
     }
 
     // Create the XHR object.
