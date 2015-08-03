@@ -9,6 +9,11 @@ require([
     //       No time to fix now since feature freeze in a few hours...
 
     var GOOGLE_SIGN_IN_BASE_URL = "https://accounts.google.com/o/oauth2/auth?redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fadmin.reports.audit.readonly&client_id=";
+    
+    var logService = mvc.createService();
+    var currentUser = Splunk.util.getConfigValue("USERNAME");
+    var dev_debug_key = "";
+    var ux_logging_key = "";
 
     var VIOLATION_TYPE_ROW_TEMPLATE =
         _.template(
@@ -113,6 +118,7 @@ require([
     service.apps()
         .fetch(function(err, apps) {
             if (err) {
+                sendDevLog( err);
                 console.error(err);
                 return;
             }
@@ -120,14 +126,15 @@ require([
             // Show the Google Drive app configuration section if the app is present and enabled
             var googleDriveApp = apps.item('googledrive_addon');
             if (googleDriveApp && !googleDriveApp.state().content.disabled) {
+                sendDevLog("Enabling Google Drive Add-on in Setup interface.");
                 $('#googleDriveModule').removeClass('hide');
             }
-
 
             var eventgenApp = apps.item('eventgen')
             if (eventgenApp) {
                 eventgenApp.fetch(function(err, eventgenApp) {
                     if (err) {
+                        sendDevLog(err);
                         console.error(err);
                         return;
                     }
@@ -152,6 +159,7 @@ require([
         var clientSecret = $("#clientSecret").val();
 
         if(clientId.length == 0) {
+            sendUxLog("User didn't enter a Client ID");
             $("#clentIdError").removeClass('hide');
         } else {
             // hiding error prompt since input value is present
@@ -159,6 +167,7 @@ require([
         }
 
         if(clientSecret.length == 0) {
+            sendUxLog("User didn't enter a Client Secret");
             $("#clentSecretError").removeClass('hide');
         } else {
             // hiding error prompt since input value is present
@@ -166,6 +175,7 @@ require([
         }
 
         if(clientId.length > 0 && clientSecret.length > 0) {
+            sendUxLog("Opening Google Authentication window for user to obtain Auth Code.");
             window.open(GOOGLE_SIGN_IN_BASE_URL + clientId, "popupWindow", "width=600,height=600,scrollbars=yes");
             $("#codeEntry").removeClass('hide');
             $("#clentIdError").addClass('hide');
@@ -178,10 +188,7 @@ require([
         var client_secret = $("#clientSecret").val()
         var auth_code = $("#authCode").val()
         if(auth_code.length > 0) {
-            $("#codeEntry").addClass('hide');
-            $("#gAuthSuccess").removeClass('hide');
-
-            // Adding auth token to the KV store
+            // Creating OAuth2 object for key exchange
             var oauth2_record = {
                 "auth_code": auth_code,
                 "client_id" : client_id,
@@ -193,7 +200,15 @@ require([
             var service = mvc.createService();
             service.post("/services/configure_oauth", oauth2_record,
                 function(err, response) {
-                    console.log("oauth response received")
+                    if(null!=response) {
+                        $("#codeEntry").addClass('hide');
+                        $("#gAuthSuccess").removeClass('hide');
+                        $("#gAuthError").addClass('hide');
+                    } else {
+                        sendDevLog("Token exchange error: " + err.status + ". Message: " + err.error);
+                        $("#gAuthError").removeClass('hide');
+                        $("#gAuthSuccess").addClass('hide');
+                    }
                 });
             $("#authEntryError").addClass('hide');
         } else {
@@ -207,7 +222,7 @@ require([
         if ($(this).hasClass('disabled')) {
             return;
         }
-        
+
         // Clear previous validation error markers
         $('.violation_type .weight input').parent('span').removeClass("error");
         
@@ -221,29 +236,47 @@ require([
         }).parent('span').addClass("error").length > 0;
         
         if (someEmpty) {
+            sendUxLog("User left required fields blank.");
             window.alert("Some required fields have been left blank.");
         } else if (notNumbers) {
+            sendUxLog("User entered invalid violation type number.");
             window.alert("Some specified violation type weights are not numbers.");
         } else {
             var violationTypes = [];
             _.each($('.violation_type'), function(violationTypeEl, index) {
+                var viol_id = DEFAULT_VIOLATION_TYPES[index].id;
+                var viol_title = DEFAULT_VIOLATION_TYPES[index].title;
+                var viol_color = $('.color input', violationTypeEl).val();
+                var viol_weight = $('.weight input', violationTypeEl).val();
+
+                sendUxLog("Saving " + viol_title + ": user selected weight: " + viol_weight);
                 violationTypes.push({
-                    id: DEFAULT_VIOLATION_TYPES[index].id,
-                    title: DEFAULT_VIOLATION_TYPES[index].title,
-                    color: $('.color input', violationTypeEl).val(),
-                    weight: $('.weight input', violationTypeEl).val()
+                    id: viol_id,
+                    title: viol_title,
+                    color: viol_color,
+                    weight: viol_weight
                 });
             });
-            
+
+            var tipsEnabled = $('#learn_more_tips_toggle input').prop('checked') ? 'True' : 'False';
+            sendUxLog( "Learn more tips checked: " + tipsEnabled)
+            var departmentSelection = departmentsDropdown.val();
+
+            var selectedDepartments = "User selected departments: ";
+            for (var i=0; i<departmentSelection.length; i++) {
+                selectedDepartments += departmentSelection[i] + " ";
+            }
+            sendUxLog(selectedDepartments);
+
             var newSetupData = {
-                departments: departmentsDropdown.val(),
-                learningTipsEnabled: $('#learn_more_tips_toggle input').prop('checked') ? 'True' : 'False'
+                departments: departmentSelection,
+                learningTipsEnabled: tipsEnabled
             };
-            
+
             var newSetupModel = (oldSetupModelId == "_new")
                 ? new SetupModel()
                 : new SetupModel({ _key: oldSetupModelId });
-            
+
             $('#error-message').hide();
             newSetupModel.save(newSetupData).then(function() {
                 setCollectionData(
@@ -251,14 +284,61 @@ require([
                     ViolationTypeModel,
                     violationTypes,
                     function() {
+                        sendDevLog("Model saved with id " + newSetupModel.id);
                         console.log('Model saved with id ' + newSetupModel.id);
                         window.location.href = "./summary";
                     });
             }, function() {
                 $('#error-message').show();
+                sendUxLog("Unable to save changes!");
             });
         }
     });
+
+    function sendUxLog(message) {
+        sendLog(message, ux_logging_key);
+    }
+
+    function sendDevLog(message) {
+        sendLog(message, dev_debug_key);
+    }
+
+    // Create the XHR object.
+    function createCORSRequest(method, url) {
+        var xhr = new XMLHttpRequest();
+        if ("withCredentials" in xhr) {
+            // XHR for Chrome/Firefox/Opera/Safari.
+            xhr.open(method, url, true);
+        } else if (typeof XDomainRequest != "undefined") {
+            // XDomainRequest for IE.
+            xhr = new XDomainRequest();
+            xhr.open(method, url);
+        } else {
+            // CORS not supported.
+            xhr = null;
+        }
+        return xhr;
+    }
+
+    function sendLog(message, authCode) {
+        var http_request = new XMLHttpRequest();
+        var http_input_url = "http://lappy386:8088/services/collector";
+        // Using lower-level call to XMLHttpRequest due to issues with how
+        // JQuery handles CORS requests
+        var xhr = createCORSRequest('POST', http_input_url);
+        xhr.setRequestHeader('Content-Type', 'text/plain');
+        xhr.setRequestHeader('Authorization', 'Splunk ' + authCode);
+
+        var log_message = {
+            "event":
+                {
+                    "username": currentUser,
+                    "message": message
+                }
+            };
+
+            xhr.send(JSON.stringify(log_message));
+  }
 
     // Replaces the contents of the specified collection with
     // new models initialized with the specified data.
@@ -267,7 +347,7 @@ require([
             saveModels(Model, modelDatas, done);
         });
     }
-    
+
     // Destroys all models in the specified KV Store collection.
     function destroyModelsIn(Collection, done) {
         var collection = new Collection();
@@ -287,7 +367,7 @@ require([
             deleteLoop();
         });
     }
-    
+
     // Saves all specified models.
     function saveModels(Model, modelDatas, done) {
         var modelIndex = 0;
