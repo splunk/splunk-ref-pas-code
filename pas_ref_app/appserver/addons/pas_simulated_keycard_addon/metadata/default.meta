@@ -1,0 +1,11 @@
+[props]
+access = read : [ * ], write : [ admin ]
+export = system
+owner = nobody
+version = 6.1.2
+
+[eventtypes]
+export = system
+
+[tags]
+export = system

@@ -14,7 +14,7 @@
       <single>
         <title>Building 1 Keycard Access Trends</title>
         <search>
-          <query>sourcetype="ri:pas:keycard" building_name="Building 1" | timechart count</query>
+          <query>tag=keycard building_name="Building 1" | timechart count span=24h</query>
           <earliest>-24h@h</earliest>
           <latest>now</latest>
         </search>
@@ -39,7 +39,7 @@
       <single>
         <title>Building 2 Keycard Access Trends</title>
         <search>
-          <query>sourcetype="ri:pas:keycard" building_name="Building 2" | timechart count</query>
+          <query>tag=keycard building_name="Building 2" | timechart count span=24h</query>
           <earliest>-24h@h</earliest>
           <latest>now</latest>
         </search>
@@ -64,7 +64,7 @@
       <single>
         <title>Building 3 Keycard Access Trends</title>
         <search>
-          <query>sourcetype="ri:pas:keycard" building_name="Building 3" | timechart count</query>
+          <query>tag=keycard building_name="Building 3" | timechart count span=24h</query>
           <earliest>-24h@h</earliest>
           <latest>now</latest>
         </search>
@@ -89,7 +89,7 @@
       <single>
         <title>Building 4 Keycard Access Trends</title>
         <search>
-          <query>sourcetype="ri:pas:keycard" building_name="Building 4" | timechart count</query>
+          <query>tag=keycard building_name="Building 4" | timechart count span=24h</query>
           <earliest>-24h@h</earliest>
           <latest>now</latest>
         </search>
@@ -116,13 +116,13 @@
       <map>
         <title>Activity by Building</title>
         <search>
-          <query>sourcetype="ri:pas:keycard" | lookup geo_pas_buildings latitude AS lat, longitude AS long OUTPUT featureId AS building | stats count(username) by building | geom geo_pas_buildings featureIdField=building</query>
+          <query>tag=keycard | lookup geo_pas_buildings latitude AS lat, longitude AS long OUTPUT featureId AS building | stats count(username) by building | geom geo_pas_buildings featureIdField=building</query>
           <earliest>$time_range.earliest$</earliest>
           <latest>$time_range.latest$</latest>
         </search>
         <option name="mapping.type">choropleth</option>
         <option name="mapping.choroplethLayer.colorBins">5</option>
-        <option name="mapping.choroplethLayer.colorMode">categorical</option>
+        <option name="mapping.choroplethLayer.colorMode">sequential</option>
         <option name="mapping.choroplethLayer.maximumColor">0xDB5800</option>
         <option name="mapping.choroplethLayer.minimumColor">0x2F25BA</option>
         <option name="mapping.choroplethLayer.neutralPoint">0</option>
@@ -150,7 +150,7 @@
       <table>
         <title>Top 10 Employee Keycard Users</title>
         <search>
-          <query>sourcetype="ri:pas:keycard" username!=guest | stats count by username | head 10</query>
+          <query>sourcetype="ri:pas:keycard" username!=guest | stats count by username | head 10 | sort -count</query>
           <earliest>$time_range.earliest$</earliest>
           <latest>$time_range.latest$</latest>
         </search>
@@ -165,7 +165,7 @@
       <chart>
         <title>Guest Access by Building</title>
         <search>
-          <query>sourcetype="ri:pas:keycard" username=guest | chart count by building_name</query>
+          <query>tag=guest_access | chart count by building_name</query>
           <earliest>$time_range.earliest$</earliest>
           <latest>$time_range.latest$</latest>
         </search>
