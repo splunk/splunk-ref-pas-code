@@ -150,7 +150,7 @@
       <table>
         <title>Top 10 Employee Keycard Users</title>
         <search>
-          <query>sourcetype="ri:pas:keycard" username!=guest | stats count by username | head 10 | sort -count</query>
+          <query>tag=keycard username!=guest | stats count by username | head 10 | sort -count</query>
           <earliest>$time_range.earliest$</earliest>
           <latest>$time_range.latest$</latest>
         </search>
