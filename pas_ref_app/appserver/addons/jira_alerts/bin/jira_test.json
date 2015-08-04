@@ -1,0 +1,21 @@
+{  
+   "app":"pas_ref_app",
+   "owner":"system",
+   "results_file":"",
+   "results_link":"",
+   "server_host":"localhost",
+   "server_uri":"https://127.0.0.1:8089",
+   "session_key":"SET_SESSION_KEY",
+   "sid":"",
+   "search_name":"",
+   "configuration":{  
+      "description":"Test Description",
+      "issue_type":"Task",
+      "jira_url":"SET_JIRA_URL",
+      "jira_username":"SET_USERNAME",
+      "priority":"",
+      "project_key":"SET_PROJECT_KEY",
+      "summary":"Test Summary"
+   },
+   "result":null
+}
