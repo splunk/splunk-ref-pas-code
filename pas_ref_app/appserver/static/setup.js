@@ -296,11 +296,19 @@ require([
     });
 
     function sendUxLog(message) {
-        sendLog(message, ux_logging_key);
+        if(dev_debug_key.length>0) {
+            sendLog(message, ux_logging_key);
+        } else {
+            console.log("UX Logging - No HTTP Input Key has been set!  Event logging disabled.");
+        }
     }
 
     function sendDevLog(message) {
-        sendLog(message, dev_debug_key);
+        if(dev_debug_key.length>0) {
+            sendLog(message, dev_debug_key);
+        } else {
+            console.log("Dev Debug - No HTTP Input Key has been set!  Event logging disabled.");
+        }
     }
 
     // Create the XHR object.

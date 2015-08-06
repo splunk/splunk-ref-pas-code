@@ -24,8 +24,6 @@ def validate_jira_settings(jira_settings):
     return True
 
 def update_jira_settings(jira_settings, server_uri, session_key):
-    dbg = open('/tmp/jira3.log', 'a')
-    print >>dbg, 'UPDATING', jira_settings
     r = requests.post(
         url=server_uri+'/servicesNS/nobody/jira_alerts/alerts/alert_actions/jira?output_mode=json',
         data={
@@ -37,7 +35,6 @@ def update_jira_settings(jira_settings, server_uri, session_key):
         },
         headers=splunkd_auth_header(session_key),
         verify=False).json()
-    print >>dbg, "RES", r
     requests.post(
         url=server_uri + '/servicesNS/nobody/jira_alerts/storage/passwords/%3Ajira_password%3A?output_mode=json',
         data={
