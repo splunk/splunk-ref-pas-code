@@ -126,6 +126,7 @@ require([
             // Show the Google Drive app configuration section if the app is present and enabled
             var googleDriveApp = apps.item('googledrive_addon');
             if (googleDriveApp && !googleDriveApp.state().content.disabled) {
+                isOauthConfigured(); // checking oauth2 credential state on filesystem
                 sendDevLog("Enabling Google Drive Add-on in Setup interface.");
                 $('#googleDriveModule').removeClass('hide');
             }
@@ -391,5 +392,22 @@ require([
             }
         };
         saveLoop();
+    }
+    
+    // Determines whether or not the Google Drive OAuth2
+    // credentials have been generated and shows UI element
+    // indicating credential status
+    function isOauthConfigured() {
+        var service = mvc.createService();
+        service.get('/services/configure_oauth/status?check=configured', "",
+            function(err, response) {
+                if(JSON.parse(response.data).configured==true) {
+                    $('#gAuthNotConfigured').addClass('hide');
+                    $('#gAuthConfigured').removeClass('hide');
+                } else {
+                    $('#gAuthConfigured').addClass('hide');
+                    $('#gAuthNotConfigured').removeClass('hide');
+                }
+            });
     }
 });

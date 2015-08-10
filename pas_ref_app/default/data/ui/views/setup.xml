@@ -53,6 +53,8 @@
                 <hr/>
                 <div id="googleDriveModule" class="hide">
                     <h3>Google Drive Add-on (Optional)</h3>
+                    <p class="text-success hide" id="gAuthConfigured">Google Drive OAuth2 credentials have been created!</p>
+                    <p class="text-warning hide" id="gAuthNotConfigured">Google Drive OAuth2 credentials have not been created.</p>
                     <div>
                         <h3>Enter Client ID:</h3>
                         <input id="clientId" type="text" />
