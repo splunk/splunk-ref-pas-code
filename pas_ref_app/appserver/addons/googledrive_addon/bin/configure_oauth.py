@@ -1,12 +1,9 @@
-import splunk.admin as admin
-import splunk.entity as entity
 import splunk.rest
 import splunk.util
-import httplib2, urllib, os, time
-import urllib, json
+import httplib2, os
+import json
 import logging
 import logging.handlers
-import httplib2
 import fileinput
 import sys
 from splunk.appserver.mrsparkle.lib.util import make_splunkhome_path
@@ -57,4 +54,22 @@ class oauth_exchange(splunk.rest.BaseRestHandler):
                 self.response.write(e)
 
     # listen to all verbs
-    handle_GET = handle_DELETE = handle_PUT = handle_VIEW = handle_POST
+    handle_POST
+
+class oauth_status(splunk.rest.BaseRestHandler):
+    def handle_GET(self):
+        try:
+            is_configured = os.path.isfile(app_dir + os.path.sep + 'google_drive_creds')
+            logger.debug("Is Google Drive Add-on Configured: " + str(is_configured))
+
+            state = json.dumps({
+                "configured": is_configured
+            })
+
+            self.response.write(state)
+        except Exception, e:
+                logger.exception(e)
+                self.response.write(e)
+
+    # listen to all verbs
+    handle_GET
