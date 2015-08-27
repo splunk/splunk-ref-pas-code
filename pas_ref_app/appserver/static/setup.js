@@ -297,7 +297,7 @@ require([
     });
 
     function sendUxLog(message) {
-        if(dev_debug_key.length>0) {
+        if(ux_logging_key.length>0) {
             sendLog(message, ux_logging_key);
         } else {
             console.log("UX Logging - No HTTP Input Key has been set!  Event logging disabled.");
