@@ -12,9 +12,32 @@ Alert action message payload contents include:
     * First search result - All extracted field values from the first search
       result (useful in certain situations).
 
-   TODO:
-    Write up section on JSON payload structure
-    Write up section on logging
+   The structure of the JSON payload looks like:
+
+    {
+        "app": <app name that alert was sent from>,
+        "owner": <owner of sending app>,
+        "results_file": <absolute path to a file containing gzipped results>
+        "Results_link": <url to view the results in splunk>
+        "server_host": <hostname of splunk instance where the alert was fired>,
+        "server_uri": <url to the Splunk REST endpoint>,
+        "session_key": <session key>,
+        "sid": <search id>,
+        "search_name": <search name>,
+        "configuration":
+        {
+            "param1": "value of parameter specified for alert (see alert_actions.conf.spec)."
+        },
+        "result":{
+            "_raw": <the attributes of the _first_ event will be in this object>
+        }
+    }
+
+Any output to STDERR will be captured by Splunk and logged.  You can control the
+log level by supplying 'DEBUG', 'INFO', or 'ERROR' as the first word of a line output
+by your script.  To find your logs, go to 'Settings' > 'Alert Actions' and select
+'View log events' for your app.
+
 """
 
 import sys
