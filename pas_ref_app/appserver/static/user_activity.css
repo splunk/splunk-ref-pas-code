@@ -38,19 +38,22 @@ div[id*='zoom_chart-refreshtime']{
     float: right;
     position: relative;
     left: 150px;
-    top:-55px;"
+    top:-55px;
  }
 
 #input1 {
     position: relative;
     left: 250px;
-    top:-55px;"
+    top: -32px;
+    width: 300px;
 }
 
 #input1 label {
-    position:relative; 
-    left: -50pt; 
-    top: 19pt;
+    display: inline;
+}
+
+#input1 > div {
+    display: inline;
 }
 
  .dashboard-row {
