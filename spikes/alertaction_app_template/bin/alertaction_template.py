@@ -43,28 +43,24 @@ by your script.  To find your logs, go to 'Settings' > 'Alert Actions' and selec
 import sys
 import json
 import urllib2
+from string import Template
+from subprocess import call
 
-# creates outbound message from alert payload contents
-# and attempts to send to the specified endpoint
-def send_message(config):
+
+def send_message(result, config):
     # retrieve endpoint url
-    url = config.get('url')
+    message = config.get('message')
+    message_text = '<no message supplied>'
 
-    # create outbound message body
-    body = OrderedDict(
-        message=config.get('message')
-    )
+    title = config.get('display_title')
 
-    # create outbound request object
-    req = urllib2.Request(url, body, {"Content-Type": "application/json"})
+    if message:
+        message_text = Template(message).safe_substitute(result)
 
-    try:
-        res = urllib2.urlopen(req)
-        body = res.read()
-        return 200 <= res.code < 300
-    except urllib2.HTTPError, e:
-        print >> sys.stderr, "ERROR Error sending message: %s" % e
-        return False
+    # Do something cool.
+    print >> sys.stderr, "INFO Title: {}".format(title)
+    print >> sys.stderr, "INFO Message: {}".format(message_text)
+
 
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "--execute":
@@ -73,7 +69,7 @@ if __name__ == "__main__":
             payload = json.loads(sys.stdin.read())
             config = payload.get('configuration')
 
-            send_message(config)
+            send_message(payload.get('result'), config)
         except Exception, e:
             print >> sys.stderr, "ERROR Unexpected error: %s" % e
             sys.exit(3)

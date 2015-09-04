@@ -1,7 +1,8 @@
 []
 access = read : [ * ], write : [ admin ]
 
-[alert_actions/alertaction_app_template]
+# TODO: Change 'alertaction_template' to the name of your action
+[alert_actions/alertaction_template]
 export = system
 
 [alerts]

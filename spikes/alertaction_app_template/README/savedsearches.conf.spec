@@ -11,7 +11,11 @@
 # as opposed to values defined in alert_actions.conf.spec, which apply
 # to all created Alert Actions of this type.
 
+# TODO: change 'alertaction_template' to the name of your action below.
 # Enable/disable alertaction notification
-action.<alertaction_name> = [0|1]
+# action.<alertaction_name> = [0|1]
+action.alertaction_template = 1
 
-action.<alertaction_name>.param.<key> = <type> (e.g. <string>)
+# TODO: Add all alert instance-specific parameters below.
+# action.<alertaction_name>.param.<key> = <type> (e.g. <string>)
+action.alertaction_template.param.message = <string>
