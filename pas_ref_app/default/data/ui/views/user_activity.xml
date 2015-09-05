@@ -1,5 +1,5 @@
 <form script="user_activity.js,provider_stats.js,user_info.js,activity_log.js"
-      stylesheet="user_activity.css,provider_stats.css,user_info.css,activity_log.css,,help_hover.css">
+      stylesheet="user_activity.css,provider_stats.css,user_info.css,activity_log.css,help_hover.css">
     <label>User Activity</label>
     <search id="base_search">
         <query>
@@ -52,9 +52,6 @@
         <panel>
             <html>
                     <div id="user_info"></div>
-
-                    
-                                
                     <div class="help-hover" id="user-info-learn-left" title="The information in this panel is extracted from a third-party system. CLICK TO LEARN MORE."> 
                         <a class="external" target="_blank" href="http://dev.splunk.com/goto/sysintegration"><i class="icon-bulb"></i>
                         Learn more about system integration</a>

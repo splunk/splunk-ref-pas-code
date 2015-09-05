@@ -5,11 +5,24 @@
 }
 
 #user_info .user_info_box {
-    display: inline-block;
     width: 25em;
 }
+
+#user_info .user_image {
+    display: block;
+    float: left;
+}
+
+#user_info .user_details {
+    display: block;
+}
+
 #user_info .user_info_box:first-child { margin-left: 0; }
-#user_info .user_info_box             { margin-left: 1em; }
+#user_info .user_info_box             {
+    float: left;
+    margin-left: 1em;
+}
+
 #user_info .user_info_box .user_fullname {
     float:left; /* add this */
     font-family: sans-serif;
