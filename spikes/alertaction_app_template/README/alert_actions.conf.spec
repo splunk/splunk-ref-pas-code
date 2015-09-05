@@ -10,6 +10,10 @@
 # NOTE: This file and the corresponding setup.xml file are
 # optional components.
 
-[<alertaction_name>]
+# TODO: Change 'alertaction_template' to the name of your app.
+[alertaction_template]
 # Parameter Key/Value pair template
+
+# TODO: Define required parameters below
 # param.<key_name> = <input_type> (e.g. <string>)
+param.display_title = <string>

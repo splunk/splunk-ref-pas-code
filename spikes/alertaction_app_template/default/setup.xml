@@ -1,16 +1,14 @@
 <setup>
+  <!-- This file is where you customize all of your app-level settings. -->
     <block title="Custom Alerts">
         <text>Configure Alert Notifications</text>
     </block>
-
-    <block title="Server" endpoint="admin/alert_actions" entity="ALERT_ACTION_NAME">
-        <input field="param.KEY_NAME">
-            <label>KEY_LABEL</label>
+    <block title="Server" endpoint="admin/alert_actions" entity="alertaction_template">
+        <input field="param.display_title">
+            <label>Alert Title</label>
             <type>text</type>
         </input>
-		<!--
-			Add all other user input elements here.
-		-->
+			<!-- Add all other user input elements here. -->
     </block>
 
 </setup>
