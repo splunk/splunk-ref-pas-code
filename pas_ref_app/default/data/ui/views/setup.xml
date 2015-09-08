@@ -60,6 +60,7 @@
                         <input id="clientId" type="text" />
                         <h3>Enter Client Secret:</h3>
                         <input id="clientSecret" type="text" />
+                        <input id="inputName" type="hidden" value="googledrive_input" />
                         <div>
                             <input id='getAuth' type='button' value='Get Code!' />
                         </div>

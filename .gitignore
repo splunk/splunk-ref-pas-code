@@ -28,3 +28,4 @@ build
 *.orig.pre41
 
 googledrive_addon/bin/google_drive_creds
+build_scripts/*.gz

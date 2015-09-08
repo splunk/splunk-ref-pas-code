@@ -9,7 +9,7 @@ require([
     //       No time to fix now since feature freeze in a few hours...
 
     var GOOGLE_SIGN_IN_BASE_URL = "https://accounts.google.com/o/oauth2/auth?redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fadmin.reports.audit.readonly&client_id=";
-    
+
     var logService = mvc.createService();
     var currentUser = Splunk.util.getConfigValue("USERNAME");
     var dev_debug_key = "";
@@ -22,7 +22,7 @@ require([
                 "<span class='color'><strong>Color:</strong> <input type=\"text\"/ disabled></span> " +
                 "<span class='weight'><strong>Weight:</strong> <input type=\"text\"/></span>" +
             "</div>");
-    
+
     var DEFAULT_VIOLATION_TYPES = [
         {
             id: 'Invalid_Time_Access',
@@ -43,29 +43,29 @@ require([
             weight: 1.0
         }
     ];
-    
+
     var departmentsDropdown = new MultiDropdownView({
         managerid: "departments_search",
         labelField: "department",
         valueField: "department",
         el: $("#departments_dropdown")
     }).render();
-    
+
     var SetupModel = KVStore.Model.extend({
         collectionName: 'ri_setup_coll'
     });
-    
+
     var ViolationTypeModel = KVStore.Model.extend({
         collectionName: 'violation_types'
     });
-    
+
     var ViolationTypeCollection = KVStore.Collection.extend({
         collectionName: 'violation_types',
         model: ViolationTypeModel
     });
-    
+
     var oldSetupModelId;
-    
+
     // Fetch setup data and populate form
     new SetupModel().fetch().then(function(setupDatas, textStatus, jqXHR) {
         new ViolationTypeCollection().fetch().then(function(violationTypes, textStatus, jqXHR) {
@@ -81,9 +81,9 @@ require([
                 oldSetupModelId = "_new";
             } else {
                 setupData = setupDatas[0];
-                
+
                 // Update existing model upon save
-                oldSetupModelId = setupData._key
+                oldSetupModelId = setupData._key;
             }
 
             // Populate departments in the UI
@@ -91,20 +91,20 @@ require([
 
             // Populate violation types in the UI
             if (violationTypes.length != DEFAULT_VIOLATION_TYPES.length) {
-                violationTypes = DEFAULT_VIOLATION_TYPES
+                violationTypes = DEFAULT_VIOLATION_TYPES;
             }
             _.each(violationTypes, function(violationType) {
                 var rowElement = $(VIOLATION_TYPE_ROW_TEMPLATE())
                     .appendTo($("#violation_types"));
-                
+
                 $('.name input', rowElement).val(violationType.title);
                 $('.color input', rowElement).val(violationType.color);
                 $('.weight input', rowElement).val(violationType.weight);
             });
 
             var learningTipsEnabled = (setupData.learningTipsEnabled === 'True');
-            $('#learn_more_tips_toggle input').prop('checked', learningTipsEnabled)
-            
+            $('#learn_more_tips_toggle input').prop('checked', learningTipsEnabled);
+
             // Now that form is loaded, allow it to be saved
             $('#save').removeClass('disabled');
         });
@@ -131,7 +131,7 @@ require([
                 $('#googleDriveModule').removeClass('hide');
             }
 
-            var eventgenApp = apps.item('eventgen')
+            var eventgenApp = apps.item('eventgen');
             if (eventgenApp) {
                 eventgenApp.fetch(function(err, eventgenApp) {
                     if (err) {
@@ -185,16 +185,18 @@ require([
     });
     
     $("#saveAuth").click(function() {
-        var client_id = $("#clientId").val()
-        var client_secret = $("#clientSecret").val()
-        var auth_code = $("#authCode").val()
+        var client_id = $("#clientId").val();
+        var client_secret = $("#clientSecret").val();
+        var auth_code = $("#authCode").val();
+        var input_name = $("#inputName").val();
         if(auth_code.length > 0) {
             // Creating OAuth2 object for key exchange
             var oauth2_record = {
                 "auth_code": auth_code,
                 "client_id" : client_id,
-                "client_secret" : client_secret
-            }
+                "client_secret" : client_secret,
+                "input_name" : input_name
+            };
 
             // Attempting to exchange auth token for refresh token via call to custom RESTful endpoint
             // Details are located in restmap.conf
@@ -260,7 +262,7 @@ require([
             });
 
             var tipsEnabled = $('#learn_more_tips_toggle input').prop('checked') ? 'True' : 'False';
-            sendUxLog( "Learn more tips checked: " + tipsEnabled)
+            sendUxLog( "Learn more tips checked: " + tipsEnabled);
             var departmentSelection = departmentsDropdown.val();
 
             var selectedDepartments = "User selected departments: ";
@@ -362,7 +364,7 @@ require([
         var collection = new Collection();
         collection.fetch().then(function() {
             var modelIndex = collection.models.length - 1;
-            
+
             var deleteLoop = function() {
                 if (modelIndex >= 0) {
                     collection.models[modelIndex].destroy().then(function() {
@@ -380,7 +382,7 @@ require([
     // Saves all specified models.
     function saveModels(Model, modelDatas, done) {
         var modelIndex = 0;
-        
+
         var saveLoop = function() {
             if (modelIndex < modelDatas.length) {
                 new Model().save(modelDatas[modelIndex]).then(function() {
@@ -393,14 +395,15 @@ require([
         };
         saveLoop();
     }
-    
+
     // Determines whether or not the Google Drive OAuth2
     // credentials have been generated and shows UI element
     // indicating credential status
     function isOauthConfigured() {
         var service = mvc.createService();
-        service.get('/services/configure_oauth/status?check=configured', "",
+        service.get('/services/configure_oauth/status', {check: "configured", input_name: "googledrive_input"},
             function(err, response) {
+                console.log(response);
                 if(JSON.parse(response.data).configured==true) {
                     $('#gAuthNotConfigured').addClass('hide');
                     $('#gAuthConfigured').removeClass('hide');
