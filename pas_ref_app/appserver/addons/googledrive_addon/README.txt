@@ -7,7 +7,7 @@ To use this add-on, you need to:
  
 	2.2) Now need to authenticate with Google Drive so that Splunk Enterprise can retrieve data: Open a terminal window, go to the Splunk bin directory and run the following command:
 		./splunk cmd python ../etc/apps/googledrive_addon/bin/configure_oauth.py 
-		'<your input name' '<your CLIENT_ID>' '<your CLIENT_SECRET>'
+		'<your input name>' '<your CLIENT_ID>' '<your CLIENT_SECRET>'
  
 	This will give you a URL that you can copy and paste into a browser, and you will get a key that you can copy and paste back into the command window to finish the authentication process.
 
