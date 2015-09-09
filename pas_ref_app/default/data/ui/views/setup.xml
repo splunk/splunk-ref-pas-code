@@ -87,6 +87,12 @@
                             Learn more about modular inputs
                         </a>
                     </div>
+                    <div class="help-hover" title="Google Drive uses OAuth for authentication. CLICK TO LEARN MORE."> 
+                        <a class="external" target="_blank" href="http://dev.splunk.com/goto/oauthmodinput">
+                            <i class="icon-bulb"></i>
+                            Learn more about authenticating modular inputs with OAuth
+                        </a>
+                    </div>
                     <hr/>
                 </div>
                 <div id="learn_more_tips_toggle">
