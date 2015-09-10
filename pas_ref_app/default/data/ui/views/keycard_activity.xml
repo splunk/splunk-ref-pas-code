@@ -8,6 +8,15 @@
         <latest>now</latest>
       </default>
     </input>
+    <html>
+      <br/>
+      <div class="help-hover" title="HTTP Event Collection allows for lightweight, forwarder-free logging. CLICK TO LEARN MORE."> 
+        <a class="external" target="_blank" href="http://dev.splunk.com/goto/sendingdata">
+          <i class="icon-bulb"></i>
+          Learn more about HTTP Event Collection
+        </a>
+      </div>
+    </html>
   </fieldset>
   <row>
     <panel>
