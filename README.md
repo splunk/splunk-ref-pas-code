@@ -27,6 +27,11 @@ running Splunk Enterprise and system requirements, see the
 #### The main PAS app
 Clone this repo. You can put the pas_ref_app folder with its content directly in the $SPLUNK_HOME/etc/apps folder. We recommend you clone it to some other working folder and create a symlink to the *pas_ref_app* in the $SPLUNK_HOME/etc/apps folder. 
 
+Initialize submodules. Several add-ons live in their own repositories, but have been linked into this project using git submodules for your convenience.
+
+* `git submodule init`
+* `git submodule update`
+
 * Unix/MacOS: `ln -s {PATH_TO_REPOSITORY}/pas_ref_app/ $SPLUNK_HOME/etc/apps/pas_ref_app`
 * Windows: `mklink /D $SPLUNK_HOME\etc\apps\pas_ref_app {PATH_TO_REPOSITORY}\pas_ref_app\`
 
