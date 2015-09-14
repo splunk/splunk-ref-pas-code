@@ -124,7 +124,7 @@ require([
             }
 
             // Show the Google Drive app configuration section if the app is present and enabled
-            var googleDriveApp = apps.item('googledrive_addon');
+            var googleDriveApp = apps.item('splunk-add-on-google-drive');
             if (googleDriveApp && !googleDriveApp.state().content.disabled) {
                 isOauthConfigured(); // checking oauth2 credential state on filesystem
                 sendDevLog("Enabling Google Drive Add-on in Setup interface.");
