@@ -1,4 +1,4 @@
-# Splunk Reference App - PAS (Ember Update) - Code Repo 
+# Splunk Reference App - PAS (Update for Splunk Enterprise 6.3) - Code Repo 
 ### Version 1.5.x
 
 Splunk Enterprise is an analytic environment that uses a distributed
@@ -46,7 +46,9 @@ There are several ways for you to feed data into the PAS app.
 
 The reference app relies on data provider add-ons. Three simulated data providers (file add-on, documents app add-on, database add-on) and one real data provider (Google Drive Data Provider add-on) are made available. Install at least one data provider. You'll find the install scripts for Unix/MacOS and Windows in the [/bin](tree/master/pas_ref_app/bin) folder. 
 
-For the Google Drive data provider installation and configuration, see specific instructions in the [Google Drive addon folder](tree/master/pas_ref_app/appserver/addons/googledrive_addon).
+For the Google Drive data provider installation and configuration, see specific instructions in the [Google Drive Addon README](https://github.com/splunk/splunk-add-on-google-drive/blob/master/README.md).
+
+For the JIRA custom alert action  installation and configuration, see specific instructions in the [JIRA Alerts Addon README](https://github.com/splunk/splunk-add-on-jira-alerts).
 
 The reference app uses a lookup table which could have been produced by an HR system process. For demonstration purposes, we have encapsulated it in the [HR info addon folder](tree/master/pas_ref_app/appserver/addons/pas_hr_info). 
 
