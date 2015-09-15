@@ -4,7 +4,7 @@
         <html>
           <div>
             <h2>Splunk Reference App - Pluggable Auditing System (PAS)</h2>
-            <h2>Version 1.0.1 - Build 030315</h2>
+            <h2>Version 1.5.0 - Build 091515</h2>
 
             <h3>Getting Started</h3>
             <p class="aboutBox">
@@ -14,7 +14,7 @@
               The app is intended to enable an organization monitor various document repositories (current and future). Managers and auditors can use the app to see who has looked at, updated, modified, deleted, or downloaded documents or other artifacts from various sources. By default, the app is configured to use sample data generated on the fly: you may need to wait a few minutes after first installing the app before any data becomes available.
             </p>
             <p class="aboutBox">
-              The app includes a number of dashboards that illustrate some of the capabilities of Splunk Enterprise apps written using SimpleXML and SplunkJS stack. The app is modular in nature and is designed for extensibility. It includes a number of data provider add-ons to simulate other data sources; these add-ons are hidden by default, but you can view them if you navigate to Manage Apps in your Splunk Enterprise installation. It also ships with a real data provider (Google Drive) - see the README for that add-on for instructions on how to enable it. For the app to function, you need to have at least one data provider add-on installed.
+              The app includes a number of dashboards that illustrate some of the capabilities of Splunk Enterprise apps written using SimpleXML and SplunkJS stack. The app is modular in nature and is designed for extensibility. It includes a number of data provider add-ons to simulate other data sources; these add-ons are hidden by default, but you can view them if you navigate to Manage Apps in your Splunk Enterprise installation. It also ships with a real data provider (Google Drive) and a real custom alert action (Atlassian JIRA) - see the corresponding README for instructions on how to enable and configure them. For the app to function, you need to have at least one data provider add-on installed.
             </p>
           </div>
         </html>
@@ -36,6 +36,12 @@
             <p class="aboutBox"> 
               The <strong>Customer Monitor</strong> dashboard lets you monitor accesses to documents in the repository associated with specific customers. Example customers in the sample data include Aladdin, Cade, and Ronan.
             </p>
+            <p class="aboutBox"> 
+              The <strong>Keycard Activity</strong> dashboard enables you to track locations and time of the employees access to company resources and real estate. It aggregates the high volume location data into a choropleth map.
+            </p>
+            <p class="aboutBox"> 
+              The <strong>Alerts</strong> dashboard lets you set and manage custom alerts triggered by a search.
+            </p>
             <p class="aboutBox">  
               Finally, there is a <strong>Setup</strong> dashboard where you are directed the first time you visit the app. On this dashboard you can specify the list of departments to display on the <b>Summary</b> dashboard and customize how the app calculates the policy violation weighted score. This dashboard uses the KV store to persist the settings.
             </p>
@@ -55,6 +61,7 @@
               <li>Custom tags in each of the provider add-ons</li>
               <li>Field aliases, calculated fields, and field extractions in each of the provider add-ons</li>
               <li>Lookups in the <strong>pas_hr_info</strong> app</li>
+              <li>Custom alert actions</li>
             </ul>
           </div>
           <div>
