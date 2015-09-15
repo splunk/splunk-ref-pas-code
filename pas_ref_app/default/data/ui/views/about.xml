@@ -8,13 +8,13 @@
 
             <h3>Getting Started</h3>
             <p class="aboutBox">
-              The Pluggable Auditing System (PAS) app and the accompanying guidance will help you  learn how to develop apps for Splunk Enterprise. This end-to-end app is developed by a Splunk engineering team in partnership with <a href="http://www.conducivesi.com">Conducive Consulting</a> and implements real-world use cases. The presented experience includes software development, testing, packaging and publishing a Splunk app. It is not, however, meant, to cover all technological features of the Splunk development platform.
+              The Pluggable Auditing System (PAS) app and the accompanying guidance will help you  learn how to develop apps for Splunk Enterprise. This end-to-end app was developed by a Splunk engineering team in partnership with <a href="http://www.conducivesi.com">Conducive Consulting</a> and implements real-world use cases. The presented experience includes software development, testing, packaging and publishing a Splunk app. It is not, however, meant, to cover all technological features of the Splunk development platform.
             </p>
             <p class="aboutBox">
-              The app is intended to enable an organization monitor various document repositories (current and future). Managers and auditors can use the app to see who has looked at, updated, modified, deleted, or downloaded documents or other artifacts from various sources. By default, the app is configured to use sample data generated on the fly: you may need to wait a few minutes after first installing the app before any data becomes available.
+              The app is intended to let an organization monitor various document repositories (current and future). Managers and auditors can use the app to see who has looked at, updated, modified, deleted, or downloaded documents or other artifacts from various sources. By default, the app is configured to use sample data generated on the fly: you may need to wait a few minutes after first installing the app before any data becomes available.
             </p>
             <p class="aboutBox">
-              The app includes a number of dashboards that illustrate some of the capabilities of Splunk Enterprise apps written using SimpleXML and SplunkJS stack. The app is modular in nature and is designed for extensibility. It includes a number of data provider add-ons to simulate other data sources; these add-ons are hidden by default, but you can view them if you navigate to Manage Apps in your Splunk Enterprise installation. It also ships with a real data provider (Google Drive) and a real custom alert action (Atlassian JIRA) - see the corresponding README for instructions on how to enable and configure them. For the app to function, you need to have at least one data provider add-on installed.
+              The app includes a number of dashboards that illustrate some of the capabilities of Splunk Enterprise apps written using SimpleXML and the SplunkJS stack. The app is modular in nature and is designed for extensibility. It includes a number of data provider add-ons to simulate other data sources; these add-ons are hidden by default, but you can view them if you navigate to Manage Apps in your Splunk Enterprise installation. It also ships with a real data provider (Google Drive) and a real custom alert action (Atlassian JIRA) - see the corresponding README for instructions on how to enable and configure them. For the app to function, you need to have at least one data provider add-on installed.
             </p>
           </div>
         </html>
@@ -25,19 +25,19 @@
               On the dashboards, you will see small lightbulb symbols (<i class="icon-bulb"></i>). If you hover the mouse over any of these you will see some additional information about the panel, and clicking will take you to the relevant location in the guidance.
             </p>
             <p class="aboutBox"> 
-              The <strong>Summary</strong> dashboard provides an overview of activity in the document repositories highlighting policy violations, suspicious activity, and historical trends. Imagine it to be used in the Command&amp;Control Center. The top two panels only show the data since midnight and refresh automatically every 5 mins. 
+              The <strong>Summary</strong> dashboard provides an overview of activity in the document repositories highlighting policy violations, suspicious activity, and historical trends. Imagine it to be used in a Command &amp; Control Center. The top two panels only show the data since midnight and refresh automatically every 5 mins. 
             </p>
             <p class="aboutBox"> 
               The <strong>User Activity</strong> dashboard, that you can navigate to from the list of <strong>Top Users</strong> on the <strong>Summary</strong> dashboard (click on the username, choose Drilldown), lets you focus on the activities of a specific user.
             </p>
             <p class="aboutBox"> 
-              The three <strong>Suspicious Activity</strong> dashboards enable you to view detailed information about the suspicious activities listed on the Summary dashboard.
+              The three <strong>Suspicious Activity</strong> dashboards let you view detailed information about the suspicious activities listed on the Summary dashboard.
             </p>
             <p class="aboutBox"> 
               The <strong>Customer Monitor</strong> dashboard lets you monitor accesses to documents in the repository associated with specific customers. Example customers in the sample data include Aladdin, Cade, and Ronan.
             </p>
             <p class="aboutBox"> 
-              The <strong>Keycard Activity</strong> dashboard enables you to track locations and time of the employees access to company resources and real estate. It aggregates the high volume location data into a choropleth map.
+              The <strong>Keycard Activity</strong> dashboard lets you track locations and time of the employees access to company resources and real estate. It aggregates the high volume location data into a choropleth map.
             </p>
             <p class="aboutBox"> 
               The <strong>Alerts</strong> dashboard lets you set and manage custom alerts triggered by a search.
@@ -74,7 +74,7 @@
           </html>
           <html>
           <div>
-            <h3>Where to Get</h3>
+            <h3>Where to Download</h3>
             <ul>
               <li>
                 <a href="https://github.com/splunk/splunk-ref-pas-code">Code Repo</a>
