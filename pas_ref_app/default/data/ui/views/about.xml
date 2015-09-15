@@ -137,7 +137,7 @@
                             <li>
                               <strong>Jack Coates</strong> and <strong>Adrian Hall</strong> for insights on extensibility and various aspects of compliance to the Common Information Model.
                             </li>
-                            <li><strong>Glenn Block</strong> for diligent review of the questions backlog, continuing advocacy of the project among customers and thoughtful doc reviews.</li>
+                            <li><strong>Glenn Block</strong> for diligent review of the questions backlog, validating the HTTP Event Collector scenarios and implementation, continuing advocacy of the project among customers and thoughtful doc reviews.</li>
                             <li><strong>Fred Wilmot</strong> for security review, identifying a vulnerability and helping come up with a better implementation.</li>
                             
                           </ul>
@@ -147,26 +147,25 @@
                 <div>
                           <ul>
                             <li><strong>David Carasso</strong> and <strong>Alex Raitz</strong> for validating our approach, asking questions, and providing pointers to the capabilities of Splunk we didn't know existed.</li>
-                            <li><strong>Matt Elting, Siegfried Puchbauer</strong>, and <strong>Carl Yestrau</strong> for consulting us on the particulars of the UI framework.</li>   
+                            <li><strong>Nick Filippi, Matt Elting, Siegfried Puchbauer</strong>, and <strong>Carl Yestrau</strong> for consulting us on the particulars of the UI framework and the Custom Alert Action framework.</li>   
                             <li><strong>Clint Sharp</strong> for many insights on using and trubleshooting eventgen.</li>          
                             <li><strong>Sanford Owings</strong> for the valuable real-world insights on the distributed deployment considerations.</li>
                             <li><strong>Denis Gladkikh</strong> for conducting code reviews and providing ideas for improvements.</li>
                             <li><strong>Mark Groves</strong> for letting us loose, yet providing important suggestions and steering the project.</li>
-                            <li><strong>Jon Rooney</strong> for marketing and communication support.</li>
+                            <li><strong>Jon Rooney</strong>, <strong>Misty Gibbs</strong>, and <strong>Erick Mechler</strong> for marketing and communication support.</li>
                              <li><strong>Randy Young, Amrit Bath, Margaret Lee</strong>, and <strong>Alex Munk</strong> for supporting and deploying the PAS app to the Splunk Cloud Sandbox.</li>
-                            <li><strong>Chris Bauer</strong>, <strong>Dritan Bitincka</strong>, <strong>Jack Coates</strong>, <strong>Damien Dallimore</strong>, <strong>Mark Groves</strong>, <strong>Alex James</strong>, <strong>Satoshi Kawasaki</strong>, <strong>Edward Kostowski</strong>, <strong>Divanny Lamas</strong>, <strong>David Maislin</strong>, <strong>David Noble</strong>, <strong>Sanford Owings</strong>, <strong>Michael Porath</strong>, <strong>Hal Rottenberg</strong>, <strong>Michael Szebenyi</strong>, <strong>Brian Wooden</strong>, <strong>Simeon Yep</strong>, and <strong>Dmitrii Zakharov</strong> for providing feedback on the project and reviewing our technical guidance.</li>                        
+                            <li><strong>Chris Bauer</strong>, <strong>Dritan Bitincka</strong>, <strong>Brent Boe</strong>, <strong>Dennis Bourg</strong>, <strong>Jack Coates</strong>, <strong>Damien Dallimore</strong>, <strong>Mark Groves</strong>, <strong>Oleg Izmerly</strong>, <strong>Alex James</strong>, <strong>Satoshi Kawasaki</strong>, <strong>Edward Kostowski</strong>, <strong>Divanny Lamas</strong>, <strong>David Maislin</strong>, <strong>David Noble</strong>, <strong>Sanford Owings</strong>, <strong>David Poncelow</strong>,<strong>Michael Porath</strong>, <strong>Hal Rottenberg</strong>, <strong>Michael Szebenyi</strong>, <strong>Eric Woo</strong>, <strong>Brian Wooden</strong>, <strong>Simeon Yep</strong>, and <strong>Dmitrii Zakharov</strong> for providing feedback on the project and reviewing our technical guidance.</li>                        
                             <li><strong>Damien Dallimore</strong> and <strong>Hal Rottenberg</strong> for evangilising the project.</li>
                             <li><strong>Alex Prokhorenko</strong> and <strong>Terry Martin</strong> for support in publishing and certifying the app.</li>
                             <li><strong>Christopher Gales</strong> for guiding our documentation adventures.</li>
                             <li><strong>Paddy Griffin</strong> and <strong>Rick Roberts</strong> for the metaphors and diagrams that help explain Splunk concepts.</li>
                             <li><strong>Ashwin Kedia</strong> for the initial facilitation of the partnership with Conducive.</li>
-                            <li><strong>Paul Sanford</strong> for flexibility in lending a key developer resource.</li>
                             <li><strong>Ji-Hyun Park</strong> for legal support, <strong>Patricia Iorg, Rendi Miller</strong>, and <strong>Dee Bender</strong> for administrative support .</li>
                             <li><strong>Manish Sainani</strong> for validating our approach to anomaly detection.</li>
                           </ul>
                           <p class="aboutBox">
                           We also thank our executive team for their leadership and ongoing support of our effort: 
-                            <strong>Godfrey Sullivan, Stephen Sorkin, Guido Schroeder, Doug Merritt, Markus Zirn, Krishna Tammana, Carola Thompson</strong>, and <strong>Colin Savage</strong>.
+                            <strong>Godfrey Sullivan, Stephen Sorkin, Guido Schroeder, Snehal Antani, Doug Merritt, Steve Sommer, Shay Mowlem, Markus Zirn, Krishna Tammana, Carola Thompson</strong>, and <strong>Colin Savage</strong>.
                           </p>
                   </div>
               </td>
