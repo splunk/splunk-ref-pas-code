@@ -79,7 +79,7 @@ define(function(require, exports, module) {
                         var sum   = get_sum(children);
                         var count = children.length;
 
-                        return children.length == 1 && children[0].length === 1 ? { "name": key, "size": children[0][0] } : { "name": key, "sum": sum, "count": count, "children": nest(children) };
+                        return children.length == 1 && children[0].length === 1 ? { "name": key, "total_accesses": children[0][0] } : { "name": key, "total_accesses": sum, "children": nest(children) };
                     }
                     else {
                         return children.length == 1 && children[0].length === 0 ? { "name": key } : { "name": key, "children": nest(children) };
@@ -94,7 +94,7 @@ define(function(require, exports, module) {
 
             if(has_size) {
                 _(formatted_data).extend({
-                    "sum": get_sum(data),
+                    "total_accesses": get_sum(data),
                     "count": data.length,
                 });
             }
@@ -190,7 +190,19 @@ define(function(require, exports, module) {
                     .attr("r", 1e-6)
                     .style("fill", function(d) { return d._children ? node_close_color : node_open_color; })
                     .style("cursor", function(d) { return d.children || d._children ? "pointer" : "default"; })
-                    .style("stroke", node_outline_color);
+                    .style("stroke", node_outline_color)
+                    .append("title")
+                    .text(function(d) {
+                        var sum  = Number(d.total_accesses) .toLocaleString('en');
+                        var size = Number(d.subgroups).toLocaleString('en');
+                        var children = (d.children || d._children);
+
+                        var description = d.name + ":\n  " + sum + " document " + (sum == 1 ? "access" : "accesses");
+                        if (children && children.length > 0) {
+                            description = description + "\n  " + children.length + (children.length == 1 ? ' subgroup' : ' subgroups');
+                        }
+                        return description;
+                    });
 
                 nodeEnter.append("svg:text")
                     .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
@@ -198,15 +210,11 @@ define(function(require, exports, module) {
                     .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
                     .style("cursor", function(d) { return d.children || d._children ? "pointer" : "default"; })
                     .style("fill-opacity", 1e-6)
-                    .html(function(d) {
+                    .text(function(d) {
                         if(has_size) {
-                            var sum  = Number(d.sum) .toLocaleString('en');
-                            var size = Number(d.size).toLocaleString('en');
+                            var sum  = Number(d.total_accesses) .toLocaleString('en');
 
-                            var long_label  = d.name + ' (<tspan fill="' + label_size_color + '">' + sum + '</tspan>, <tspan fill="' + label_count_color+ '">' + d.count + '</tspan>)';
-                            var short_label = d.name + ' (<tspan fill="' + label_size_color + '">' + size + '</tspan>)';
-
-                            return d.children || d._children ? long_label : short_label;
+                            return d.name + ' (' + sum + ')';
                         }
                         else {
                             return d.name;
