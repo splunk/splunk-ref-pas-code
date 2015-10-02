@@ -59,7 +59,10 @@
                 <div id="googleDriveModule" class="hide">
                     <h3>Google Drive Add-on (Optional)</h3>
                     <p class="text-success hide" id="gAuthConfigured">Google Drive OAuth2 credentials have been created!</p>
+                    <p class="text-success hide" id="gAuthSuccess">You have successfully set up Google Drive authentication!</p>
                     <p class="text-warning hide" id="gAuthNotConfigured">Google Drive OAuth2 credentials have not been created.</p>
+                    <p class="text-warning hide" id="gAuthAuthorizing">Authorizing Google Drive (check for popup windows)...</p>
+                    <p class="text-error hide" id="gAuthError">An error was encountered during the OAuth2 authentication process.</p>
                     <div>
                         <h3>Enter Client ID:</h3>
                         <input id="clientId" type="text" />
@@ -80,8 +83,6 @@
                             <p class="text-warning hide" style="margin-top:5px;" id="authEntryError">Please enter your authorization code.</p>
                         </div>
                     </div>
-                    <p class="text-success hide" id="gAuthSuccess">You have successfully set up Google Drive authentication!</p>
-                    <p class="text-error hide" id="gAuthError">An error was encountered during the OAuth2 authentication process.</p>
                     <div class="help-hover" title="Modular inputs allow ingestion of all kinds of data. CLICK TO LEARN MORE."> 
                         <a class="external" target="_blank" href="http://dev.splunk.com/goto/modularinputs">
                             <i class="icon-bulb"></i>

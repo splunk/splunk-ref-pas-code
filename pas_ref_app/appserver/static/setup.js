@@ -181,6 +181,8 @@ require([
             $("#codeEntry").removeClass('hide');
             $("#clentIdError").addClass('hide');
             $("#clentSecretError").addClass('hide');
+            $("#gAuthAuthorizing").removeClass('hide');
+            $("#gAuthNotConfigured").addClass('hide');
         }
     });
     
@@ -198,15 +200,17 @@ require([
                 "input_name" : input_name
             };
 
-            // Attempting to exchange auth token for refresh token via call to custom RESTful endpoint
+            // name to exchange auth token for refresh token via call to custom RESTful endpoint
             // Details are located in restmap.conf
             var service = mvc.createService();
             service.post("/services/configure_oauth", oauth2_record,
                 function(err, response) {
+                    $("#gAuthAuthorizing").addClass('hide');
                     if(null!=response) {
                         $("#codeEntry").addClass('hide');
                         $("#gAuthSuccess").removeClass('hide');
                         $("#gAuthError").addClass('hide');
+                        $("#gAuthNotConfigured").addClass('hide');
                     } else {
                         sendDevLog("Token exchange error: " + err.status + ". Message: " + err.error);
                         $("#gAuthError").removeClass('hide');
@@ -403,7 +407,6 @@ require([
         var service = mvc.createService();
         service.get('/services/configure_oauth/status', {check: "configured", input_name: "googledrive_input"},
             function(err, response) {
-                console.log(response);
                 if(JSON.parse(response.data).configured==true) {
                     $('#gAuthNotConfigured').addClass('hide');
                     $('#gAuthConfigured').removeClass('hide');
