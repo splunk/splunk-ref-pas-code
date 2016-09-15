@@ -131,7 +131,7 @@ require([
                 $('#googleDriveModule').removeClass('hide');
             }
 
-            var eventgenApp = apps.item('eventgen');
+            var eventgenApp = apps.item('eventgen') || apps.item('SA-Eventgen');
             if (eventgenApp) {
                 eventgenApp.fetch(function(err, eventgenApp) {
                     if (err) {

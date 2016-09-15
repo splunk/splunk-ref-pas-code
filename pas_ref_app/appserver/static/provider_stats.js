@@ -22,8 +22,8 @@ require([
     providerStatsSearch.data("results", {
         // HACK: By default, no "data" event is fired when no results are
         //       found. Override so that it does fire in this case.
-        condition: function(manager, job) {
-            return (job.properties() || {}).isDone;
+        condition: function(manager) {
+            return (manager.job.properties() || {}).isDone;
         }
     }).on("data", function(resultsModel) {
         var rows = resultsModel.data().rows;

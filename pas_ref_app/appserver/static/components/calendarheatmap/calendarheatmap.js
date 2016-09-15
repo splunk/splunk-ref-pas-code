@@ -64,6 +64,7 @@ define(function(require, exports, module) {
     var SimpleSplunkView = require("splunkjs/mvc/simplesplunkview");
     var d3 = require("../d3/d3");
     var CalHeatMap = require("./contrib/cal-heatmap");
+    var moment = require("moment");
 
     require("css!./calendarheatmap.css");
 
