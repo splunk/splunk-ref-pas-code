@@ -1,9 +1,9 @@
 [submodule "pas_ref_app/appserver/addons/splunk-add-on-jira-alert"]
 	path = pas_ref_app/appserver/addons/splunk-add-on-jira-alerts
 	url = https://github.com/splunk/splunk-add-on-jira-alerts.git
-[submodule "pas_ref_app/appserver/addons/eventgen"]
-	path = pas_ref_app/appserver/addons/eventgen
-	url = https://github.com/splunk/eventgen.git
 [submodule "pas_ref_app/appserver/addons/splunk-add-on-google-drive"]
 	path = pas_ref_app/appserver/addons/splunk-add-on-google-drive
 	url = https://github.com/splunk/splunk-add-on-google-drive.git
+[submodule "pas_ref_app/appserver/addons/SA-Eventgen"]
+	path = pas_ref_app/appserver/addons/SA-Eventgen
+	url = https://github.com/splunk/eventgen.git
