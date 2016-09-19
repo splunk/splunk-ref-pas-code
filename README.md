@@ -39,7 +39,7 @@ Initialize submodules. Several add-ons live in their own repositories, but have 
 There are several ways for you to feed data into the PAS app.
 
 * Ingest your own data. Just make sure those sources are tagged with "change" and "audit", 
-* Use the eventgen app, if you want a simulated data flow. Get it from <http://bit.ly/splunkeventgen>, or 
+* Use the eventgen app, if you want a simulated data flow. Get it from <http://dev.splunk.com/goto/deveventgen>, or 
 * Consume the test data set provided in the [test repo](http://github.com/splunk/splunk-ref-pas-test/tree/master/tests/pas_sample_data). 
 
 #### Install dependencies
