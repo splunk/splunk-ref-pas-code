@@ -30,3 +30,5 @@ build
 googledrive_addon/bin/google_drive_creds
 build_scripts/*.gz
 .tern-port
+.idea/
+splunk-ref-pas-code.iml
