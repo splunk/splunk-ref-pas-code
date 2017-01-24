@@ -3,7 +3,7 @@
   "info": {
     "title": "Splunk Reference App - Application Add-on", 
     "id": {
-      "group": null, 
+      "group": null,
       "name": "pas_simulated_application_addon", 
       "version": "1.5.0"
     }, 

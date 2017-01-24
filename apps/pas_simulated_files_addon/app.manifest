@@ -3,7 +3,7 @@
   "info": {
     "title": "Splunk Reference App - Files Add-on", 
     "id": {
-      "group": null, 
+      "group": null,
       "name": "pas_simulated_files_addon", 
       "version": "1.5.0"
     }, 

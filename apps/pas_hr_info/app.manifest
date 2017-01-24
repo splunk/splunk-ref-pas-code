@@ -3,7 +3,7 @@
   "info": {
     "title": "Splunk Reference App - HR info", 
     "id": {
-      "group": null, 
+      "group": null,
       "name": "pas_hr_info", 
       "version": "1.5.0"
     }, 

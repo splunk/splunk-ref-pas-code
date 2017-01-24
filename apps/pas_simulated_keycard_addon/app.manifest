@@ -3,7 +3,7 @@
   "info": {
     "title": "Splunk Reference App - Keycard Add-on", 
     "id": {
-      "group": null, 
+      "group": null,
       "name": "pas_simulated_keycard_addon", 
       "version": "1.5.0"
     }, 
