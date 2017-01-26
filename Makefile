@@ -23,11 +23,6 @@ help: ## Show this help message.
 	@echo 'targets:'
 	@egrep '^(.+)\:\ ##\ (.+)' $(MAKEFILE_LIST) | column -t -c 2 -s ':#' | sed 's/^/  /'
 
-guard-%:
-ifndef ${*}
-	$(error Environment variable ${*} is not set)
-endif
-
 clean: ## Remove artifacts
 	@rm -rf out/work/optional_dependencies
 	@rm -r out
@@ -59,13 +54,13 @@ package_oneclick: $(PACKAGES_DIR) $(ONE_CLICK_DIR)
 	slim package -o $(ONE_CLICK_DIR) -r $(PACKAGES_DIR) $(APPS_DIR)/$(MAIN_APP)
 
 devlink: ## Link apps into a Splunk installation
-devlink: guard-SPLUNK_HOME
+devlink:
 	@if [ -d $(SPLUNK_HOME)/etc/apps ]; then \
 		for i in $(realpath $(APP_SOURCE_DIRS)); do \
-			ln -s $$i $(SPLUNK_HOME); \
+			ln -s $$i $(SPLUNK_HOME)/etc/apps; \
 		done \
 	else \
-		echo "Could not find SPLUNK_HOME/etc/apps"; \
+		echo "Could not find Splunk app home at $(SPLUNK_HOME)/etc/apps"; \
 		exit 1; \
 	fi
 
@@ -74,11 +69,14 @@ partition: package_oneclick $(PARTITIONED_DIR)
 	slim partition -o $(PARTITIONED_DIR) -r $(PACKAGES_DIR) $(ONE_CLICK_DIR)/$(MAIN_APP_PACKAGE)
 
 standalone_package: ## Build package for local install
-standalone_package: $(STANDALONE_DIR) $(STANDALONE_BUILD)
+standalone_package: $(STANDALONE_DIR) $(STANDALONE_BUILD) optional_dependencies
 	@cp -r $(APPS_DIR)/$(MAIN_APP) $(STANDALONE_BUILD)
 	@mkdir -p $(STANDALONE_DEP_DIR)
 	@for a in $(realpath $(APP_SOURCE_DIRS)); do \
 	  cp -r $$a $(STANDALONE_DEP_DIR); \
+	done
+	@for dep in $(OPTIONAL_GIT_DEPS); do \
+	  cp -r $(OPTIONAL_DEPENDENCY_DIR)/$$a $(STANDALONE_DEP_DIR); \
 	done
 	@tar cvfz $(STANDALONE_DIR)/$(MAIN_APP_PACKAGE) $(STANDALONE_BUILD)/$(MAIN_APP)
 

@@ -32,3 +32,4 @@ build_scripts/*.gz
 .tern-port
 .idea/
 splunk-ref-pas-code.iml
+out/
