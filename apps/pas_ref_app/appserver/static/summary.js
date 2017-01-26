@@ -23,7 +23,7 @@ require([
     _,
     FilterComponent,
     context
-) {
+) { 
     // Setup a custom contextual menu that appears when clicking on
     // the Trend chart, the Top Users table, and the Top Documents table.
     // 
@@ -34,11 +34,6 @@ require([
     // Listen for "click:menu" events and take the appropriate action,
     // usually adding items to the custom Filter Criteria panel.
     FilterComponent.initialize(mvc);
-    
-    // Refetch page every 5 minutes automatically
-    window.setInterval(function() {
-        window.location.reload();
-    }, 5*60*1000);
     
     function setupPopupMenus() {
         var trendChart = mvc.Components.getInstance("trend_chart");

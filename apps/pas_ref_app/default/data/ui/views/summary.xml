@@ -1,5 +1,6 @@
 <form script="summary.js,policy_violations.js,suspicious_activity.js"
-      stylesheet="summary.css,policy_violations.css,bootstrap-tagsinput.css,help_hover.css">
+      stylesheet="summary.css,policy_violations.css,bootstrap-tagsinput.css,help_hover.css"
+      refresh="300">
     <label>Summary</label>
     <search id="base_search">
         <query>
