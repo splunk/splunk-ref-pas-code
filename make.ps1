@@ -116,7 +116,7 @@ function run_in_docker() {
 }
 
 if ($args.Length -eq 0) {
-    create_standalone_package
+    print_help
 } else {
     $command = $args.Get(0)
     switch($command) {
