@@ -18,12 +18,21 @@ $optional_splunk_dependencies = "eventgen", "splunk-add-on-google-drive", "splun
 
 
 function print_help() {
-    Write-Output "Help"
+"targets:"
+"  help                    Show this help message."
+"  clean                   Remove artifacts"
+"  validate                Validate built package (builds if not already built)"
+"  package_oneclick        Package the apps for oneclick cloud install"
+"  devlink                 Link apps into a Splunk installation"
+"  partition               Partition the PAS app"
+"  standalone_package      Build package for local install"
+"  package_all             Build packages for standalone, cluster (partitioned), and oneclick cloud"
+"  run_in_docker           Build a docker image and run it with the app installed"
 }
 
 function clean_artifacts() {
     if (Test-Path .\out) {
-        Remove-Item .\out -Recurse
+        Remove-Item .\out -Recurse -Force
     }
 }
 
@@ -83,6 +92,7 @@ function get_optional_dependencies() {
     foreach ($dep in $optional_splunk_dependencies) {
         if (-Not (Test-Path "$optional_dependency_dir/$dep")) {
             git clone --depth 1 "https://github.com/splunk/$dep.git" "$optional_dependency_dir/$dep"
+            Remove-Item -Recurse -Force "$optional_dependency_dir/$dep/.git"
         } else {
             "Skipping $dep"
         }

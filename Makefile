@@ -89,6 +89,7 @@ optional_dependencies:
 		if [ ! -d $(OPTIONAL_DEPENDENCY_DIR)/$$i ]; then \
 			echo $$i; \
 			git clone --depth 1 https://github.com/splunk/$$i.git $(OPTIONAL_DEPENDENCY_DIR)/$$i; \
+			rm -rf $(OPTIONAL_DEPENDENCY_DIR)/$$i/.git; \
 		fi \
 	done
 
