@@ -12,7 +12,7 @@ PARTITIONED_DIR=out/release/partitioned
 ONE_CLICK_DIR=out/release/oneclick
 STANDALONE_DIR=out/release/standalone
 OPTIONAL_DEPENDENCY_DIR=out/work/optional_dependencies
-MAIN_APP_VERSION=1.5.0
+MAIN_APP_VERSION=1.5.2
 # MAIN_APP_VERSION=$(eval grep version apps/pas_ref_app/default/app.conf | cut -d = -f 2)
 MAIN_APP_PACKAGE=$(MAIN_APP)-$(MAIN_APP_VERSION).tar.gz
 STANDALONE_DEP_DIR=$(STANDALONE_BUILD)/$(MAIN_APP)/appserver/addons
