@@ -5,27 +5,27 @@
     "id": {
       "group": null,
       "name": "pas_ref_app", 
-      "version": "1.5.0"
+      "version": "1.5.2"
     }, 
     "author": [
       {
-        "name": "Splunk Dev (gmelnik)", 
+        "name": "Splunk", 
         "email": null, 
-        "company": null
+        "company": "Splunk"
       }
     ], 
     "releaseDate": null, 
     "description": "Splunk Reference App - PAS, including the main app and the underlying add-ons.", 
     "classification": {
-      "intendedAudience": null, 
+      "intendedAudience": "Developers", 
       "categories": [], 
-      "developmentStatus": null
+      "developmentStatus": "Code Sample"
     }, 
-    "commonInformationModels": null, 
+    "commonInformationModels": "Change Analysis", 
     "license": {
-      "name": null, 
+      "name": "Apache-2.0", 
       "text": null, 
-      "uri": null
+      "uri": "https://spdx.org/licenses/Apache-2.0.html#licenseText"
     }, 
     "privacyPolicy": {
       "name": null, 
@@ -65,37 +65,3 @@
   "incompatibleApps": null, 
   "platformRequirements": null
 }
-# The following optional sections can be customized and added to the main manifest:
-#
-# Lists the app dependencies and version requirements
-# "dependencies": {
-#     "<app-group>:<app-name>": {
-#         "version": "*",
-#         "package": "<source-package-location>"
-#     }
-# }
-#
-# Lists the inputs that belong on the search head rather than forwarders
-# "tasks": []
-#
-# Lists the possible input groups with app dependencies, and inputs that should be included
-# "inputGroups": {
-#     "<group-name>": {
-#         "requires": {
-#             "<app-group>:<app-name>": ["<dependent-input-groups>"]
-#         },
-#         "inputs": ["<defined-inputs>"]
-#     }
-# }
-#
-# Lists the app IDs that cannot be installed on the system alongside this app
-# "incompatibleApps": {
-#     "<app-group>:<app-name>": "<version>"
-# }
-#
-# Specify the platform version requirements for this app
-# "platformRequirements": {
-#     "splunk": {
-#         "Enterprise": "<version>"
-#     }
-# }
