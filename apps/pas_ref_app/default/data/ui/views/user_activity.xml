@@ -105,7 +105,7 @@
                 <option name="charting.axisTitleX.visibility">collapsed</option>
                 <option name="charting.axisTitleY.visibility">collapsed</option>
                 <option name="charting.drilldown">none</option>
-                <option name="height">100px</option>
+                <option name="height">100</option>
                 <option name="charting.seriesColors">[0x6072A8, 0xFF5A09]</option>
             </chart>
             <html>

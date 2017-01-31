@@ -41,7 +41,6 @@
         <option name="underLabel">Compared to Last 24h</option>
         <option name="useColors">1</option>
         <option name="useThousandSeparators">1</option>
-        <option name="linkView">search</option>
       </single>
     </panel>
     <panel>
@@ -66,7 +65,6 @@
         <option name="underLabel">Compared to Last 24h</option>
         <option name="useColors">1</option>
         <option name="useThousandSeparators">1</option>
-        <option name="linkView">search</option>
       </single>
     </panel>
     <panel>
@@ -91,7 +89,6 @@
         <option name="underLabel">Compared to Last 24h</option>
         <option name="useColors">1</option>
         <option name="useThousandSeparators">1</option>
-        <option name="linkView">search</option>
       </single>
     </panel>
     <panel>
@@ -116,7 +113,6 @@
         <option name="underLabel">Compared to Last 24h</option>
         <option name="useColors">1</option>
         <option name="useThousandSeparators">1</option>
-        <option name="linkView">search</option>
       </single>
     </panel>
   </row>
