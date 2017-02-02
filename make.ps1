@@ -23,7 +23,6 @@ function print_help() {
 "  clean                   Remove artifacts"
 "  validate                Validate built package (builds if not already built)"
 "  package_oneclick        Package the apps for oneclick cloud install"
-"  devlink                 Link apps into a Splunk installation"
 "  partition               Partition the PAS app"
 "  standalone_package      Build package for local install"
 "  package_all             Build packages for standalone, cluster (partitioned), and oneclick cloud"

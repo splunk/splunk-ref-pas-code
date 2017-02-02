@@ -43,7 +43,7 @@ $(STANDALONE_DIR):
 	@mkdir -p $(STANDALONE_DIR)
 
 validate: ## Validate built package (builds if not already built)
-validate: package
+validate: package_oneclick
 	@slim validate $(ONE_CLICK_DIR)/$(MAIN_APP_PACKAGE)
 
 package_oneclick: ## Package the apps for oneclick cloud install
@@ -95,14 +95,17 @@ optional_dependencies:
 
 run_in_docker: ## Build a docker image and run it with the app installed
 run_in_docker: optional_dependencies
+	@echo "Building image"
 	$(eval $@_IMAGE := $(shell docker build -q .))
+	@echo "Starting container"
 	$(eval $@_CONTAINER := $(shell docker run --env SPLUNK_START_ARGS="--accept-license" -p 8000:8000 -d --rm $($@_IMAGE)))
 	$(eval $@_OS := $(shell uname))
-	$(echo "Launching Splunk ")
+	@echo "Launching Splunk "
 	@sleep 10
-	$(echo "Launching browser")
+	@echo "Launching browser"
 	@case $($@_OS) in \
 		"Darwin") open http://localhost:8000 ;; \
 		*) which xdg-open > /dev/null && xdg-open http://localhost:8000 || echo "Splunk is ready at http://localhost:8000" ;; \
 	esac
+	@echo "Press Ctrl-C to stop and remove the container"
 	@docker attach $($@_CONTAINER) || echo "Done."

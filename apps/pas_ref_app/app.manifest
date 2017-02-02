@@ -21,7 +21,7 @@
       "categories": [], 
       "developmentStatus": "Code Sample"
     }, 
-    "commonInformationModels": "Change Analysis", 
+    "commonInformationModels": {"Change Analysis": "4.5.0"}, 
     "license": {
       "name": "Apache-2.0", 
       "text": null, 
@@ -40,24 +40,24 @@
   }, 
   "dependencies": {
 	"pas_hr_info": {
-		  "version": "1.5.0",
-		  "package": "pas_hr_info-1.5.0.tar.gz"
+		  "version": "1.5.2",
+		  "package": "pas_hr_info-1.5.2.tar.gz"
 	},
     "pas_simulated_application_addon": {
-		  "version": "1.5.0",
-		  "package": "pas_simulated_application_addon-1.5.0.tar.gz"
+		  "version": "1.5.2",
+		  "package": "pas_simulated_application_addon-1.5.2.tar.gz"
 	  },
     "pas_simulated_database_addon": {
-		  "version": "1.5.0",
-		  "package": "pas_simulated_database_addon-1.5.0.tar.gz"
+		  "version": "1.5.2",
+		  "package": "pas_simulated_database_addon-1.5.2.tar.gz"
 	  },
     "pas_simulated_files_addon": {
-		  "version": "1.5.0",
-		  "package": "pas_simulated_files_addon-1.5.0.tar.gz"
+		  "version": "1.5.2",
+		  "package": "pas_simulated_files_addon-1.5.2.tar.gz"
 	  },
     "pas_simulated_keycard_addon": {
-		  "version": "1.5.0",
-		  "package": "pas_simulated_keycard_addon-1.5.0.tar.gz"
+		  "version": "1.5.2",
+		  "package": "pas_simulated_keycard_addon-1.5.2.tar.gz"
 	  }
   }, 
   "tasks": null, 
