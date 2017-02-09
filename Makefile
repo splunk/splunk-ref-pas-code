@@ -78,7 +78,7 @@ standalone_package: $(STANDALONE_DIR) $(STANDALONE_BUILD) optional_dependencies
 	@for dep in $(OPTIONAL_GIT_DEPS); do \
 	  cp -r $(OPTIONAL_DEPENDENCY_DIR)/$$a $(STANDALONE_DEP_DIR); \
 	done
-	@tar cvfz $(STANDALONE_DIR)/$(MAIN_APP_PACKAGE) $(STANDALONE_BUILD)/$(MAIN_APP)
+	tar -cz -C $(STANDALONE_BUILD) -f ${PWD}/$(STANDALONE_DIR)/$(MAIN_APP_PACKAGE) .
 
 package_all: ## Build packages for standalone, cluster (partitioned), and oneclick cloud
 package_all: standalone_package package_oneclick partition
