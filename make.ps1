@@ -63,12 +63,13 @@ function create_standalone_package() {
     foreach ($dep in $optional_splunk_dependencies) {
         Copy-Item -Force -Recurse "$optional_dependency_dir/$dep" $addon_dir
     }
-    Compress-Archive -Update -Path $standalone_build_dir -DestinationPath "$standalone_dir\$main_app_archive"
+    Compress-Archive -Update -Path $standalone_build_dir\* -DestinationPath "$standalone_dir\$main_app_archive"
 }
 
 function create_all_packages() {
     create_oneclick_package
     create_standalone_package
+    partition
 }
 
 function validate() {
@@ -80,7 +81,7 @@ function validate() {
 
 function partition() {
     if (-Not (Test-Path -PathType Leaf $oneclick_app_archive)) {
-        create_packages
+        create_all_packages
     }
     ensure_directory_exists($partitioned_dir)
     slim partition -o $partitioned_dir $oneclick_app_archive  2>&1 | ForEach-Object { "$_" }
@@ -123,7 +124,6 @@ if ($args.Length -eq 0) {
       "clean" {clean_artifacts}
       "validate" {validate}
       "package_oneclick" {create_oneclick_package}
-      "devlink" {esplode}
       "partition" {partition}
       "standalone_package" {create_standalone_package}
       "package_all" {create_all_packages}
